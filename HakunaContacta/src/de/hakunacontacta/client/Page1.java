@@ -58,7 +58,7 @@ public class Page1 extends Composite {
 
 		
 		//-----------------------------------------
-		
+		//addedthis
 		final ListGrid groupGrid = new ListGrid();
 		groupGrid.setWidth(250);
 		groupGrid.setHeight(300);
