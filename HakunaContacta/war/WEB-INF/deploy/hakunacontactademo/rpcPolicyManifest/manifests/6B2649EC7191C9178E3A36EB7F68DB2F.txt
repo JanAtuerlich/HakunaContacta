@@ -1,0 +1,2 @@
+serviceClass: de.hakunacontacta.client.GreetingService
+path: 1C2FD9666DB7B36F624A71EDB845E2F9.gwt.rpc
