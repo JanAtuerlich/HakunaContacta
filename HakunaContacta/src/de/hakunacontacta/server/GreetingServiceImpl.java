@@ -43,9 +43,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import de.hakunacontacta.client.GreetingService;
+import de.hakunacontacta.contactmodule.Contact;
+import de.hakunacontacta.contactmodule.ContactGroup;
 import de.hakunacontacta.contactmodule.ContactManager;
-import de.hakunacontacta.shared.Contact;
-import de.hakunacontacta.shared.ContactGroup;
 import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
 
@@ -55,7 +55,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.URL;
@@ -204,13 +204,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	}
  
 	@Override
-	public Collection<Contact> getContacts() {
+	public ArrayList<Contact> getContacts() {
 		// TODO Auto-generated method stub
 		return contactManager.getContacts();
 	}
 
 	@Override
-	public Collection<ContactGroup> getContactGroups() {
+	public ArrayList<ContactGroup> getContactGroups() {
 		// TODO Auto-generated method stub
 		return contactManager.getGroups();
 	}

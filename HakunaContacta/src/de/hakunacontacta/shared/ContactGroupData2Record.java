@@ -2,6 +2,9 @@ package de.hakunacontacta.shared;
 
 import java.util.Collection;
 
+import de.hakunacontacta.contactmodule.Contact;
+import de.hakunacontacta.contactmodule.ContactGroup;
+
 
 public class ContactGroupData2Record {
 	

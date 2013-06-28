@@ -1,7 +1,10 @@
 package de.hakunacontacta.shared;
 
 import java.util.Collection;
-import java.util.Date;  
+import java.util.Date; 
+
+import de.hakunacontacta.contactmodule.Contact;
+import de.hakunacontacta.contactmodule.ContactGroup;
 
   
 public class ContactData2Record {  

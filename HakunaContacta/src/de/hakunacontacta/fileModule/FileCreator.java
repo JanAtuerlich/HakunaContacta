@@ -28,9 +28,9 @@ import net.sourceforge.cardme.vcard.types.params.AdrParamType;
 import net.sourceforge.cardme.vcard.types.params.EmailParamType;
 import net.sourceforge.cardme.vcard.types.params.TelParamType;
 
-import de.hakunacontacta.dummyContactManager.ContactDummy;
-import de.hakunacontacta.dummyContactManager.SourceFieldDummy;
-import de.hakunacontacta.dummyContactManager.SourceTypeDummy;
+import de.hakunacontacta.contactmodule.Contact;
+import de.hakunacontacta.contactmodule.ContactSourceType;
+import de.hakunacontacta.contactmodule.ContactSourceField;
 import de.hakunacontacta.exportModule.ExportField;
 import de.hakunacontacta.exportModule.ExportOption;
 
@@ -39,13 +39,13 @@ import ezvcard.VCard;
 
 public class FileCreator implements IFileCreator {
 
-	private ArrayList<ContactDummy> selectedContacts;
+	private ArrayList<Contact> selectedContacts;
 	private ArrayList<ExportField> exportFields;
-	private ArrayList<ContactDummy> cleansedContacts = new ArrayList<ContactDummy>();
+	private ArrayList<Contact> cleansedContacts = new ArrayList<Contact>();
 	private String exportFormat;
 	private static VCardImpl vcardFull = null;
 
-	public FileCreator(ArrayList<ContactDummy> selectedContacts, ArrayList<ExportField> exportFields, String exportFormat) {
+	public FileCreator(ArrayList<Contact> selectedContacts, ArrayList<ExportField> exportFields, String exportFormat) {
 		this.selectedContacts = selectedContacts;
 		this.exportFields = exportFields;
 		this.exportFormat = exportFormat;
@@ -54,28 +54,34 @@ public class FileCreator implements IFileCreator {
 	@Override
 	public String cleanseContacts(){
 
-		for (ContactDummy incomingContact : selectedContacts) {
-			ArrayList<SourceTypeDummy> initSourceTypeList = new ArrayList<SourceTypeDummy>();
+		for (Contact incomingContact : selectedContacts) {
+			ArrayList<ContactSourceType> initSourceTypeList = new ArrayList<ContactSourceType>();
 			Collections.sort(exportFields);
 			for (ExportField exportField : exportFields) {
-				SourceTypeDummy initSourceType = new SourceTypeDummy(exportField.getName());
-				initSourceType.addSourceField(exportField.getName(), "");
+				ContactSourceType initSourceType = new ContactSourceType();
+				initSourceType.setType(exportField.getName());
+				ContactSourceField initSourceField = new ContactSourceField();
+				initSourceField.setName(exportField.getName());
+				initSourceField.setValue("");
+				initSourceType.addSourceField(initSourceField);
 				initSourceTypeList.add(initSourceType);
 				Collections.sort(exportField.getExportOptions());
 			}
-			ContactDummy cleansedContact = new ContactDummy(incomingContact.geteTag(), incomingContact.getName());
+			Contact cleansedContact = new Contact();
+			cleansedContact.seteTag(incomingContact.geteTag());
+			cleansedContact.setName(incomingContact.getName());
 			cleansedContact.setSourceTypes(initSourceTypeList);
 			for (ExportField exportField : exportFields) {
 				for (ExportOption exportOption : exportField.getExportOptions()) {
 					boolean foundbest = false;
-					for (SourceTypeDummy incomingSourceType : incomingContact.getSourceTypes()) {
-						for (SourceFieldDummy incomingSourceField : incomingSourceType.getSourceFields()) {
+					for (ContactSourceType incomingSourceType : incomingContact.getSourceTypes()) {
+						for (ContactSourceField incomingSourceField : incomingSourceType.getSourceFields()) {
 							if (exportOption.getSourceType() == incomingSourceType.getType()
 									&& exportOption.getSourceField() == incomingSourceField.getName()) {
-								for (SourceTypeDummy cleansedSourceType : cleansedContact.getSourceTypes()) {
+								for (ContactSourceType cleansedSourceType : cleansedContact.getSourceTypes()) {
 									if (cleansedSourceType.getType() == exportField.getName()) {
 										System.out.println(cleansedContact.getName() + ", " + cleansedSourceType.getType());
-										for (SourceFieldDummy cleansedSourceField : cleansedSourceType.getSourceFields()) {
+										for (ContactSourceField cleansedSourceField : cleansedSourceType.getSourceFields()) {
 											cleansedSourceField.setName(exportField.getName());
 											cleansedSourceField.setValue(incomingSourceField.getValue());
 										}
@@ -92,8 +98,6 @@ public class FileCreator implements IFileCreator {
 			cleansedContacts.add(cleansedContact);
 		}
 		
-	
-		//this.ausgabe();
 		String output;
 		if (exportFormat == "CSV") {
 			output = createCSV();
@@ -117,19 +121,6 @@ public class FileCreator implements IFileCreator {
 		
 	}
 
-	private void ausgabe() {
-		for (ContactDummy contact : cleansedContacts) {
-			// System.out.println(contact.geteTag()+", "+contact.getName());
-			for (SourceTypeDummy st : contact.getSourceTypes()) {
-				// System.out.println(st.getType());
-				for (SourceFieldDummy sf : st.getSourceFields()) {
-					System.out.println(contact.geteTag() + ", " + contact.getName() + ", " + st.getType() + ", " + sf.getName() + ", "
-							+ sf.getValue());
-				}
-			}
-		}
-	}
-
 	private String createCSV() {
 
 		// TODO einfach den Namen aus dem Kontaktobjekt übernehmen ist schlecht,
@@ -143,13 +134,13 @@ public class FileCreator implements IFileCreator {
 
 		csv += seperator + "\n";
 
-		for (ContactDummy contact : cleansedContacts) {
+		for (Contact contact : cleansedContacts) {
 
 			Collections.sort(contact.getSourceTypes());
 
 			csv += contact.getName();
-			for (SourceTypeDummy sourceType : contact.getSourceTypes()) {
-				for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+			for (ContactSourceType sourceType : contact.getSourceTypes()) {
+				for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 					// System.out.println(sourceType.getType() + " of contact "
 					// + contact.getName() + " " + sourceField.getName() + ", "
 					// + sourceField.getValue());
@@ -175,13 +166,13 @@ public class FileCreator implements IFileCreator {
 
 		csv += seperator + "\n";
 
-		for (ContactDummy contact : cleansedContacts) {
+		for (Contact contact : cleansedContacts) {
 
 			Collections.sort(contact.getSourceTypes());
 
 			csv += contact.getName();
-			for (SourceTypeDummy sourceType : contact.getSourceTypes()) {
-				for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+			for (ContactSourceType sourceType : contact.getSourceTypes()) {
+				for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 					csv += seperator + sourceField.getValue();
 				}
 			}
@@ -203,7 +194,7 @@ public class FileCreator implements IFileCreator {
 	private String createVCard() {
 		String vCard = "";
 
-		for (ContactDummy contact : cleansedContacts) {
+		for (Contact contact : cleansedContacts) {
 			Collections.sort(contact.getSourceTypes());
 
 			VCardImpl vcard = new VCardImpl();
@@ -222,18 +213,18 @@ public class FileCreator implements IFileCreator {
 			n.setCharset(Charset.forName("UTF-8"));
 			n.setLanguage(LanguageType.DE);
 
-			for (SourceTypeDummy sourceType : contact.getSourceTypes()) {
+			for (ContactSourceType sourceType : contact.getSourceTypes()) {
 
 				if (sourceType.getType() == "Vorname") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						n.setGivenName(sourceField.getValue());
 					}
 				} else if (sourceType.getType() == "Nachname") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						n.setFamilyName(sourceField.getValue());
 					}
 				} else if (sourceType.getType() == "Homepage") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						
 						try {
 							vcard.addUrl(new UrlType(new URL(sourceField.getValue())));
@@ -246,7 +237,7 @@ public class FileCreator implements IFileCreator {
 						}
 					}
 				} else if (sourceType.getType() == "Adresse") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 
 						AdrType address1 = new AdrType();
 						address1.setCharset("UTF-8");
@@ -272,7 +263,7 @@ public class FileCreator implements IFileCreator {
 						// TODO sourceField.getValue())));
 					}
 				} else if (sourceType.getType() == "Telefon") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 
 						TelType telephone = new TelType();
 						telephone.setCharset("UTF-8");
@@ -282,7 +273,7 @@ public class FileCreator implements IFileCreator {
 
 					}
 				} else if (sourceType.getType() == "Handy") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 
 						TelType telephone = new TelType();
 						telephone.setCharset("UTF-8");
@@ -292,7 +283,7 @@ public class FileCreator implements IFileCreator {
 
 					}
 				} else if (sourceType.getType() == "E-Mail Privat") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 
 						EmailType email = new EmailType();
 						email.setEmail(sourceField.getValue());
@@ -301,7 +292,7 @@ public class FileCreator implements IFileCreator {
 
 					}
 				} else if (sourceType.getType() == "E-Mail geschäftlich") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 
 						EmailType email = new EmailType();
 						email.setEmail(sourceField.getValue());
@@ -310,7 +301,7 @@ public class FileCreator implements IFileCreator {
 
 					}
 				} else if (sourceType.getType() == "Kommentar") {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 
 						NoteType note = new NoteType();
 						note.setNote(sourceField.getValue());
@@ -318,7 +309,7 @@ public class FileCreator implements IFileCreator {
 
 					}
 				} else {
-					for (SourceFieldDummy sourceField : sourceType.getSourceFields()) {
+					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						vcard.addExtendedType(new ExtendedType("X-" + sourceField.getName(), sourceField.getValue()));
 					}
 				}

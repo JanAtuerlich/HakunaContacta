@@ -22,9 +22,9 @@ import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HStack;
 
-import de.hakunacontacta.shared.Contact;
+import de.hakunacontacta.contactmodule.Contact;
+import de.hakunacontacta.contactmodule.ContactGroup;
 import de.hakunacontacta.shared.ContactData2Record;
-import de.hakunacontacta.shared.ContactGroup;
 import de.hakunacontacta.shared.ContactGroupData2Record;
 import de.hakunacontacta.shared.ContactGroupRecord;
 import de.hakunacontacta.shared.ContactRecord;
@@ -109,7 +109,6 @@ public class Page1 extends Composite {
 							selectionGrid.removeData(event.getRecord());
 						}
 					}
-					
 				}
 			}
 		});

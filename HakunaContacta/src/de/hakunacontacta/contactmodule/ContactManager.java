@@ -6,22 +6,16 @@ import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactFeed;
 import com.google.gdata.data.extensions.*;
 import com.google.gdata.util.ServiceException;
-
 import de.hakunacontacta.shared.Constant;
-import de.hakunacontacta.shared.Contact;
-import de.hakunacontacta.shared.ContactGroup;
-import de.hakunacontacta.shared.SourceField;
-import de.hakunacontacta.shared.SourceType;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class ContactManager {
-	private Collection<Contact> contacts = new HashSet<Contact>();
-	private Collection<ContactGroup> contactGroups = new HashSet<ContactGroup>();
+public class ContactManager implements IContactManager{
+	private ArrayList<Contact> contacts = new ArrayList<Contact>();
+	private ArrayList<ContactGroup> contactGroups = new ArrayList<ContactGroup>();
 	private final static Logger LOGGER = Logger.getLogger(ContactManager.class
 			.getName());
 	
@@ -94,71 +88,71 @@ public class ContactManager {
 								}
 							}
 						}
-//						Collection<SourceType> sourceTypes = new HashSet<SourceType>();
+//						ArrayList<SourceType> sourceTypes = new ArrayList<SourceType>();
 						
 						
-						SourceType sourceTypeName = new SourceType();
+						ContactSourceType sourceTypeName = new ContactSourceType();
 						sourceTypeName.setType("Name");
-						SourceField sourceFieldName = new SourceField();
+						ContactSourceField sourceFieldName = new ContactSourceField();
 						sourceFieldName.setName("Vollständiger Name");
 						sourceFieldName.setValue(fullname);
 						sourceTypeName.addSourceField(sourceFieldName);
 						if (name.hasAdditionalName()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Zweiter Vorname");
 							sourceFieldName.setValue(name.getAdditionalName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasFamilyName()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Nachname");
 							sourceFieldName.setValue(name.getFamilyName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasGivenName()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Vorname");
 							sourceFieldName.setValue(name.getGivenName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasNamePrefix()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Prefix");
 							sourceFieldName.setValue(name.getNamePrefix().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasNameSuffix()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Suffix");
 							sourceFieldName.setValue(name.getNameSuffix().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasGender()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Geschlecht");
 							sourceFieldName.setValue(entry.getGender().getValue().toString());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasInitials()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Initialen");
 							sourceFieldName.setValue(entry.getInitials().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasMaidenName()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Mädchenname");
 							sourceFieldName.setValue(entry.getMaidenName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasNickname()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Nickname");
 							sourceFieldName.setValue(entry.getNickname().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasShortName()){
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceFieldName.setName("Kurzname");
 							sourceFieldName.setValue(entry.getShortName().getValue());
 							sourceTypeName.addSourceField(sourceField);
@@ -166,13 +160,13 @@ public class ContactManager {
 						contact.addSourceType(sourceTypeName);
 
 						if (entry.hasOrganizations()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceType.setType("Titel und Unternehmen");
 							for (Organization orga : entry.getOrganizations()){
-								SourceField sourceFieldEnterprice = new SourceField();
+								ContactSourceField sourceFieldEnterprice = new ContactSourceField();
 								sourceFieldEnterprice.setName("Unternehmen");
 								sourceFieldEnterprice.setValue(orga.getOrgName().getValue());
-								SourceField sourceFieldTitle = new SourceField();
+								ContactSourceField sourceFieldTitle = new ContactSourceField();
 								sourceFieldTitle.setName("Titel");
 								sourceFieldTitle.setValue(orga.getOrgTitle().getValue());
 								sourceType.addSourceField(sourceFieldEnterprice);
@@ -182,7 +176,7 @@ public class ContactManager {
 						}
 												
 						if (entry.hasEmailAddresses()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("Email");
 							for (Email email : entry.getEmailAddresses()){
 								String emailLabel = null;
@@ -190,7 +184,7 @@ public class ContactManager {
 									emailLabel = email.getLabel();
 								else
 									emailLabel = transformFieldName(email.getRel());
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(emailLabel);
 								sourceField.setValue(email.getAddress());
 								sourceType.addSourceField(sourceField);
@@ -199,7 +193,7 @@ public class ContactManager {
 						}
 						
 						if (entry.hasPhoneNumbers()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("Telefon");
 							for (PhoneNumber phoneNumber : entry.getPhoneNumbers()){
 								String phoneLabel = null;
@@ -209,7 +203,7 @@ public class ContactManager {
 									phoneLabel = transformFieldName(phoneNumber.getRel());
 								if (phoneLabel.equals("grandcentral"))
 									phoneLabel = "Google Voice";
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(phoneLabel);
 								sourceField.setValue(phoneNumber.getPhoneNumber());
 								sourceType.addSourceField(sourceField);
@@ -218,7 +212,7 @@ public class ContactManager {
 						}
 						
 						if (entry.hasPostalAddresses() || entry.hasStructuredPostalAddresses()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("Adresse");
 							for (PostalAddress postalAddress : entry.getPostalAddresses()){
 								String addressLabel = null;
@@ -226,7 +220,7 @@ public class ContactManager {
 									addressLabel = postalAddress.getLabel();
 								else
 									addressLabel = transformFieldName(postalAddress.getRel());
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(addressLabel);
 								sourceField.setValue(postalAddress.getValue());
 								sourceType.addSourceField(sourceField);
@@ -237,7 +231,7 @@ public class ContactManager {
 									addressLabel = postalAddress.getLabel();
 								else
 									addressLabel = transformFieldName(postalAddress.getRel());
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(addressLabel);
 								sourceField.setValue(postalAddress.getFormattedAddress().getValue());
 								sourceType.addSourceField(sourceField);
@@ -246,9 +240,9 @@ public class ContactManager {
 						}
 						
 						if (entry.hasBirthday()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("Geburtstag");
-							SourceField sourceField = new SourceField();
+							ContactSourceField sourceField = new ContactSourceField();
 							sourceField.setName("Geburtstag");
 							sourceField.setValue(entry.getBirthday().getValue());
 							sourceType.addSourceField(sourceField);
@@ -256,7 +250,7 @@ public class ContactManager {
 						}
 						
 						if (entry.hasWebsites()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("URL");
 							for (Website website : entry.getWebsites()){
 								String websiteLabel = null;
@@ -264,7 +258,7 @@ public class ContactManager {
 									websiteLabel = website.getLabel();
 								else
 									websiteLabel = transformFieldName(website.getRel().toValue());
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(websiteLabel);
 								sourceField.setValue(website.getHref());
 								sourceType.addSourceField(sourceField);
@@ -273,7 +267,7 @@ public class ContactManager {
 						}
 						
 						if (entry.hasImAddresses()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("Instant Messaging");
 							for (Im im : entry.getImAddresses()){
 								String imLabel = null;
@@ -281,7 +275,7 @@ public class ContactManager {
 									imLabel = im.getProtocol();
 								else
 									imLabel = transformFieldName(im.getProtocol());
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(imLabel);
 								sourceField.setValue(im.getAddress());
 								sourceType.addSourceField(sourceField);
@@ -290,10 +284,10 @@ public class ContactManager {
 						}
 						
 						if (entry.hasUserDefinedFields()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("Benuzerdefiniertes Feld");
 							for (UserDefinedField field : entry.getUserDefinedFields()){
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(field.getKey());
 								sourceField.setValue(field.getValue());
 								sourceType.addSourceField(sourceField);
@@ -302,10 +296,10 @@ public class ContactManager {
 						}
 											
 						if (entry.hasExtendedProperties()){
-							SourceType sourceType = new SourceType();
+							ContactSourceType sourceType = new ContactSourceType();
 							sourceTypeName.setType("Extended Property");
 							for (ExtendedProperty property : entry.getExtendedProperties()){
-								SourceField sourceField = new SourceField();
+								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(property.getName());
 								sourceField.setValue(property.getValue());
 								sourceType.addSourceField(sourceField);
@@ -404,14 +398,156 @@ public class ContactManager {
 		}
 	}
 
-	public Collection<Contact> getContacts() {
+	public ArrayList<Contact> getContacts() {
 		return contacts;
 		
 	}
 	
-	public Collection<ContactGroup> getGroups() {
+	public ArrayList<ContactGroup> getGroups() {
 		return contactGroups;
 		
+	}
+
+
+	@Override
+	public ArrayList<ContactGroup> getAllGroups() {
+		
+		return contactGroups;
+	}
+
+	@Override
+	public ArrayList<Contact> getContacts(String groupName) {
+		ArrayList<Contact> contactsFromGroups = new ArrayList<Contact>(); //braucht man für getContacts Methode
+		if (groupName != "all"){
+			for(ContactGroup contactGroup : contactGroups) {
+				if (contactGroup.getName() == groupName){
+					contactsFromGroups = contactGroup.getContacts();
+					
+				}
+			}
+			return contactsFromGroups;
+		}
+		else{
+			return contacts;
+		}
+	
+	}
+
+	@Override
+	public void selectGroup(String groupName) {
+		for(ContactGroup contactGroup : contactGroups) {
+			if (contactGroup.getName() == groupName){
+				contactGroup.selectChkContacts();
+			}
+		}
+		
+	}
+
+	@Override
+	public void unselectGroup(String groupName) {
+		for(ContactGroup contactGroup : contactGroups) {
+			if (contactGroup.getName() == groupName){
+				contactGroup.unselectChkContacts();
+			}
+		}
+	}
+
+	@Override
+	public void selectContact(String eTag) {
+		for(Contact contact : contacts) {
+			if (contact.geteTag() == eTag){
+				contact.selectChkGroups();
+			}
+		}
+	}
+
+	@Override
+	public void unselectContact(String eTag) {
+		for(Contact contact : contacts) {
+			if (contact.geteTag() == eTag){
+				contact.unselectChkGroups();
+			}
+		}
+	}
+
+	@Override
+	public ArrayList<ContactSourceType> getSourceTypesOfSelectedContacts() {
+ArrayList<ContactSourceType> sourceTypesEachOnlyOnes = new ArrayList<ContactSourceType>(); //ArrayList nur in dieser Methode
+		
+		for(Contact contact : contacts) {
+			if (contact.getSelected() == true){
+							
+				
+				for (ContactSourceType sourcetype: contact.getSourceTypes()){ 						//Die Sourcetypes durchlaufen von diesen KOntakt
+					boolean typeAlreadyInArrayList = false;
+					ArrayList<ContactSourceField> sourceFieldsEachOnlyOnes = new ArrayList<ContactSourceField>(); 
+					
+					for (ContactSourceType sourceTypeOnes : sourceTypesEachOnlyOnes){								//Die Sourcetypes-ArrayList dieser Methode durchlaufen
+						
+						if (sourceTypeOnes.getType() == sourcetype.getType()){					// Überprüfung ob sourcetype eines Kontakts schon in ArrayList
+							typeAlreadyInArrayList = true;
+							for (ContactSourceField sourceField : sourceTypeOnes.getSourceFields()){	//alle Source fields durchsuchen. Die mit doppeltem Namen werden anzahl++. die anderen grigen neues feld in ArrayList
+								boolean fieldAlreadyInArrayList = false;
+								for (ContactSourceField sourceFieldOnes: sourceFieldsEachOnlyOnes){
+									
+									if (sourceField.getName() == sourceFieldOnes.getName()){
+										fieldAlreadyInArrayList = true;
+										sourceFieldOnes.setAnzahl(sourceFieldOnes.getAnzahl() + 1);
+									}		
+								}
+								if (fieldAlreadyInArrayList == false){ 								//field war niergens in FieldArrayList (in der jedes Feld nur einmal vorkommt)
+									ContactSourceField sourceFieldOnes = new ContactSourceField();  //neues SourceField mit Anzahl anlegen und 
+									sourceFieldOnes.setName(sourceField.getName());
+									sourceFieldOnes.setAnzahl(1);
+									sourceFieldsEachOnlyOnes.add(sourceFieldOnes);							//diese SourceField in OnlyOnes ArrayList einbauen
+								}
+							}
+							sourceTypeOnes.setSourceFields(sourceFieldsEachOnlyOnes);
+							
+						}
+					}
+					
+					
+				
+					if (typeAlreadyInArrayList == false){ //Type ist noch nicht in der AnzeigeArrayList
+								
+						for (ContactSourceField sourceField : sourcetype.getSourceFields()){		//alle Source fields durchsuchen. Die mit doppeltem Namen werden anzahl++. die anderen grigen neues feld in ArrayList
+							boolean fieldAlreadyInArrayList = false;
+							for (ContactSourceField sourceFieldOnes: sourceFieldsEachOnlyOnes){
+								if (sourceField.getName() == sourceFieldOnes.getName()){
+									fieldAlreadyInArrayList = true;
+									sourceFieldOnes.setAnzahl(sourceFieldOnes.getAnzahl() + 1);
+								}		
+							}
+							if (fieldAlreadyInArrayList == false){ 								//field war niergens in FieldArrayList (in der jedes Feld nur einmal vorkommt)
+								ContactSourceField sourceFieldOnes = new ContactSourceField();  //neues SourceField mit Anzahl anlegen und 
+								sourceFieldOnes.setName(sourceField.getName());
+								sourceFieldOnes.setAnzahl(1);
+								sourceFieldsEachOnlyOnes.add(sourceFieldOnes);							//diese SourceField in OnlyOnes ArrayList einbauen
+							}
+						}
+						sourcetype.setSourceFields(sourceFieldsEachOnlyOnes);
+						sourceTypesEachOnlyOnes.add(sourcetype);
+						
+								
+						
+					}
+				}
+				
+			}
+		}
+	return sourceTypesEachOnlyOnes;	
+	}
+
+	@Override
+	public ArrayList<Contact> getSelectedContacts() {
+		ArrayList<Contact> contacsSelected = new ArrayList<Contact>();
+		for(Contact contact : contacts) {
+			if (contact.getSelected() == true){
+				contacsSelected.add(contact);
+			}
+			}
+	return contacsSelected;
 	}
 	
 

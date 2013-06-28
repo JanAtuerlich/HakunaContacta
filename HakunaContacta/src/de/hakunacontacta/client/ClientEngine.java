@@ -1,74 +1,24 @@
-/**
- * Copyright (C) 2012-2013, Markus Sprunck
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or
- * without modification, are permitted provided that the following
- * conditions are met:
- *
- * - Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above
- *   copyright notice, this list of conditions and the following
- *   disclaimer in the documentation and/or other materials provided
- *   with the distribution.
- *
- * - The name of its contributor may be used to endorse or promote
- *   products derived from this software without specific prior
- *   written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
- * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- */
-
-
 package de.hakunacontacta.client;
 
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import de.hakunacontacta.client.MyHistoryListener;
-import de.hakunacontacta.shared.Contact;
-import de.hakunacontacta.shared.ContactGroup;
+import de.hakunacontacta.contactmodule.Contact;
+import de.hakunacontacta.contactmodule.ContactGroup;
 import de.hakunacontacta.shared.LoginInfo;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
@@ -80,8 +30,8 @@ import com.google.api.gwt.oauth2.client.AuthRequest;
 public class ClientEngine implements EntryPoint {
 
 	// TODO #05: add constants for OAuth2 (don't forget to update GOOGLE_CLIENT_ID)
-	private Collection<Contact> contacts;
-	private Collection<ContactGroup> contactGroups;
+	private ArrayList<Contact> contacts;
+	private ArrayList<ContactGroup> contactGroups;
 	private MyHistoryListener historyListener;
 	private Page1 page1;
 	private ClientEngine thisClientEngine = this;
@@ -140,7 +90,7 @@ public class ClientEngine implements EntryPoint {
 			
 						@Override
 						public void onSuccess(final LoginInfo loginInfo) {
-							greetingService.getContactGroups(new AsyncCallback<Collection<ContactGroup>>(){
+							greetingService.getContactGroups(new AsyncCallback<ArrayList<ContactGroup>>(){
 							
 								@Override
 								public void onFailure(Throwable caught) {
@@ -149,9 +99,9 @@ public class ClientEngine implements EntryPoint {
 								}
 
 								@Override
-								public void onSuccess(Collection<ContactGroup> result) {
+								public void onSuccess(ArrayList<ContactGroup> result) {
 									contactGroups = result;
-									greetingService.getContacts(new AsyncCallback<Collection<Contact>>() {
+									greetingService.getContacts(new AsyncCallback<ArrayList<Contact>>() {
 
 										@Override
 										public void onFailure(Throwable caught) {
@@ -160,7 +110,7 @@ public class ClientEngine implements EntryPoint {
 										}
 
 										@Override
-										public void onSuccess(Collection<Contact> result) {
+										public void onSuccess(ArrayList<Contact> result) {
 											contacts = result;
 											final String initToken = History.getToken();
 											
@@ -219,11 +169,11 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 
-	public Collection<Contact> getContacts() {
+	public ArrayList<Contact> getContacts() {
 		return contacts;
 	}
 	
-	public Collection<ContactGroup> getContactGroups() {
+	public ArrayList<ContactGroup> getContactGroups() {
 		return contactGroups;
 	}
 

@@ -38,13 +38,12 @@
 
 package de.hakunacontacta.client;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hakunacontacta.contactmodule.ContactManager;
-import de.hakunacontacta.shared.Contact;
-import de.hakunacontacta.shared.ContactGroup;
+import de.hakunacontacta.contactmodule.Contact;
+import de.hakunacontacta.contactmodule.ContactGroup;
 import de.hakunacontacta.shared.LoginInfo;
 
 /**
@@ -61,9 +60,9 @@ public interface GreetingServiceAsync {
 
 	void loginDetails(String token, AsyncCallback<LoginInfo> asyncCallback);
 
-	void getContacts(AsyncCallback<Collection<Contact>> callback);
+	void getContacts(AsyncCallback<ArrayList<Contact>> callback);
 
-	void getContactGroups(AsyncCallback<Collection<ContactGroup>> callback);
+	void getContactGroups(AsyncCallback<ArrayList<ContactGroup>> callback);
 	
 	// TODO #10:> end	
 
