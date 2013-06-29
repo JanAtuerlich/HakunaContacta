@@ -38,6 +38,7 @@ public class Page1 extends Composite {
 	private ArrayList<Contact> contacts;
 	private ArrayList<ContactGroup> contactGroups;
 	
+	private final ListGrid groupGrid = new ListGrid();
 	private final ListGrid selectionGrid = new ListGrid();
 	private final ListGrid contactGrid = new ListGrid();
 	
@@ -64,7 +65,6 @@ public class Page1 extends Composite {
 
 		
 		//-----------------------------------------
-		final ListGrid groupGrid = new ListGrid();
 		groupGrid.setWidth(250);
 		groupGrid.setHeight(300);
 		groupGrid.setShowAllRecords(true);
@@ -78,7 +78,6 @@ public class Page1 extends Composite {
 		
 		groupGrid.setData(ContactGroupData2Record.getNewRecords(contactGroups));
 		
-//		final ListGrid contactGrid = new ListGrid();
 		contactGrid.setWidth(250);
 		contactGrid.setHeight(300);
 		contactGrid.setOverflow(Overflow.AUTO);
@@ -98,7 +97,6 @@ public class Page1 extends Composite {
 		ListGridField nameField = new ListGridField("name", "Kontaktnamen");
 		contactGrid.setFields(nameField);
 
-//		final ListGrid selectionGrid = new ListGrid();
 		selectionGrid.setWidth(250);
 		selectionGrid.setHeight(300);
 		selectionGrid.setShowAllRecords(true);
@@ -253,7 +251,6 @@ public class Page1 extends Composite {
 	private void groupSelection(String name, boolean selected){
 		for (ContactGroup contactGroup: contactGroups){
 			if(contactGroup.getName().equals(name)){
-				contactGroup.setSelected(selected);
 				for (Contact contact: contactGroup.getContacts()){
 					contact.setSelected(selected);
 				}
@@ -262,7 +259,6 @@ public class Page1 extends Composite {
 	}
 	
 	private void reloadSelectionGrid(){
-//		selectionGrid.setData(new ListGridRecord[] {});
 		for(ListGridRecord record: selectionGrid.getRecords()){
 			selectionGrid.removeData(record);
 		}
@@ -271,17 +267,12 @@ public class Page1 extends Composite {
 					selectionGrid.addData(contactRecord);
 			}
 		}
-		for(ListGridRecord record: selectionGrid.getRecords()){
-			
-
-		}
 	}
 	
 	private void reloadContactGrid(ArrayList<Contact> contactsToShow){
 		for(ListGridRecord record: contactGrid.getRecords()){
 			contactGrid.removeData(record);
 		}
-//		contactGrid.setData(new ListGridRecord[] {});
 		for (ContactRecord contactRecord: ContactData2Record.getNewRecords(contactsToShow)){
 			contactGrid.addData(contactRecord);
 			if (contactRecord.getAttributeAsBoolean("selected")){
