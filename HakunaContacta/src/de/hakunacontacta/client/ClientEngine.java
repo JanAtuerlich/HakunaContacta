@@ -33,6 +33,10 @@ public class ClientEngine implements EntryPoint {
 	private ArrayList<Contact> contacts;
 	private ArrayList<ContactGroup> contactGroups;
 	private MyHistoryListener historyListener;
+	public MyHistoryListener getHistoryListener() {
+		return historyListener;
+	}
+
 	private Page1 page1;
 	private ClientEngine thisClientEngine = this;
 	private static final Auth AUTH = Auth.get();

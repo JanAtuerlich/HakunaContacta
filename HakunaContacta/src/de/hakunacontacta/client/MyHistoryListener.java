@@ -7,9 +7,14 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class MyHistoryListener implements ValueChangeHandler<String> {
 
 	public Page1 page1;
+	public Page2 page2;
 	
 	public void setPage1(Page1 page1){
 		this.page1 = page1;
+	}
+	
+	public void setPage2(Page2 page2){
+		this.page2 = page2;
 	}
 	
 	@Override
@@ -23,7 +28,7 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
 		
 		if (event.getValue().equals("page2")){
     		RootPanel.get().clear();
-    		RootPanel.get().add(Page2.getInstance());
+    		RootPanel.get().add(page2);
 		}	
 	}
 
