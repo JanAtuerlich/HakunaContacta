@@ -3,9 +3,9 @@ package de.hakunacontacta.client;
 
 import java.util.ArrayList;
 
+import de.hakunacontacta.contactModule.Contact;
+import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.MyHistoryListener;
-import de.hakunacontacta.contactmodule.Contact;
-import de.hakunacontacta.contactmodule.ContactGroup;
 import de.hakunacontacta.shared.LoginInfo;
 
 import com.google.gwt.core.client.Callback;
@@ -112,6 +112,17 @@ public class ClientEngine implements EntryPoint {
 										@Override
 										public void onSuccess(ArrayList<Contact> result) {
 											contacts = result;
+											for (ContactGroup contactGroup: contactGroups){
+												ArrayList<Contact> tempContacts = new ArrayList<Contact>();
+												for (Contact groupContact: contactGroup.getContacts()){
+													for (Contact contact: contacts){
+														if (groupContact.geteTag().equals(contact.geteTag())){
+															tempContacts.add(contact);
+														}
+													}
+												}
+												contactGroup.setContacts(tempContacts);
+											}
 											final String initToken = History.getToken();
 											
 											page1 = Page1.getInstance(thisClientEngine);
@@ -211,6 +222,6 @@ public class ClientEngine implements EntryPoint {
 				userEmail.append(result.getEmailAddress());
 			}
 		});
-
+		
 	}
 }

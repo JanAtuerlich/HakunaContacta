@@ -1,4 +1,4 @@
-package de.hakunacontacta.contactmodule;
+package de.hakunacontacta.contactModule;
 
 import java.io.Serializable;
 import java.util.ArrayList;

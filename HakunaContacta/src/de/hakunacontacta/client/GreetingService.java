@@ -42,8 +42,8 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import de.hakunacontacta.contactmodule.Contact;
-import de.hakunacontacta.contactmodule.ContactGroup;
+import de.hakunacontacta.contactModule.Contact;
+import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.shared.LoginInfo;
 
 /**

@@ -42,10 +42,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import de.hakunacontacta.contactModule.Contact;
+import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.GreetingService;
-import de.hakunacontacta.contactmodule.Contact;
-import de.hakunacontacta.contactmodule.ContactGroup;
-import de.hakunacontacta.contactmodule.ContactManager;
+import de.hakunacontacta.contactModule.ContactManager;
 import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
 
@@ -134,6 +134,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 		} else {
 			loginInfo.setLoggedIn(false);
+//			loginInfo.setLoginUrl(userService.createLoginURL("http://hakunacontacta.appspot.com/HakunaContacta.html"));
 			loginInfo.setLoginUrl(userService.createLoginURL("http://127.0.0.1:8888/HakunaContacta.html?gwt.codesvr=127.0.0.1:9997"));
 		}
 		return loginInfo;

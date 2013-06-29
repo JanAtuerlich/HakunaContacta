@@ -1,9 +1,9 @@
 package de.hakunacontacta.shared;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
-import de.hakunacontacta.contactmodule.Contact;
-import de.hakunacontacta.contactmodule.ContactGroup;
+import de.hakunacontacta.contactModule.Contact;
+import de.hakunacontacta.contactModule.ContactGroup;
 
 
 public class ContactGroupData2Record {
@@ -14,7 +14,7 @@ public class ContactGroupData2Record {
         return records;  
     }  
   
-    public static ContactGroupRecord[] getNewRecords(Collection<ContactGroup> contactGroups) {  
+    public static ContactGroupRecord[] getNewRecords(ArrayList<ContactGroup> contactGroups) {  
     	
     	ContactGroupRecord[] contactGroupRecords = new ContactGroupRecord[contactGroups.size()];
     	
@@ -24,21 +24,16 @@ public class ContactGroupData2Record {
     	    	
     			contactGroup.getContacts();
     			String[] contacts = new String[contactGroup.getContacts().size()];
-    			for (String string : contacts) {
-        			for (Contact contact : contactGroup.getContacts()) {
-        				string = contact.geteTag();
-    				} 
+    			int j = 0;
+        		for (Contact contact : contactGroup.getContacts()) {
+        				contacts[j] = contact.geteTag();
+        				j++;
 				}
-    			contactGroupRecords[i] = new  ContactGroupRecord(contactGroup.getName(), contacts); 
+    			contactGroupRecords[i] = new  ContactGroupRecord(contactGroup.getName(), contactGroup.getSelected(), contacts); 
     			i++;
 			}
 		
-    	
-    	
-    	for (ContactGroupRecord contactGroupRecord : contactGroupRecords) {
-			System.out.println(contactGroupRecord.getAttribute("groupname"));
-		}
-    	
+
 		return contactGroupRecords;
     	 
     }  
