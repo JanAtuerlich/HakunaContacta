@@ -1,4 +1,4 @@
-package de.hakunacontacta.contactmodule;
+package de.hakunacontacta.contactModule;
 
 import com.google.gdata.client.contacts.*;
 import com.google.gdata.data.contacts.*;
@@ -6,6 +6,7 @@ import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactFeed;
 import com.google.gdata.data.extensions.*;
 import com.google.gdata.util.ServiceException;
+
 import de.hakunacontacta.shared.Constant;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ public class ContactManager implements IContactManager{
 	private final static Logger LOGGER = Logger.getLogger(ContactManager.class
 			.getName());
 	
-	private boolean fertig = false;
 	
 
 	/*
@@ -75,7 +75,7 @@ public class ContactManager implements IContactManager{
 					Name name = entry.getName();
 					if (name.hasFullName()){
 						String fullname = name.getFullName().getValue();
-						String eTag = entry.getEtag();
+						String eTag = entry.getId();
 						Contact contact = new Contact();
 						contact.seteTag(eTag);
 						contact.setName(fullname);
@@ -310,7 +310,8 @@ public class ContactManager implements IContactManager{
 					}
 				}
 			}
-
+			
+			
 //			int anzahl = 0;
 //			for (Contact contact: contacts){
 //				anzahl++;
@@ -331,7 +332,6 @@ public class ContactManager implements IContactManager{
 //			System.out.println("\n\nAnzahl der Kontakte: " + anzahl);
 			
 			
-			fertig = true;
 			
 			
 //			for (ContactGroup group: contactGroups){

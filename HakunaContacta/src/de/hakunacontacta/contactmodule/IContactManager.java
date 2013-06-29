@@ -1,6 +1,9 @@
-package de.hakunacontacta.contactmodule;
+package de.hakunacontacta.contactModule;
 
 import java.util.ArrayList;
+
+import de.hakunacontacta.contactModule.Contact;
+import de.hakunacontacta.contactModule.ContactGroup;
 
 public interface IContactManager {
 

@@ -7,13 +7,22 @@ public class ContactRecord extends ListGridRecord {
     public ContactRecord() {  
     }  
   
-    public ContactRecord(String etag, String name, String[] groups) {  
+    public ContactRecord(String etag, String name, boolean selected, String[] groups) {  
     	setEtag(etag);  
-        setName(name);   
+        setName(name);
+        setSelected(selected);
         setGroups(groups);   
     }   
     
-    public void setEtag(String etag) {  
+    public void setSelected(boolean selected) {
+		setAttribute("selected", selected);		
+	}
+    
+    public boolean getSelected(){
+    	return getAttributeAsBoolean("selected");
+    }
+
+	public void setEtag(String etag) {  
         setAttribute("etag", etag);  
     }  
   

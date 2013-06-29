@@ -28,9 +28,9 @@ import net.sourceforge.cardme.vcard.types.params.AdrParamType;
 import net.sourceforge.cardme.vcard.types.params.EmailParamType;
 import net.sourceforge.cardme.vcard.types.params.TelParamType;
 
-import de.hakunacontacta.contactmodule.Contact;
-import de.hakunacontacta.contactmodule.ContactSourceType;
-import de.hakunacontacta.contactmodule.ContactSourceField;
+import de.hakunacontacta.contactModule.Contact;
+import de.hakunacontacta.contactModule.ContactSourceField;
+import de.hakunacontacta.contactModule.ContactSourceType;
 import de.hakunacontacta.exportModule.ExportField;
 import de.hakunacontacta.exportModule.ExportOption;
 
