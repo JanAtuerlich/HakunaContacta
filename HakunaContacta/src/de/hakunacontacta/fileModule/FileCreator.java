@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+
 import net.sourceforge.cardme.io.VCardWriter;
 import net.sourceforge.cardme.vcard.VCardImpl;
 import net.sourceforge.cardme.vcard.arch.EncodingType;
@@ -115,8 +117,11 @@ public class FileCreator implements IFileCreator {
 			output = null;
 		}
 		
+		
+		byte[] encoded = Base64.encodeBase64(output.getBytes()); 
+		
 		  
-		  return output;
+		  return new String(encoded);
 
 		
 	}

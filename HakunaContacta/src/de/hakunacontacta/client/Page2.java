@@ -1,6 +1,6 @@
 package de.hakunacontacta.client;
 
-//import com.google.api.client.util.Base64;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -36,22 +36,16 @@ public class Page2 extends Composite {
 		Button button = new Button("Create Export");
 		
 		final String dateiendung = "csv";
-		final String exportString = "Hallo Jan";
-		//final byte[] encoded = Base64.encodeBase64(exportString.getBytes()); 
-		//System.out.println(exportString);
-		//System.out.println(encoded);
-		
-
-
+		final String encoded = "QXVmZ2FiZW46DQoNCi0gRmlsZSBhbiBDbGllbnQgc2VuZGVuLCBiaXNoZXIgZ2lidHMgZXMgZWluZW4gZmVydGlnZW4gU3RyaW5nLiAtPiBSZWNoZXJjaGUsIFByb3RvdHlwZQ0KLSBHVUkgMyBtYWNoZW4NCi0gTWV0aG9kZW4gaW4gQ2xpZW50RW5naW5lIHp1ciBWZXJmw7xndW5nIHN0ZWxsZW4NCi0gTG9nbw0KLSBBbGxnLiBIb21lcGFnZSwgYnp3IGVyc3RlIFBhZ2UgDQotIA0KLSA=";
 		
 		
 		
 		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				//final HTML html = new HTML("<a download=\"Contactexport." + dateiendung + "\" href=data:application/" +dateiendung + ";base64," + encoded + ">Download</a>");
+				final HTML html = new HTML("<a download=\"Contactexport." + dateiendung + "\" href=data:application/" +dateiendung + ";base64," + encoded + ">Download</a>");
 				//final HTML html = new HTML("<a download=\"MyFile." + dateiendung + "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
-				//page2.add(html);
+				page2.add(html);
 				
 				
 
