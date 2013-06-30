@@ -218,13 +218,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		// TODO Auto-generated method stub
 		return contactManager.getGroups();
 	}
-
 	@Override
-	public ArrayList<ContactSourceType> getContactSourceTypes() {
-		System.out.println("der Aufruf kommt an");
-		return contactManager.getSourceTypesOfSelectedContacts();
+	public void setSelections(ArrayList<Contact> contacts,
+			ArrayList<ContactGroup> contactGroups) {
+		contactManager.setSelections(contacts, contactGroups);		
 	}
-
-	// TODO #11:> end	
+	@Override	public ArrayList<ContactSourceType> getContactSourceTypes() {
+		return contactManager.getSourceTypesOfSelectedContacts();
+	}	// TODO #11:> end	
 
 }

@@ -67,7 +67,4 @@ public interface GreetingService extends RemoteService {
 	ArrayList<Contact> getContacts();
 	
 	ArrayList<ContactGroup> getContactGroups();
-	
-	ArrayList<ContactSourceType> getContactSourceTypes();
-	
-}
+		void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups);	ArrayList<ContactSourceType> getContactSourceTypes();}

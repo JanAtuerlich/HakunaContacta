@@ -8,6 +8,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionAppearance;
@@ -40,7 +41,6 @@ public class Page1 extends Composite {
 	private final ListGrid groupGrid = new ListGrid();
 	private final ListGrid selectionGrid = new ListGrid();
 	private final ListGrid contactGrid = new ListGrid();
-//	public static Page2 page2;
 	
 	
 	private Page1(){
@@ -220,12 +220,6 @@ public class Page1 extends Composite {
 
 		mainPanel.add(grids);
 		mainPanel.addStyleName("mainPanel");
-//		RootPanel.get("content").add(mainPanel);
-		
-		
-		
-		
-		
 		
 		//------------------------------------------
 		Button button = new Button("Forward");
@@ -233,15 +227,13 @@ public class Page1 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				clientEngine.createPage2();
-//				page2 = Page2.getInstance(clientEngine);
-//				clientEngine.getHistoryListener().setPage2(page2);
-//				History.newItem("page2", true);
-			}
+				clientEngine.setSelections(contacts, contactGroups);
+				clientEngine.createPage2();			}
 		});
 		page1.add(mainPanel);
 		page1.add(content);
 		page1.add(button);
+		page1.addStyleName("page1");
 	}
 	
 	private void contactSelection(String etag, boolean selected){
