@@ -17,8 +17,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.TreeModelType;
-import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
@@ -62,36 +60,20 @@ public class Page2 extends Composite {
 
 		// ------------------------------------
 		
-		final ListBox formatList = new ListBox();
-		formatList.setTitle("Exportformat");
-		formatList.addItem("CSV"); //Index 0
-		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); //Index 1
-		formatList.addItem("vCard"); //Index 2
-		formatList.addItem("XML (xCard)"); //Index 3
-		
-		formatList.addChangeHandler(new ChangeHandler() {
-			
-			@Override
-			public void onChange(ChangeEvent event) {
-				int selectedIndex = formatList.getSelectedIndex();
-				if(selectedIndex == 0){
-					//Methode für CSV
-				}
-			}
-		});
-		
-		Tree grid1Tree = thisContactSourceTypesTree;
+		//Linke Seite
+		Tree sourceGridTree = thisContactSourceTypesTree;
 
-		final TreeGrid grid1 = new TreeGrid();
-		grid1.setHeight(300);
-		grid1.setWidth(200);
-		grid1.setDragDataAction(DragDataAction.COPY);
-		grid1.setCanDragRecordsOut(true);
-		grid1.setData(grid1Tree);
-		grid1.getData().openAll();
-		grid1.setShowHeader(false);
-		grid1.setTreeFieldTitle("Quellfelder");
-
+		final TreeGrid sourceGrid = new TreeGrid();
+		sourceGrid.setHeight(300);
+		sourceGrid.setWidth(200);
+		sourceGrid.setDragDataAction(DragDataAction.COPY);
+		sourceGrid.setCanDragRecordsOut(true);
+		sourceGrid.setData(sourceGridTree);
+		sourceGrid.getData().openAll();
+		sourceGrid.setShowHeader(false);
+		sourceGrid.setTreeFieldTitle("Quellfelder");
+		
+		//Rechte Seite
 		final Tree grid2Tree = new Tree();
 		grid2Tree.setModelType(TreeModelType.CHILDREN);
 		grid2Tree.setNameProperty("Name");
@@ -136,6 +118,30 @@ public class Page2 extends Composite {
 			}
 		});
 
+		//Dropdown-Menu
+		final ListBox formatList = new ListBox();
+		formatList.setTitle("Exportformat");
+		formatList.addItem("CSV"); //Index 0
+		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); //Index 1
+		formatList.addItem("vCard"); //Index 2
+		formatList.addItem("XML (xCard)"); //Index 3
+		
+		formatList.addChangeHandler(new ChangeHandler() {
+			
+			@Override
+			public void onChange(ChangeEvent event) {
+				int selectedIndex = formatList.getSelectedIndex();
+				if(selectedIndex == 0){
+					//Methode für CSV
+					clientEngine.writeExportTree(grid2Tree);
+				}
+				if(selectedIndex == 1){
+					//Methode für CSV-Word-Serienbriefe
+					clientEngine.writeExportTree(grid2Tree);
+				}
+			}
+		});
+		
 		// Move cursor focus to the input box.
 		addExportfieldTextBox.setFocus(true);
 
@@ -184,7 +190,7 @@ public class Page2 extends Composite {
 			}
 		});
 
-		grid1.setStyleName("grid1");
+		sourceGrid.setStyleName("sourceGrid");
 		grid2.setStyleName("grid2");
 		grid2.setBaseStyle("grid2records");
 
@@ -195,7 +201,7 @@ public class Page2 extends Composite {
 		addPanel.addStyleName("addPanel");
 
 		HStack grids = new HStack(2);
-		grids.addMember(grid1);
+		grids.addMember(sourceGrid);
 		grids.addMember(grid2);
 		grids.setStyleName("grids");
 		grids.draw();

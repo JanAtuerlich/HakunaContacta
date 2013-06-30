@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.smartgwt.client.widgets.tree.Tree;
+import com.smartgwt.client.widgets.tree.TreeNode;
 
  
 /**
@@ -193,32 +194,29 @@ public class ClientEngine implements EntryPoint {
 	}
 	
 	public void createPage2() {
-
 		greetingService.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
-					@Override
-					public void onSuccess(ArrayList<ContactSourceType> result) {
-						ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
-						
-//						ContactSourceType c = new ContactSourceType();
-//						c.setType("Tel");
-//						ContactSourceField sf = new ContactSourceField();
-//						sf.setName("Private");
-//						sf.setValue("0054");
-//						sf.setAnzahl(1);
-//						c.addSourceField(sf);
-//						result.add(c);
-						
-						contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
-						page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
-						historyListener.setPage2(page2);
-						History.newItem("page2", true);
-					}
+			@Override
+			public void onSuccess(ArrayList<ContactSourceType> result) {
+				ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
+				contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
+				page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
+				historyListener.setPage2(page2);
+				History.newItem("page2", true);
+			}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Problem beim Erstellen der ContactSourceTypes beim Client");
-					}
-				});
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Problem beim Erstellen der ContactSourceTypes beim Client");
+			}
+		});
+	}
+	
+	public void writeExportTree(Tree exportTree){
+		TreeNode rootnode = exportTree.getRoot();
+		
+		for (TreeNode node : exportTree.getAllNodes(rootnode)) {
+			System.out.println(node.getAttribute("Name"));
+		}
 	}
 
 	public ArrayList<Contact> getContacts() {

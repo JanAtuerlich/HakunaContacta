@@ -481,13 +481,26 @@ public class ContactManager implements IContactManager{
 			if (contact.getSelected() == true) {
 				for (ContactSourceType contactSourceType : contact.getSourceTypes()) {
 					if(!exportSourceTypes.contains(contactSourceType)){
-						exportSourceTypes.add(contactSourceType);
+						ContactSourceType exportSourceType = new ContactSourceType();
+						exportSourceType.setType(contactSourceType.getType());
+						exportSourceTypes.add(exportSourceType);
 					}
-					else{
-						for (ContactSourceType exportSourceType : exportSourceTypes) {
+				}
+				for (ContactSourceType exportSourceType : exportSourceTypes) {
+					for (ContactSourceType contactSourceType : contact.getSourceTypes()) {
+						if(exportSourceType.getType() == contactSourceType.getType()){
 							for (ContactSourceField contactSourceField : contactSourceType.getSourceFields()) {
-								if(!exportSourceType.getSourceFields().contains(contactSourceField) && contactSourceType.getType() == exportSourceType.getType()){
-									exportSourceType.addSourceField(contactSourceField);
+								if(!exportSourceType.getSourceFields().contains(contactSourceField)){
+									ContactSourceField exportSourceField = new ContactSourceField();
+									exportSourceField.setName(contactSourceField.getName());
+									exportSourceField.setAnzahl(1);
+									exportSourceType.addSourceField(exportSourceField);
+								}else{
+									for (ContactSourceField exportSourceField : exportSourceType.getSourceFields()) {
+										if(exportSourceField.getName() == contactSourceField.getName()){
+											exportSourceField.setAnzahl(exportSourceField.getAnzahl() + 1);
+										}
+									}
 								}
 							}
 						}
@@ -496,99 +509,29 @@ public class ContactManager implements IContactManager{
 			}
 		}
 		
-		
-		String x = null;
-		x += "Contacts + SourceTypes!!!!!!!\n";
-		for (Contact contact : this.getSelectedContacts()) {
-			x += "\n " + contact.getName() + ": ";
-			
-			for (ContactSourceType contactSourceType : contact.getSourceTypes()) {
-				
-				x += contactSourceType.getType()+ "( ";
-				
-				for (ContactSourceField contactSourceField : contactSourceType.getSourceFields()) {
-					
-					x+= contactSourceField.getName() + " [" +contactSourceField.getValue() + "], ";
-					
-				}
-				
-				x += ") \n";
-				
-			}
-		}
-		
-		System.out.println(x);
-		
+//		String x = null;
+//		x = "Contacts + SourceTypes:\n";
+//		for (Contact contact : this.getSelectedContacts()) {
+//			x += "\n " + contact.getName() + ": ";
+//			
+//			for (ContactSourceType contactSourceType : contact.getSourceTypes()) {
+//				
+//				x += contactSourceType.getType()+ "( ";
+//				
+//				for (ContactSourceField contactSourceField : contactSourceType.getSourceFields()) {
+//					
+//					x+= contactSourceField.getName() + " [" +contactSourceField.getValue() + "], ";
+//					
+//				}
+//				
+//				x += ") \n";
+//				
+//			}
+//		}
+//		
+//		System.out.println(x);
 		
 		return exportSourceTypes;
-	}
-	
-	public ArrayList<ContactSourceType> getSourceTypesOfSelectedContacts2() {
-		ArrayList<ContactSourceType> sourceTypesEachOnlyOnes = new ArrayList<ContactSourceType>();
-		
-		for(Contact contact : contacts) {
-			if (contact.getSelected() == true){
-							
-				
-				for (ContactSourceType sourcetype: contact.getSourceTypes()){ 						//Die Sourcetypes durchlaufen von diesen KOntakt
-					boolean typeAlreadyInArrayList = false;
-					ArrayList<ContactSourceField> sourceFieldsEachOnlyOnes = new ArrayList<ContactSourceField>(); 
-					
-					for (ContactSourceType sourceTypeOnes : sourceTypesEachOnlyOnes){								//Die Sourcetypes-ArrayList dieser Methode durchlaufen
-						
-						if (sourceTypeOnes.getType() == sourcetype.getType()){					// Überprüfung ob sourcetype eines Kontakts schon in ArrayList
-							typeAlreadyInArrayList = true;
-							for (ContactSourceField sourceField : sourceTypeOnes.getSourceFields()){	//alle Source fields durchsuchen. Die mit doppeltem Namen werden anzahl++. die anderen grigen neues feld in ArrayList
-								boolean fieldAlreadyInArrayList = false;
-								for (ContactSourceField sourceFieldOnes: sourceFieldsEachOnlyOnes){
-									
-									if (sourceField.getName() == sourceFieldOnes.getName()){
-										fieldAlreadyInArrayList = true;
-										sourceFieldOnes.setAnzahl(sourceFieldOnes.getAnzahl() + 1);
-									}		
-								}
-								if (fieldAlreadyInArrayList == false){ 								//field war niergens in FieldArrayList (in der jedes Feld nur einmal vorkommt)
-									ContactSourceField sourceFieldOnes = new ContactSourceField();  //neues SourceField mit Anzahl anlegen und 
-									sourceFieldOnes.setName(sourceField.getName());
-									sourceFieldOnes.setAnzahl(1);
-									sourceFieldsEachOnlyOnes.add(sourceFieldOnes);							//diese SourceField in OnlyOnes ArrayList einbauen
-								}
-							}
-							sourceTypeOnes.setSourceFields(sourceFieldsEachOnlyOnes);
-							
-						}
-					}
-					
-					
-				
-					if (typeAlreadyInArrayList == false){ //Type ist noch nicht in der AnzeigeArrayList
-								
-						for (ContactSourceField sourceField : sourcetype.getSourceFields()){		//alle Source fields durchsuchen. Die mit doppeltem Namen werden anzahl++. die anderen grigen neues feld in ArrayList
-							boolean fieldAlreadyInArrayList = false;
-							for (ContactSourceField sourceFieldOnes: sourceFieldsEachOnlyOnes){
-								if (sourceField.getName() == sourceFieldOnes.getName()){
-									fieldAlreadyInArrayList = true;
-									sourceFieldOnes.setAnzahl(sourceFieldOnes.getAnzahl() + 1);
-								}		
-							}
-							if (fieldAlreadyInArrayList == false){ 								//field war niergens in FieldArrayList (in der jedes Feld nur einmal vorkommt)
-								ContactSourceField sourceFieldOnes = new ContactSourceField();  //neues SourceField mit Anzahl anlegen und 
-								sourceFieldOnes.setName(sourceField.getName());
-								sourceFieldOnes.setAnzahl(1);
-								sourceFieldsEachOnlyOnes.add(sourceFieldOnes);							//diese SourceField in OnlyOnes ArrayList einbauen
-							}
-						}
-						sourcetype.setSourceFields(sourceFieldsEachOnlyOnes);
-						sourceTypesEachOnlyOnes.add(sourcetype);
-						
-								
-						
-					}
-				}
-				
-			}
-		}
-	return sourceTypesEachOnlyOnes;	
 	}
 
 	@Override
@@ -603,7 +546,6 @@ public class ContactManager implements IContactManager{
 	}
 
 	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups) {
-		// TODO Auto-generated method stub
 		this.contacts = contacts;
 		this.contactGroups = contactGroups;
 	}
