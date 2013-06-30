@@ -46,6 +46,8 @@ import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.GreetingService;
 import de.hakunacontacta.contactModule.ContactManager;
+import de.hakunacontacta.shared.ContactSourceType;
+import de.hakunacontacta.shared.ContactSourceTypes2Tree;
 import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
 
@@ -54,6 +56,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.smartgwt.client.widgets.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -214,6 +217,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	public ArrayList<ContactGroup> getContactGroups() {
 		// TODO Auto-generated method stub
 		return contactManager.getGroups();
+	}
+
+	@Override
+	public ArrayList<ContactSourceType> getContactSourceTypes() {
+		System.out.println("der Aufruf kommt an");
+		return contactManager.getSourceTypesOfSelectedContacts();
 	}
 
 	// TODO #11:> end	

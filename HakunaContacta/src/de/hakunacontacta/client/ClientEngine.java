@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.MyHistoryListener;
+import de.hakunacontacta.shared.ContactSourceType;
+import de.hakunacontacta.shared.ContactSourceTypes2Tree;
 import de.hakunacontacta.shared.LoginInfo;
 
 import com.google.gwt.core.client.Callback;
@@ -22,6 +24,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
+import com.smartgwt.client.widgets.tree.Tree;
 
  
 /**
@@ -33,11 +36,13 @@ public class ClientEngine implements EntryPoint {
 	private ArrayList<Contact> contacts;
 	private ArrayList<ContactGroup> contactGroups;
 	private MyHistoryListener historyListener;
+	private Tree contactSourceTypesTree = null;
 	public MyHistoryListener getHistoryListener() {
 		return historyListener;
 	}
-
+	
 	private Page1 page1;
+	private Page2 page2;
 	private ClientEngine thisClientEngine = this;
 	private static final Auth AUTH = Auth.get();
 	private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
@@ -182,6 +187,27 @@ public class ClientEngine implements EntryPoint {
 				GWT.log("Error -> loginDetails\n" + caught.getMessage());
 			}
 		});
+	}
+	
+	public void createPage2() {
+
+		greetingService.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
+					@Override
+					public void onSuccess(ArrayList<ContactSourceType> result) {
+												
+						ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
+						contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
+						page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
+						historyListener.setPage2(page2);
+						History.newItem("page2", true);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						System.out.println("Problem beim Erstellen der ContactSourceTypes beim Client");
+					}
+				});
+
 	}
 
 	public ArrayList<Contact> getContacts() {

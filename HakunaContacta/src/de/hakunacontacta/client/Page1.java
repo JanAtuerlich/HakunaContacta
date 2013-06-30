@@ -40,7 +40,7 @@ public class Page1 extends Composite {
 	private final ListGrid groupGrid = new ListGrid();
 	private final ListGrid selectionGrid = new ListGrid();
 	private final ListGrid contactGrid = new ListGrid();
-	public static Page2 page2;;
+//	public static Page2 page2;
 	
 	
 	private Page1(){
@@ -233,10 +233,10 @@ public class Page1 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				
-				page2 = Page2.getInstance(clientEngine);
-				clientEngine.getHistoryListener().setPage2(page2);
-				History.newItem("page2", true);
+				clientEngine.createPage2();
+//				page2 = Page2.getInstance(clientEngine);
+//				clientEngine.getHistoryListener().setPage2(page2);
+//				History.newItem("page2", true);
 			}
 		});
 		page1.add(mainPanel);

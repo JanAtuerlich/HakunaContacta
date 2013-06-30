@@ -39,11 +39,14 @@ package de.hakunacontacta.client;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.smartgwt.client.widgets.tree.Tree;
 
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
+import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.LoginInfo;
 
 /**
@@ -64,5 +67,7 @@ public interface GreetingService extends RemoteService {
 	ArrayList<Contact> getContacts();
 	
 	ArrayList<ContactGroup> getContactGroups();
+	
+	ArrayList<ContactSourceType> getContactSourceTypes();
 	
 }

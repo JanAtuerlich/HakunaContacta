@@ -41,9 +41,11 @@ package de.hakunacontacta.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.smartgwt.client.widgets.tree.Tree;
 
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
+import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.LoginInfo;
 
 /**
@@ -63,6 +65,8 @@ public interface GreetingServiceAsync {
 	void getContacts(AsyncCallback<ArrayList<Contact>> callback);
 
 	void getContactGroups(AsyncCallback<ArrayList<ContactGroup>> callback);
+	
+	void getContactSourceTypes(AsyncCallback<ArrayList<ContactSourceType>> callback);
 	
 	// TODO #10:> end	
 
