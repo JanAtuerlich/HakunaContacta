@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
+import de.hakunacontacta.shared.ContactSourceType;
 
 public interface IContactManager {
 

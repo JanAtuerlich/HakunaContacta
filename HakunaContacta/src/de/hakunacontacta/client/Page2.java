@@ -55,16 +55,28 @@ public class Page2 extends Composite {
 		
 		//------------------------------------
 		
-	       Tree grid1Tree = new Tree();
+	        Tree grid1Tree = new Tree();
 	        grid1Tree.setModelType(TreeModelType.CHILDREN);  
 	        grid1Tree.setNameProperty("Name");
-	        grid1Tree.setRoot(new TreeNode("Root",  
-	                new TreeNode("Bin 1",  
-	                        new TreeNode("Blue Cube"),  
-	                        new TreeNode("Yellow Cube"),  
-	                        new TreeNode("Green Cube")  
-	                ) 
-	        ));  
+	        
+	        final TreeNode rootNode = new TreeNode("NAME");
+	        rootNode.setAttribute("Name","root");
+	        rootNode.setName("Testname");
+	        grid1Tree.setRoot(rootNode);
+	        
+	                
+	        TreeNode childNode1 = new TreeNode();
+	        childNode1.setAttribute("Name","Exportfeld1");
+	        childNode1.setAttribute("Feld1", "inhalt1");
+	        childNode1.setCanDrag(false);
+	        childNode1.setIsFolder(true);
+	        grid1Tree.add(childNode1, rootNode);
+	        	     	        
+	        TreeNode childNode2 = new TreeNode("Test");
+	        childNode2.setAttribute("Name","Exportfeld2");  
+	        childNode2.setCanDrag(false);
+	        childNode2.setIsFolder(true);
+	        grid1Tree.add(childNode2, rootNode);
 	        
 	  
 	        final TreeGrid grid1 = new TreeGrid();  
@@ -82,9 +94,11 @@ public class Page2 extends Composite {
 	        grid2Tree.setModelType(TreeModelType.CHILDREN);  
 	        grid2Tree.setNameProperty("Name");  
 	        
-		        final TreeNode rootNode = new TreeNode();
+		        final TreeNode rootNode = new TreeNode("NAME");
 		        rootNode.setAttribute("Name","root");
+		        rootNode.setName("Testname");
 		        grid2Tree.setRoot(rootNode);
+		        
 		                
 		        TreeNode childNode1 = new TreeNode();
 		        childNode1.setAttribute("Name","Exportfeld1");

@@ -1,4 +1,4 @@
-package de.hakunacontacta.contactModule;
+package de.hakunacontacta.shared;
 
 import java.io.Serializable;
 
