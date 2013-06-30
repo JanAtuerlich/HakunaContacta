@@ -119,7 +119,6 @@ public class Page1 extends Composite {
 					checkGroupsForSelection();
 					loadGroupGrid();
 					loadSelectionGrid();
-					test();
 				}
 			}
 		});
@@ -148,7 +147,6 @@ public class Page1 extends Composite {
 					checkGroupsForSelection();
 					loadGroupGrid();
 					loadSelectionGrid();
-					test();
 				}
 			}
 		});
@@ -178,7 +176,7 @@ public class Page1 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 
-//			clientEngine.setSelections(contacts, contactGroups);
+			clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
 		page1.add(mainPanel);
@@ -269,15 +267,5 @@ public class Page1 extends Composite {
 			}
 		}
 	}
-	
-	private void test(){
-		for (ContactGroupRecord record : contactGroups) {
-			System.out.println(record.getAttributeAsString("groupname") + ": \t\t" + (record.getSelected()? "X" : ""));
-		}
-		for (ContactRecord record : contacts) {
-			System.out.println(record.getAttributeAsString("name") + ": \t\t" + (record.getSelected()? "X" : ""));
-		}
-	}
-	
 	
 }

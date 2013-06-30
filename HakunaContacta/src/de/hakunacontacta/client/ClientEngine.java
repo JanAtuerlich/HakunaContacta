@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.MyHistoryListener;
+import de.hakunacontacta.shared.ContactGroupRecord;
+import de.hakunacontacta.shared.ContactRecord;
 import de.hakunacontacta.shared.ContactSourceField;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ContactSourceTypes2Tree;
@@ -273,7 +275,21 @@ public class ClientEngine implements EntryPoint {
 		
 	}
 	
-	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups){
+	public void setSelections(ContactRecord[] contactRecords, ContactGroupRecord[] contactGroupRecords){
+		for (ContactGroupRecord contactGroupRecord : contactGroupRecords) {
+			for (ContactGroup contactGroup : contactGroups) {
+				if(contactGroupRecord.getGroupname().equals(contactGroup.getName())){
+					contactGroup.setSelected(contactGroupRecord.getSelected());
+				}
+			}
+		}
+		for (ContactRecord contactRecord : contactRecords) {
+			for (Contact contact : contacts) {
+				if(contactRecord.getEtag().equals(contact.geteTag())){
+					contact.setSelected(contactRecord.getSelected());
+				}
+			}
+		}
 		greetingService.setSelections(contacts, contactGroups, new AsyncCallback<Void>() {
 
 			@Override
