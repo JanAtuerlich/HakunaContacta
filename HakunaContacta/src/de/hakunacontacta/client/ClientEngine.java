@@ -74,14 +74,14 @@ public class ClientEngine implements EntryPoint {
 
 	private void loadLogin(final LoginInfo loginInfo) {
 		signInLink.setHref(loginInfo.getLoginUrl());
-		signInLink.setText("Bitte, melden Sie sich mit Ihrem Google Account an");
-		signInLink.setTitle("Sign in");
+		signInLink.setText("Einloggen");
+		signInLink.setTitle("Einloggen");
 	}
 
 	private void loadLogout(final LoginInfo loginInfo) {
 		signInLink.setHref(loginInfo.getLogoutUrl());
-		signInLink.setText(loginInfo.getName());
-		signInLink.setTitle("Sign out");
+		signInLink.setText(loginInfo.getName()+"Ausloggen");
+		signInLink.setTitle("Ausloggen");
 	}
 
 	private void addGoogleAuthHelper() {
@@ -233,6 +233,9 @@ public class ClientEngine implements EntryPoint {
 		HTML start = new HTML("<p>Startseite Inhalt YEEEHAAA</p>");
 		RootPanel.get("content").add(start);
 		RootPanel.get("loginPanelContainer").add(loginPanel);
+		RootPanel.get("footer").clear();
+		HTML footerimage = new HTML("<img src=\"images/1.jpg\">");
+		RootPanel.get("footer").add(footerimage);
 		final StringBuilder userEmail = new StringBuilder();
 		greetingService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 			@Override

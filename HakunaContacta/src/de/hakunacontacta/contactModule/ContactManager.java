@@ -558,6 +558,7 @@ public class ContactManager implements IContactManager{
 		this.contacts = contacts;
 		this.contactGroups = contactGroups;
 		
+		
 	}
 	
 
