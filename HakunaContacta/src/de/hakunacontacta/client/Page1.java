@@ -12,7 +12,6 @@ import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -23,6 +22,7 @@ import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.shared.ContactData2Record;
 import de.hakunacontacta.shared.ContactGroupData2Record;
+import de.hakunacontacta.shared.ContactGroupRecord;
 import de.hakunacontacta.shared.ContactRecord;
 
 public class Page1 extends Composite {
@@ -32,13 +32,14 @@ public class Page1 extends Composite {
 	private static ClientEngine clientEngine;
 	private VerticalPanel mainPanel = new VerticalPanel();
 	
-	private ArrayList<Contact> contacts;
-	private ArrayList<ContactGroup> contactGroups;
+	private ContactRecord[] contacts;
+	private ContactGroupRecord[] contactGroups;
 	
 	private final ListGrid groupGrid = new ListGrid();
 	private final ListGrid selectionGrid = new ListGrid();
 	private final ListGrid contactGrid = new ListGrid();
 	
+	private boolean select = true;
 	
 	private Page1(){
 		initPage();
@@ -55,9 +56,12 @@ public class Page1 extends Composite {
 
 	private void initPage() {
 		page1.setPixelSize(800, 400);
-		contacts = clientEngine.getContacts();
-		contactGroups = clientEngine.getContactGroups();
-
+		ArrayList<Contact> importContacts = clientEngine.getContacts();
+		ArrayList<ContactGroup> importContactGroups = clientEngine.getContactGroups();
+		
+		contacts = ContactData2Record.getNewRecords(importContacts);
+		contactGroups = ContactGroupData2Record.getNewRecords(importContactGroups);
+		
 		
 		//-----------------------------------------
 		groupGrid.setWidth(200);
@@ -72,7 +76,7 @@ public class Page1 extends Composite {
 				"Gruppenname");
 		groupGrid.setFields(groupnameField);
 		
-		groupGrid.setData(ContactGroupData2Record.getNewRecords(contactGroups));
+		loadGroupGrid();
 		
 		contactGrid.setWidth(200);
 		contactGrid.setHeight(400);
@@ -83,12 +87,8 @@ public class Page1 extends Composite {
 		contactGrid.setCanGroupBy(false);
 		contactGrid.setSelectionType(SelectionStyle.SIMPLE);
 		contactGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-		for (ContactRecord contactRecord: ContactData2Record.getNewRecords(contacts)){
-			contactGrid.addData(contactRecord);
-			if (contactRecord.getAttributeAsBoolean("selected")){
-				contactGrid.selectRecord(contactRecord);
-			}
-		}
+		
+		loadContactGrid("ALL");
 
 		ListGridField nameField = new ListGridField("name", "Kontaktnamen");
 		contactGrid.setFields(nameField);
@@ -104,41 +104,52 @@ public class Page1 extends Composite {
 		selectionGrid.setFields(selectedContactsField);
 		
 		
-		contactGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+		groupGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+			
 			public void onSelectionChanged(SelectionEvent event) {
-				if (event.getState() == true){
-					contactSelection(event.getRecord().getAttribute("etag"), true);
-					contactGrid.selectRecord(event.getRecord());
+				if (select){
+					ContactGroupRecord record = (ContactGroupRecord) event.getRecord();
+					if (event.getState()) {
+						groupGrid.selectRecord(record);
+						groupSelection(record.getAttributeAsString("groupname"), true);
+					} else {
+						groupGrid.deselectRecord(record);
+						groupSelection(record.getAttributeAsString("groupname"), false);
+					}
+					checkGroupsForSelection();
+					loadGroupGrid();
+					loadSelectionGrid();
+					test();
 				}
-				else { 
-					contactSelection(event.getRecord().getAttribute("etag"), false);
-					contactGrid.deselectRecord(event.getRecord());
-				}
-				reloadSelectionGrid();
 			}
 		});
+		
 		
 		groupGrid.addRecordClickHandler(new RecordClickHandler() {
+			
 			public void onRecordClick(RecordClickEvent event) {
-				ArrayList<Contact> contactsToShow;
-				for (ContactGroup contactGroup: contactGroups){
-					if (contactGroup.getName().equals(event.getRecord().getAttribute("groupname"))){
-						contactsToShow = contactGroup.getContacts();
-						reloadContactGrid(contactsToShow);
-					}
-				}
-					
+				loadContactGrid(event.getRecord().getAttributeAsString("groupname"));
 			}
 		});
 		
-		groupGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+		
+		contactGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+			
 			public void onSelectionChanged(SelectionEvent event) {
-				if (event.getState()){
-					groupSelection(event.getRecord().getAttribute("groupname"), true);
-				} else {
-					groupSelection(event.getRecord().getAttribute("groupname"), false);
+				if (select){
+					ContactRecord record = (ContactRecord) event.getRecord();
+					if (event.getState()) {
+						contactGrid.selectRecord(record);
+						contactSelection(record.getAttributeAsString("etag"), true);
+					} else {
+						contactGrid.deselectRecord(record);
+						contactSelection(record.getAttributeAsString("etag"), false);
+					}
+					checkGroupsForSelection();
+					loadGroupGrid();
+					loadSelectionGrid();
+					test();
 				}
-				reloadSelectionGrid();
 			}
 		});
 		
@@ -167,7 +178,7 @@ public class Page1 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 
-			clientEngine.setSelections(contacts, contactGroups);
+//			clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
 		page1.add(mainPanel);
@@ -175,43 +186,98 @@ public class Page1 extends Composite {
 		page1.addStyleName("page1");
 	}
 	
-	private void contactSelection(String etag, boolean selected){
-		for(Contact contact: contacts){
-			if(contact.geteTag().equals(etag))
-				contact.setSelected(selected);
+	private void loadGroupGrid(){
+		select = false;
+		groupGrid.setData(contactGroups);
+		for (ContactGroupRecord contactGroupRecord : contactGroups) {
+			if(contactGroupRecord.getSelected()){
+				groupGrid.selectRecord(contactGroupRecord);
+			}
+		}
+		select = true;
+	}
+	
+	private void loadContactGrid(String groupName){
+		select = false;
+		if (groupName.equals("ALL")) {
+			contactGrid.setData(contacts);
+			for (ContactRecord record : contacts) {
+				if (record.getSelected()) {
+					contactGrid.selectRecord(record);
+				}				
+			}
+		} else {
+			contactGrid.setData(new ContactRecord[]{});
+			for (ContactRecord record : contacts) {
+				if(record.getAttributeAsString("groups").contains(groupName)){
+					contactGrid.addData(record);
+					if(record.getSelected()){
+						contactGrid.selectRecord(record);
+					}
+				}
+			}
+		}
+		select = true;
+	}
+	
+	private void loadSelectionGrid(){
+		selectionGrid.setData(new ContactRecord[]{});
+		for (ContactRecord contactRecord : contacts) {
+			if (contactRecord.getSelected()) {
+				selectionGrid.addData(contactRecord);
+			}			
 		}
 	}
 	
-	private void groupSelection(String name, boolean selected){
-		for (ContactGroup contactGroup: contactGroups){
-			if(contactGroup.getName().equals(name)){
-				for (Contact contact: contactGroup.getContacts()){
-					contact.setSelected(selected);
+	private void groupSelection(String groupname, boolean selected){
+		for (ContactGroupRecord groupRecord : contactGroups) {
+			if (groupRecord.getAttributeAsString("groupname").equals(groupname)) {
+				groupRecord.setSelected(selected);
+				String groupContacts = groupRecord.getAttributeAsString("contacts");
+				for (ContactRecord contactRecord: contacts){
+					if (groupContacts.contains(contactRecord.getAttributeAsString("etag"))) {
+						contactRecord.setSelected(selected);
+					}
 				}
 			}
 		}
 	}
 	
-	private void reloadSelectionGrid(){
-		for(ListGridRecord record: selectionGrid.getRecords()){
-			selectionGrid.removeData(record);
-		}
-		for (ContactRecord contactRecord: ContactData2Record.getNewRecords(contacts)){
-			if (contactRecord.getAttributeAsBoolean("selected")){
-					selectionGrid.addData(contactRecord);
+	private void contactSelection(String etag, boolean selected){
+		for (ContactRecord contactRecord : contacts) {
+			if(contactRecord.getAttributeAsString("etag").equals(etag)){
+				contactRecord.setSelected(selected);
 			}
 		}
 	}
 	
-	private void reloadContactGrid(ArrayList<Contact> contactsToShow){
-		for(ListGridRecord record: contactGrid.getRecords()){
-			contactGrid.removeData(record);
-		}
-		for (ContactRecord contactRecord: ContactData2Record.getNewRecords(contactsToShow)){
-			contactGrid.addData(contactRecord);
-			if (contactRecord.getAttributeAsBoolean("selected")){
-				contactGrid.selectRecord(contactRecord);
+	private void checkGroupsForSelection(){
+		for (ContactGroupRecord groupRecord : contactGroups) {
+			String contactsInGroup = groupRecord.getAttributeAsString("contacts");
+			boolean allContactsAreSelected = true;
+			boolean isEmpty = true;
+			for(ContactRecord contactRecord : contacts){
+				if (contactsInGroup.contains(contactRecord.getEtag())){
+					isEmpty = false;
+					if (!contactRecord.getSelected()){
+						allContactsAreSelected = false;
+					}
+				}	
+			}
+			if(!isEmpty){
+				groupRecord.setSelected(allContactsAreSelected);
 			}
 		}
 	}
+	
+	private void test(){
+		for (ContactGroupRecord record : contactGroups) {
+			System.out.println(record.getAttributeAsString("groupname") + ": \t\t" + (record.getSelected()? "X" : ""));
+		}
+		for (ContactRecord record : contacts) {
+			System.out.println(record.getAttributeAsString("name") + ": \t\t" + (record.getSelected()? "X" : ""));
+		}
+	}
+	
+	
 }
