@@ -4,13 +4,10 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -57,16 +54,15 @@ public class Page1 extends Composite {
 	}
 
 	private void initPage() {
-		page1.setBorderWidth(2);
-		page1.setPixelSize(150, 150);
-		HTML content = new HTML("This is page1. Click to move to page2");
+		page1.setPixelSize(800, 400);
 		contacts = clientEngine.getContacts();
 		contactGroups = clientEngine.getContactGroups();
 
 		
 		//-----------------------------------------
-		groupGrid.setWidth(250);
-		groupGrid.setHeight(300);
+		groupGrid.setWidth(200);
+		groupGrid.setHeight(400);
+		groupGrid.setEmptyMessage("Keine Gruppen vorhanden.");
 		groupGrid.setShowAllRecords(true);
 		groupGrid.setCanSort(true);
 		groupGrid.setCanGroupBy(false);
@@ -78,15 +74,15 @@ public class Page1 extends Composite {
 		
 		groupGrid.setData(ContactGroupData2Record.getNewRecords(contactGroups));
 		
-		contactGrid.setWidth(250);
-		contactGrid.setHeight(300);
-		contactGrid.setOverflow(Overflow.AUTO);
+		contactGrid.setWidth(200);
+		contactGrid.setHeight(400);
+		contactGrid.setBorder("1px solid #ABABAB");
+		contactGrid.setEmptyMessage("Keine Kontakte vorhanden.");
 		contactGrid.setShowAllRecords(true);
 		contactGrid.setCanSort(true);
 		contactGrid.setCanGroupBy(false);
 		contactGrid.setSelectionType(SelectionStyle.SIMPLE);
 		contactGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-//		contactGrid.setData(ContactData2Record.getNewRecords(contacts));
 		for (ContactRecord contactRecord: ContactData2Record.getNewRecords(contacts)){
 			contactGrid.addData(contactRecord);
 			if (contactRecord.getAttributeAsBoolean("selected")){
@@ -98,74 +94,14 @@ public class Page1 extends Composite {
 		contactGrid.setFields(nameField);
 
 		selectionGrid.setWidth(250);
-		selectionGrid.setHeight(300);
+		selectionGrid.setHeight(400);
+		selectionGrid.setBorder("1px solid #ABABAB");
+		selectionGrid.setEmptyMessage("Keine Kontakte ausgew\u00E4hlt.");
 		selectionGrid.setShowAllRecords(true);
-		ListGridField selectedCountriesField = new ListGridField("name",
+		selectionGrid.setCanGroupBy(false);
+		ListGridField selectedContactsField = new ListGridField("name",
 				"Kontaktnamen");
-		selectionGrid.setFields(selectedCountriesField);
-		
-//		contactGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
-//			public void onSelectionChanged(SelectionEvent event) {
-//				if (event.getState() == true) {
-//					//clinetEngine.setContactSelection(etag, true) 
-//					if (!selectionGrid.getRecordList().contains(
-//							event.getRecord())) {
-//						selectionGrid.addData(event.getRecord());
-//					}
-//				} else if(event.getState() == false) {	
-//					//clinetEngine.setContactSelection(etag, true) 
-//					for (ListGridRecord selectedRecord : selectionGrid.getRecords()) {
-//						if(!selectionGrid.getRecordList().contains(
-//								event.getRecord())){
-//							selectionGrid.removeData(event.getRecord());
-//						}
-//					}
-//				}
-//			}
-//		});
-//
-//		groupGrid.addRecordClickHandler(new RecordClickHandler() {
-//			public void onRecordClick(RecordClickEvent event) {
-//				contactGrid.setData(new ListGridRecord[] {});
-//				ContactGroupRecord record = (ContactGroupRecord) event.getRecord();
-//				for (String contact : record.getAttributeAsStringArray("contacts")) {
-//					for (ContactRecord contactrecord : ContactData2Record.getRecords()) {
-//						if (contact.equals(contactrecord.getAttributeAsString("etag"))) {
-//							contactGrid.addData(contactrecord);
-//							contactGrid.selectRecord(contactrecord);
-//						}
-//					}
-//				}
-//			}
-//		});
-//		groupGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
-//			public void onSelectionChanged(SelectionEvent event) {
-//				if (event.getState() == true) {
-//					for (ContactRecord contactrecord : ContactData2Record.getRecords()) {
-//						for (String groupname : contactrecord.getAttributeAsStringArray("groups")) {
-//							if (groupname.equals(event.getRecord()
-//									.getAttributeAsString("groupname"))) {
-//								if (!selectionGrid.getRecordList().contains(contactrecord)) {
-//									System.out.println(contactrecord.getAttribute("name"));
-//									selectionGrid.addData(contactrecord);
-//								}
-//							}
-//						}
-//					}
-//				} 
-//				else if (event.getState() == false) {
-//					for (ContactRecord contactrecord : ContactData2Record.getRecords()) {
-//						if (contactrecord.getAttributeAsString("groups")
-//								.contains(
-//										event.getRecord().getAttributeAsString(
-//												"groupname"))) {
-//							selectionGrid.removeData(contactrecord);
-//						}
-//					}
-//				}
-//			}
-//
-//		});
+		selectionGrid.setFields(selectedContactsField);
 		
 		
 		contactGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -206,23 +142,27 @@ public class Page1 extends Composite {
 			}
 		});
 		
-
 		
-
-		contactGrid.setStyleName("grid1");
-		selectionGrid.setStyleName("grid2");
-
+		contactGrid.addStyleName("contactGrid");
+		selectionGrid.addStyleName("selectionGrid");
+		
+		HTML gridHeaders = new HTML("<div id=\"gridHeader1\">Gruppenauswahl</div><div id=\"gridHeader2\">Kontaktauswahl</div><div id=\"gridHeader3\">Ausgew\u00E4hlte Kontakte</div>");
+		gridHeaders.addStyleName("gridHeaders");
+		
 		HStack grids = new HStack(3);
+		grids.addStyleName("grids");
 		grids.addMember(groupGrid);
 		grids.addMember(contactGrid);
 		grids.addMember(selectionGrid);
 		grids.draw();
-
+		
+		mainPanel.add(gridHeaders);
 		mainPanel.add(grids);
 		mainPanel.addStyleName("mainPanel");
 		
 		//------------------------------------------
-		Button button = new Button("Forward");
+		Button button = new Button("Weiter");
+		button.addStyleName("next");
 		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -231,7 +171,6 @@ public class Page1 extends Composite {
 			}
 		});
 		page1.add(mainPanel);
-		page1.add(content);
 		page1.add(button);
 		page1.addStyleName("page1");
 	}

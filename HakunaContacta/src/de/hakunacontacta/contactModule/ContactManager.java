@@ -606,7 +606,6 @@ public class ContactManager implements IContactManager{
 		// TODO Auto-generated method stub
 		this.contacts = contacts;
 		this.contactGroups = contactGroups;
-
 	}
 	
 
