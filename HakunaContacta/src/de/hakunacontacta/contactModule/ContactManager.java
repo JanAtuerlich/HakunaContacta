@@ -8,6 +8,8 @@ import com.google.gdata.data.extensions.*;
 import com.google.gdata.util.ServiceException;
 
 import de.hakunacontacta.shared.Constant;
+import de.hakunacontacta.shared.ContactSourceField;
+import de.hakunacontacta.shared.ContactSourceType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -472,7 +474,7 @@ public class ContactManager implements IContactManager{
 
 	@Override
 	public ArrayList<ContactSourceType> getSourceTypesOfSelectedContacts() {
-ArrayList<ContactSourceType> sourceTypesEachOnlyOnes = new ArrayList<ContactSourceType>(); //ArrayList nur in dieser Methode
+		ArrayList<ContactSourceType> sourceTypesEachOnlyOnes = new ArrayList<ContactSourceType>(); //ArrayList nur in dieser Methode
 		
 		for(Contact contact : contacts) {
 			if (contact.getSelected() == true){
