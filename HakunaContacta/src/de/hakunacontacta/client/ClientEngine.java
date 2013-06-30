@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.MyHistoryListener;
+import de.hakunacontacta.shared.ContactSourceField;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ContactSourceTypes2Tree;
 import de.hakunacontacta.shared.LoginInfo;
@@ -44,6 +45,7 @@ public class ClientEngine implements EntryPoint {
 	
 	private Page1 page1;
 	private Page2 page2;
+	public boolean check = false;
 	private ClientEngine thisClientEngine = this;
 	private static final Auth AUTH = Auth.get();
 	private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
@@ -195,8 +197,17 @@ public class ClientEngine implements EntryPoint {
 		greetingService.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
 					@Override
 					public void onSuccess(ArrayList<ContactSourceType> result) {
-												
 						ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
+						
+//						ContactSourceType c = new ContactSourceType();
+//						c.setType("Tel");
+//						ContactSourceField sf = new ContactSourceField();
+//						sf.setName("Private");
+//						sf.setValue("0054");
+//						sf.setAnzahl(1);
+//						c.addSourceField(sf);
+//						result.add(c);
+						
 						contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
 						page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
 						historyListener.setPage2(page2);
@@ -208,7 +219,6 @@ public class ClientEngine implements EntryPoint {
 						System.out.println("Problem beim Erstellen der ContactSourceTypes beim Client");
 					}
 				});
-
 	}
 
 	public ArrayList<Contact> getContacts() {
@@ -218,7 +228,11 @@ public class ClientEngine implements EntryPoint {
 	public ArrayList<ContactGroup> getContactGroups() {
 		return contactGroups;
 	}
-
+	
+	public void sendExportFields(Tree exportTree){
+		
+	}
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -269,8 +283,7 @@ public class ClientEngine implements EntryPoint {
 
 			@Override
 			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub
-				
+				thisClientEngine.createPage2();
 			}
 		});
 	}

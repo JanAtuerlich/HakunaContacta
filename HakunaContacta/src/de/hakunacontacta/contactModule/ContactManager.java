@@ -101,62 +101,62 @@ public class ContactManager implements IContactManager{
 						sourceTypeName.addSourceField(sourceFieldName);
 						if (name.hasAdditionalName()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Zweiter Vorname");
-							sourceFieldName.setValue(name.getAdditionalName().getValue());
+							sourceField.setName("Zweiter Vorname");
+							sourceField.setValue(name.getAdditionalName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasFamilyName()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Nachname");
-							sourceFieldName.setValue(name.getFamilyName().getValue());
+							sourceField.setName("Nachname");
+							sourceField.setValue(name.getFamilyName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasGivenName()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Vorname");
-							sourceFieldName.setValue(name.getGivenName().getValue());
+							sourceField.setName("Vorname");
+							sourceField.setValue(name.getGivenName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasNamePrefix()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Prefix");
-							sourceFieldName.setValue(name.getNamePrefix().getValue());
+							sourceField.setName("Prefix");
+							sourceField.setValue(name.getNamePrefix().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (name.hasNameSuffix()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Suffix");
-							sourceFieldName.setValue(name.getNameSuffix().getValue());
+							sourceField.setName("Suffix");
+							sourceField.setValue(name.getNameSuffix().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasGender()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Geschlecht");
-							sourceFieldName.setValue(entry.getGender().getValue().toString());
+							sourceField.setName("Geschlecht");
+							sourceField.setValue(entry.getGender().getValue().toString());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasInitials()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Initialen");
-							sourceFieldName.setValue(entry.getInitials().getValue());
+							sourceField.setName("Initialen");
+							sourceField.setValue(entry.getInitials().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasMaidenName()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Mädchenname");
-							sourceFieldName.setValue(entry.getMaidenName().getValue());
+							sourceField.setName("Mädchenname");
+							sourceField.setValue(entry.getMaidenName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasNickname()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Nickname");
-							sourceFieldName.setValue(entry.getNickname().getValue());
+							sourceField.setName("Nickname");
+							sourceField.setValue(entry.getNickname().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						if (entry.hasShortName()){
 							ContactSourceField sourceField = new ContactSourceField();
-							sourceFieldName.setName("Kurzname");
-							sourceFieldName.setValue(entry.getShortName().getValue());
+							sourceField.setName("Kurzname");
+							sourceField.setValue(entry.getShortName().getValue());
 							sourceTypeName.addSourceField(sourceField);
 						}
 						contact.addSourceType(sourceTypeName);
@@ -179,7 +179,7 @@ public class ContactManager implements IContactManager{
 												
 						if (entry.hasEmailAddresses()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("Email");
+							sourceType.setType("Email");
 							for (Email email : entry.getEmailAddresses()){
 								String emailLabel = null;
 								if (email.getLabel() != null)
@@ -196,7 +196,7 @@ public class ContactManager implements IContactManager{
 						
 						if (entry.hasPhoneNumbers()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("Telefon");
+							sourceType.setType("Telefon");
 							for (PhoneNumber phoneNumber : entry.getPhoneNumbers()){
 								String phoneLabel = null;
 								if (phoneNumber.getLabel() != null)
@@ -215,7 +215,7 @@ public class ContactManager implements IContactManager{
 						
 						if (entry.hasPostalAddresses() || entry.hasStructuredPostalAddresses()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("Adresse");
+							sourceType.setType("Adresse");
 							for (PostalAddress postalAddress : entry.getPostalAddresses()){
 								String addressLabel = null;
 								if (postalAddress.getLabel() != null)
@@ -243,7 +243,7 @@ public class ContactManager implements IContactManager{
 						
 						if (entry.hasBirthday()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("Geburtstag");
+							sourceType.setType("Geburtstag");
 							ContactSourceField sourceField = new ContactSourceField();
 							sourceField.setName("Geburtstag");
 							sourceField.setValue(entry.getBirthday().getValue());
@@ -253,7 +253,7 @@ public class ContactManager implements IContactManager{
 						
 						if (entry.hasWebsites()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("URL");
+							sourceType.setType("URL");
 							for (Website website : entry.getWebsites()){
 								String websiteLabel = null;
 								if (website.getLabel() != null)
@@ -270,7 +270,7 @@ public class ContactManager implements IContactManager{
 						
 						if (entry.hasImAddresses()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("Instant Messaging");
+							sourceType.setType("Instant Messaging");
 							for (Im im : entry.getImAddresses()){
 								String imLabel = null;
 								if (!im.getProtocol().startsWith("http://schemas.google.com/g/2005#"))
@@ -287,7 +287,7 @@ public class ContactManager implements IContactManager{
 						
 						if (entry.hasUserDefinedFields()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("Benuzerdefiniertes Feld");
+							sourceType.setType("Benuzerdefiniertes Feld");
 							for (UserDefinedField field : entry.getUserDefinedFields()){
 								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(field.getKey());
@@ -299,7 +299,7 @@ public class ContactManager implements IContactManager{
 											
 						if (entry.hasExtendedProperties()){
 							ContactSourceType sourceType = new ContactSourceType();
-							sourceTypeName.setType("Extended Property");
+							sourceType.setType("Extended Property");
 							for (ExtendedProperty property : entry.getExtendedProperties()){
 								ContactSourceField sourceField = new ContactSourceField();
 								sourceField.setName(property.getName());
@@ -324,9 +324,9 @@ public class ContactManager implements IContactManager{
 //					System.out.println("\t\tGruppe " + index + ": " + group.getName());
 //				}
 //				
-//				for (SourceType type : contact.getSourceTypes()){
+//				for (ContactSourceType type : contact.getSourceTypes()){
 //					System.out.println("\t" + type.getType() + ":");
-//					for (SourceField field : type.getSourceFields()){
+//					for (ContactSourceField field : type.getSourceFields()){
 //						System.out.println("\t\t" + field.getName() + ": " + field.getValue());
 //					}
 //				}
@@ -472,9 +472,59 @@ public class ContactManager implements IContactManager{
 		}
 	}
 
+	
 	@Override
 	public ArrayList<ContactSourceType> getSourceTypesOfSelectedContacts() {
-		ArrayList<ContactSourceType> sourceTypesEachOnlyOnes = new ArrayList<ContactSourceType>(); //ArrayList nur in dieser Methode
+		ArrayList<ContactSourceType> exportSourceTypes = new ArrayList<ContactSourceType>();
+		
+		for (Contact contact : contacts) {
+			if (contact.getSelected() == true) {
+				for (ContactSourceType contactSourceType : contact.getSourceTypes()) {
+					if(!exportSourceTypes.contains(contactSourceType)){
+						exportSourceTypes.add(contactSourceType);
+					}
+					else{
+						for (ContactSourceType exportSourceType : exportSourceTypes) {
+							for (ContactSourceField contactSourceField : contactSourceType.getSourceFields()) {
+								if(!exportSourceType.getSourceFields().contains(contactSourceField) && contactSourceType.getType() == exportSourceType.getType()){
+									exportSourceType.addSourceField(contactSourceField);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		String x = null;
+		x += "Contacts + SourceTypes!!!!!!!\n";
+		for (Contact contact : this.getSelectedContacts()) {
+			x += "\n " + contact.getName() + ": ";
+			
+			for (ContactSourceType contactSourceType : contact.getSourceTypes()) {
+				
+				x += contactSourceType.getType()+ "( ";
+				
+				for (ContactSourceField contactSourceField : contactSourceType.getSourceFields()) {
+					
+					x+= contactSourceField.getName() + " [" +contactSourceField.getValue() + "], ";
+					
+				}
+				
+				x += ") \n";
+				
+			}
+		}
+		
+		System.out.println(x);
+		
+		
+		return exportSourceTypes;
+	}
+	
+	public ArrayList<ContactSourceType> getSourceTypesOfSelectedContacts2() {
+		ArrayList<ContactSourceType> sourceTypesEachOnlyOnes = new ArrayList<ContactSourceType>();
 		
 		for(Contact contact : contacts) {
 			if (contact.getSelected() == true){
@@ -544,20 +594,19 @@ public class ContactManager implements IContactManager{
 	@Override
 	public ArrayList<Contact> getSelectedContacts() {
 		ArrayList<Contact> contacsSelected = new ArrayList<Contact>();
-		for(Contact contact : contacts) {
-			if (contact.getSelected() == true){
+		for (Contact contact : contacts) {
+			if (contact.getSelected() == true) {
 				contacsSelected.add(contact);
 			}
-			}
-	return contacsSelected;
+		}
+		return contacsSelected;
 	}
 
-	public void setSelections(ArrayList<Contact> contacts,
-			ArrayList<ContactGroup> contactGroups) {
+	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups) {
 		// TODO Auto-generated method stub
 		this.contacts = contacts;
 		this.contactGroups = contactGroups;
-		
+
 	}
 	
 

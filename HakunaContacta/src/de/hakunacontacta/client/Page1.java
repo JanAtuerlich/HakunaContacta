@@ -227,8 +227,8 @@ public class Page1 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				clientEngine.setSelections(contacts, contactGroups);
-				clientEngine.createPage2();			}
+			clientEngine.setSelections(contacts, contactGroups);
+			}
 		});
 		page1.add(mainPanel);
 		page1.add(content);

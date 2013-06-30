@@ -47,7 +47,6 @@ import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.GreetingService;
 import de.hakunacontacta.contactModule.ContactManager;
 import de.hakunacontacta.shared.ContactSourceType;
-import de.hakunacontacta.shared.ContactSourceTypes2Tree;
 import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
 
