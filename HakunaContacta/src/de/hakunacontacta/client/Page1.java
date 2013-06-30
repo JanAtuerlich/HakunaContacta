@@ -228,7 +228,7 @@ public class Page1 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				
+				clientEngine.setSelections(contacts, contactGroups);
 				page2 = Page2.getInstance(clientEngine);
 				clientEngine.getHistoryListener().setPage2(page2);
 				History.newItem("page2", true);

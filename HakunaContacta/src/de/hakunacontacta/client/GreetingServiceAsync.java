@@ -63,6 +63,9 @@ public interface GreetingServiceAsync {
 	void getContacts(AsyncCallback<ArrayList<Contact>> callback);
 
 	void getContactGroups(AsyncCallback<ArrayList<ContactGroup>> callback);
+
+	void setSelections(ArrayList<Contact> contacts,
+			ArrayList<ContactGroup> contactGroups, AsyncCallback<Void> callback);
 	
 	// TODO #10:> end	
 

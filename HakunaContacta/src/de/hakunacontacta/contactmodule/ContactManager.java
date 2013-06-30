@@ -551,6 +551,14 @@ public class ContactManager implements IContactManager{
 			}
 	return contacsSelected;
 	}
+
+	public void setSelections(ArrayList<Contact> contacts,
+			ArrayList<ContactGroup> contactGroups) {
+		// TODO Auto-generated method stub
+		this.contacts = contacts;
+		this.contactGroups = contactGroups;
+		
+	}
 	
 
 }

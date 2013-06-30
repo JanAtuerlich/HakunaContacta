@@ -216,6 +216,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return contactManager.getGroups();
 	}
 
+	@Override
+	public void setSelections(ArrayList<Contact> contacts,
+			ArrayList<ContactGroup> contactGroups) {
+		// TODO Auto-generated method stub
+		contactManager.setSelections(contacts, contactGroups);		
+	}
+
 	// TODO #11:> end	
 
 }

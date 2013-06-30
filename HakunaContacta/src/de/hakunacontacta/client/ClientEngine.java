@@ -231,4 +231,21 @@ public class ClientEngine implements EntryPoint {
 		});
 		
 	}
+	
+	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups){
+		greetingService.setSelections(contacts, contactGroups, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
 }
