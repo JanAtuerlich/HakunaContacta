@@ -3,6 +3,9 @@ package de.hakunacontacta.contactModule;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import de.hakunacontacta.shared.ContactSourceField;
+import de.hakunacontacta.shared.ContactSourceType;
+
 
 
 

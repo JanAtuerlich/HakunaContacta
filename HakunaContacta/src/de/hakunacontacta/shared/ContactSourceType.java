@@ -1,4 +1,4 @@
-package de.hakunacontacta.contactModule;
+package de.hakunacontacta.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,8 +10,6 @@ public class ContactSourceType implements Serializable, Comparable<ContactSource
 	private String type;
 
 	private ArrayList<ContactSourceField> sourceFields = new ArrayList<ContactSourceField>();
-	
-	
 	public ContactSourceType(){
 	}
 
