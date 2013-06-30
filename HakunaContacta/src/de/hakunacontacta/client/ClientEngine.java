@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -68,7 +69,7 @@ public class ClientEngine implements EntryPoint {
 
 	private void loadLogin(final LoginInfo loginInfo) {
 		signInLink.setHref(loginInfo.getLoginUrl());
-		signInLink.setText("Please, sign in with your Google Account");
+		signInLink.setText("Bitte, melden Sie sich mit Ihrem Google Account an");
 		signInLink.setTitle("Sign in");
 	}
 
@@ -203,6 +204,8 @@ public class ClientEngine implements EntryPoint {
 		signInLink.setTitle("sign out");
 		loginImage.getElement().setClassName("login-area");
 		loginPanel.add(signInLink);
+		HTML start = new HTML("<p>Startseite Inhalt YEEEHAAA</p>");
+		RootPanel.get("content").add(start);
 		RootPanel.get("loginPanelContainer").add(loginPanel);
 		final StringBuilder userEmail = new StringBuilder();
 		greetingService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {

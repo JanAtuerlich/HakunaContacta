@@ -8,6 +8,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionAppearance;
@@ -222,12 +223,6 @@ public class Page1 extends Composite {
 
 		mainPanel.add(grids);
 		mainPanel.addStyleName("mainPanel");
-//		RootPanel.get("content").add(mainPanel);
-		
-		
-		
-		
-		
 		
 		//------------------------------------------
 		Button button = new Button("Forward");
@@ -244,6 +239,7 @@ public class Page1 extends Composite {
 		page1.add(mainPanel);
 		page1.add(content);
 		page1.add(button);
+		page1.addStyleName("page1");
 	}
 	
 	private void contactSelection(String etag, boolean selected){
