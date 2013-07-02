@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.MyHistoryListener;
+import de.hakunacontacta.shared.ContactData2Record;
+import de.hakunacontacta.shared.ContactGroupData2Record;
+import de.hakunacontacta.shared.ContactGroupRecord;
+import de.hakunacontacta.shared.ContactRecord;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ContactSourceTypes2Tree;
 import de.hakunacontacta.shared.LoginInfo;
@@ -26,6 +30,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.smartgwt.client.widgets.tree.Tree;
+import com.smartgwt.client.widgets.tree.TreeNode;
 
  
 /**
@@ -36,6 +41,9 @@ public class ClientEngine implements EntryPoint {
 	// TODO #05: add constants for OAuth2 (don't forget to update GOOGLE_CLIENT_ID)
 	private ArrayList<Contact> contacts;
 	private ArrayList<ContactGroup> contactGroups;
+	private ContactRecord[] contactRecords;
+	private ContactGroupRecord[] contactGroupRecords;
+	
 	private MyHistoryListener historyListener;
 	private Tree contactSourceTypesTree = null;
 	public MyHistoryListener getHistoryListener() {
@@ -44,6 +52,7 @@ public class ClientEngine implements EntryPoint {
 	
 	private Page1 page1;
 	private Page2 page2;
+	public boolean check = false;
 	private ClientEngine thisClientEngine = this;
 	private static final Auth AUTH = Auth.get();
 	private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
@@ -74,14 +83,14 @@ public class ClientEngine implements EntryPoint {
 
 	private void loadLogin(final LoginInfo loginInfo) {
 		signInLink.setHref(loginInfo.getLoginUrl());
-		signInLink.setText("Bitte, melden Sie sich mit Ihrem Google Account an");
-		signInLink.setTitle("Sign in");
+		signInLink.setText("Einloggen");
+		signInLink.setTitle("Einloggen");
 	}
 
 	private void loadLogout(final LoginInfo loginInfo) {
 		signInLink.setHref(loginInfo.getLogoutUrl());
-		signInLink.setText(loginInfo.getName());
-		signInLink.setTitle("Sign out");
+		signInLink.setText(loginInfo.getName()+"Ausloggen");
+		signInLink.setTitle("Ausloggen");
 	}
 
 	private void addGoogleAuthHelper() {
@@ -133,6 +142,9 @@ public class ClientEngine implements EntryPoint {
 												}
 												contactGroup.setContacts(tempContacts);
 											}
+											contactRecords = ContactData2Record.getNewRecords(contacts);
+											contactGroupRecords = ContactGroupData2Record.getNewRecords(contactGroups);
+											
 											final String initToken = History.getToken();
 											
 											page1 = Page1.getInstance(thisClientEngine);
@@ -191,24 +203,29 @@ public class ClientEngine implements EntryPoint {
 	}
 	
 	public void createPage2() {
-
 		greetingService.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
-					@Override
-					public void onSuccess(ArrayList<ContactSourceType> result) {
-												
-						ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
-						contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
-						page2 = Page2.getInstance(thisClientEngine, c);
-						historyListener.setPage2(page2);
-						History.newItem("page2", true);
-					}
+			@Override
+			public void onSuccess(ArrayList<ContactSourceType> result) {
+				ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
+				contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
+				page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
+				historyListener.setPage2(page2);
+				History.newItem("page2", true);
+			}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Problem beim Erstellen der ContactSourceTypes beim Client");
-					}
-				});
-
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Problem beim Erstellen der ContactSourceTypes beim Client");
+			}
+		});
+	}
+	
+	public void writeExportTree(Tree exportTree){
+		TreeNode rootnode = exportTree.getRoot();
+		
+		for (TreeNode node : exportTree.getAllNodes(rootnode)) {
+			System.out.println(node.getAttribute("Name"));
+		}
 	}
 
 	public ArrayList<Contact> getContacts() {
@@ -218,7 +235,19 @@ public class ClientEngine implements EntryPoint {
 	public ArrayList<ContactGroup> getContactGroups() {
 		return contactGroups;
 	}
-
+	
+	public ContactGroupRecord[] getContactGroupRecord(){
+		return contactGroupRecords;
+	}
+	
+	public ContactRecord[] getContactRecords(){
+		return contactRecords;
+	}
+	
+	public void sendExportFields(Tree exportTree){
+		
+	}
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -233,6 +262,9 @@ public class ClientEngine implements EntryPoint {
 		HTML start = new HTML("<p>Startseite Inhalt YEEEHAAA</p>");
 		RootPanel.get("content").add(start);
 		RootPanel.get("loginPanelContainer").add(loginPanel);
+		RootPanel.get("footer").clear();
+		HTML footerimage = new HTML("<img src=\"images/1.jpg\">");
+		RootPanel.get("footer").add(footerimage);
 		final StringBuilder userEmail = new StringBuilder();
 		greetingService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 			@Override
@@ -258,7 +290,21 @@ public class ClientEngine implements EntryPoint {
 		
 	}
 	
-	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups){
+	public void setSelections(ContactRecord[] contactRecords, ContactGroupRecord[] contactGroupRecords){
+		for (ContactGroupRecord contactGroupRecord : contactGroupRecords) {
+			for (ContactGroup contactGroup : contactGroups) {
+				if(contactGroupRecord.getGroupname().equals(contactGroup.getName())){
+					contactGroup.setSelected(contactGroupRecord.getSelected());
+				}
+			}
+		}
+		for (ContactRecord contactRecord : contactRecords) {
+			for (Contact contact : contacts) {
+				if(contactRecord.getEtag().equals(contact.geteTag())){
+					contact.setSelected(contactRecord.getSelected());
+				}
+			}
+		}
 		greetingService.setSelections(contacts, contactGroups, new AsyncCallback<Void>() {
 
 			@Override
@@ -269,8 +315,7 @@ public class ClientEngine implements EntryPoint {
 
 			@Override
 			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub
-				
+				thisClientEngine.createPage2();
 			}
 		});
 	}

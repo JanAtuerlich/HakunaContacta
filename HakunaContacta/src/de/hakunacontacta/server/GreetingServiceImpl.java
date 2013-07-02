@@ -47,7 +47,6 @@ import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.GreetingService;
 import de.hakunacontacta.contactModule.ContactManager;
 import de.hakunacontacta.shared.ContactSourceType;
-import de.hakunacontacta.shared.ContactSourceTypes2Tree;
 import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
 
@@ -56,7 +55,6 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.smartgwt.client.widgets.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.logging.Level;

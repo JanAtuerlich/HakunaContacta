@@ -2,6 +2,7 @@ package de.hakunacontacta.client;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class MyHistoryListener implements ValueChangeHandler<String> {
@@ -24,11 +25,17 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
 		if (event.getValue().equals("page1")){
     		RootPanel.get("content").clear();
     		RootPanel.get("content").add(page1);
+    		RootPanel.get("footer").clear();
+    		HTML footerimage = new HTML("<img src=\"images/2.jpg\">");
+    		RootPanel.get("footer").add(footerimage);
 		}
 		
 		if (event.getValue().equals("page2")){
     		RootPanel.get("content").clear();
     		RootPanel.get("content").add(page2);
+    		RootPanel.get("footer").clear();
+    		HTML footerimage = new HTML("<img src=\"images/3.jpg\">");
+    		RootPanel.get("footer").add(footerimage);
 		}	
 	}
 

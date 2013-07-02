@@ -25,6 +25,7 @@ public class ContactSourceTypes2Tree {
         	
         	TreeNode sourceType = new TreeNode();
         	sourceType.setName(contactSourceType.getType());
+        	sourceType.setAttribute("Name", contactSourceType.getType());
         	sourceType.setCanDrag(false);
 	        sourceType.setIsFolder(true);
 	        sources.add(sourceType, rootNode);
@@ -33,9 +34,10 @@ public class ContactSourceTypes2Tree {
 	        for (ContactSourceField contactSourceField : contactSourceType.getSourceFields()) {
 	        	TreeNode sourceField = new TreeNode();
 	        	sourceField.setName(contactSourceField.getName() + " (" + contactSourceField.getAnzahl() + ")");
+	        	sourceField.setAttribute("Name", contactSourceField.getName() + " (" + contactSourceField.getAnzahl() + ")");
 	        	sourceField.setAttribute("SourceType", contactSourceType.getType());
 	        	sourceField.setAttribute("SourceFieldName", contactSourceField.getName());
-		        sources.add(sourceType, rootNode);
+		        sources.add(sourceField, sourceType);
 	        	
 				
 			}

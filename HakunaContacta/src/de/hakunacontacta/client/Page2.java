@@ -1,5 +1,7 @@
 package de.hakunacontacta.client;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -10,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.DragDataAction;
@@ -46,6 +49,7 @@ public class Page2 extends Composite {
 	}
 
 	private void initPage() {
+		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setBorderWidth(2);
 		page2.setPixelSize(150, 150);
 		HTML content = new HTML("This is page2. Click to move to back page1");
@@ -55,24 +59,21 @@ public class Page2 extends Composite {
 		final String encoded = "QXVmZ2FiZW46DQoNCi0gRmlsZSBhbiBDbGllbnQgc2VuZGVuLCBiaXNoZXIgZ2lidHMgZXMgZWluZW4gZmVydGlnZW4gU3RyaW5nLiAtPiBSZWNoZXJjaGUsIFByb3RvdHlwZQ0KLSBHVUkgMyBtYWNoZW4NCi0gTWV0aG9kZW4gaW4gQ2xpZW50RW5naW5lIHp1ciBWZXJmw7xndW5nIHN0ZWxsZW4NCi0gTG9nbw0KLSBBbGxnLiBIb21lcGFnZSwgYnp3IGVyc3RlIFBhZ2UgDQotIA0KLSA=";
 
 		// ------------------------------------
-		System.out.println("getTree!");
-		Tree grid1Tree = thisContactSourceTypesTree;
-//		grid1Tree.setModelType(TreeModelType.CHILDREN);
-//		grid1Tree.setNameProperty("Name");
-//		grid1Tree.setRoot(new TreeNode("Root", new TreeNode("Bin 1",
-//				new TreeNode("Blue Cube"), new TreeNode("Yellow Cube"),
-//				new TreeNode("Green Cube"))));
+		
+		//Linke Seite
+		Tree sourceGridTree = thisContactSourceTypesTree;
 
-		final TreeGrid grid1 = new TreeGrid();
-		grid1.setHeight(300);
-		grid1.setWidth(200);
-		grid1.setDragDataAction(DragDataAction.COPY);
-		grid1.setCanDragRecordsOut(true);
-		grid1.setData(grid1Tree);
-		grid1.getData().openAll();
-		grid1.setShowHeader(false);
-		grid1.setTreeFieldTitle("Quellfelder");
-
+		final TreeGrid sourceGrid = new TreeGrid();
+		sourceGrid.setHeight(300);
+		sourceGrid.setWidth(200);
+		sourceGrid.setDragDataAction(DragDataAction.COPY);
+		sourceGrid.setCanDragRecordsOut(true);
+		sourceGrid.setData(sourceGridTree);
+		sourceGrid.getData().openAll();
+		sourceGrid.setShowHeader(false);
+		sourceGrid.setTreeFieldTitle("Quellfelder");
+		
+		//Rechte Seite
 		final Tree grid2Tree = new Tree();
 		grid2Tree.setModelType(TreeModelType.CHILDREN);
 		grid2Tree.setNameProperty("Name");
@@ -117,6 +118,30 @@ public class Page2 extends Composite {
 			}
 		});
 
+		//Dropdown-Menu
+		final ListBox formatList = new ListBox();
+		formatList.setTitle("Exportformat");
+		formatList.addItem("CSV"); //Index 0
+		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); //Index 1
+		formatList.addItem("vCard"); //Index 2
+		formatList.addItem("XML (xCard)"); //Index 3
+		
+		formatList.addChangeHandler(new ChangeHandler() {
+			
+			@Override
+			public void onChange(ChangeEvent event) {
+				int selectedIndex = formatList.getSelectedIndex();
+				if(selectedIndex == 0){
+					//Methode für CSV
+					clientEngine.writeExportTree(grid2Tree);
+				}
+				if(selectedIndex == 1){
+					//Methode für CSV-Word-Serienbriefe
+					clientEngine.writeExportTree(grid2Tree);
+				}
+			}
+		});
+		
 		// Move cursor focus to the input box.
 		addExportfieldTextBox.setFocus(true);
 
@@ -165,7 +190,7 @@ public class Page2 extends Composite {
 			}
 		});
 
-		grid1.setStyleName("grid1");
+		sourceGrid.setStyleName("sourceGrid");
 		grid2.setStyleName("grid2");
 		grid2.setBaseStyle("grid2records");
 
@@ -176,13 +201,14 @@ public class Page2 extends Composite {
 		addPanel.addStyleName("addPanel");
 
 		HStack grids = new HStack(2);
-		grids.addMember(grid1);
+		grids.addMember(sourceGrid);
 		grids.addMember(grid2);
 		grids.setStyleName("grids");
 		grids.draw();
 		mainPanel.add(grids);
 		mainPanel.add(addPanel);
 		mainPanel.addStyleName("mainPanel");
+		mainPanel.add(formatList);
 
 		// ------------------------------------
 
@@ -192,23 +218,20 @@ public class Page2 extends Composite {
 				final HTML html = new HTML("<a download=\"Contactexport."
 						+ dateiendung + "\" href=data:application/"
 						+ dateiendung + ";base64," + encoded + ">Download</a>");
-				// final HTML html = new HTML("<a download=\"MyFile." +
-				// dateiendung +
-				// "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
+				// final HTML html = new HTML("<a download=\"MyFile." + dateiendung + "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
 				page2.add(html);
 
 				// String uri
 				// ="<a download=\"MyFile.csv\" href=data:text/csv;charset=utf-8,\"test\">Download</a>";
 				// String uri ="href=data:text/csv;charset=utf-8,\"test\"";
-				//
 				// Window.open(uri, "TEST", "");
-				//
 				// History.newItem("page1", true);
 			}
 		});
 		page2.add(mainPanel);
 		page2.add(content);
 		page2.add(button);
+
 
 	}
 }
