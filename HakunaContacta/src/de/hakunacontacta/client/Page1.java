@@ -98,6 +98,7 @@ public class Page1 extends Composite {
 		selectionGrid.setBorder("1px solid #ABABAB");
 		selectionGrid.setEmptyMessage("Keine Kontakte ausgew\u00E4hlt.");
 		selectionGrid.setShowAllRecords(true);
+		selectionGrid.setCanRemoveRecords(true);
 		selectionGrid.setCanGroupBy(false);
 		ListGridField selectedContactsField = new ListGridField("name",
 				"Kontaktnamen");
@@ -150,6 +151,8 @@ public class Page1 extends Composite {
 				}
 			}
 		});
+		
+		
 		
 		
 		contactGrid.addStyleName("contactGrid");

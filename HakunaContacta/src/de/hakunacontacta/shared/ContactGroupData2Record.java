@@ -29,7 +29,7 @@ public class ContactGroupData2Record {
         				contacts[j] = contact.geteTag();
         				j++;
 				}
-    			contactGroupRecords[i] = new  ContactGroupRecord(contactGroup.getName(), contactGroup.getSelected(), contacts); 
+    			contactGroupRecords[i] = new  ContactGroupRecord(contactGroup.getName()+" ("+j+")", contactGroup.getSelected(), contacts); 
     			i++;
 			}
 		

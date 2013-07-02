@@ -57,7 +57,6 @@ public class ContactManager implements IContactManager{
 					ContactGroupFeed.class);
 
 			for (ContactGroupEntry groupEntry : groupResultFeed.getEntries()) {
-				
 				String groupID = groupEntry.getId();
 				String name = groupEntry.getTitle().getPlainText();
 				
