@@ -16,21 +16,30 @@ public class ContactGroupData2Record {
   
     public static ContactGroupRecord[] getNewRecords(ArrayList<ContactGroup> contactGroups) {  
     	
-    	ContactGroupRecord[] contactGroupRecords = new ContactGroupRecord[contactGroups.size()];
+    	int arraySize = 0;
+    	for (ContactGroup contactGroup : contactGroups) {
+			if (contactGroup.getContacts().size() > 0){
+				arraySize++;
+			}
+		}
+    	ContactGroupRecord[] contactGroupRecords = new ContactGroupRecord[arraySize];
     	
-    	
-    	int i = 0;	
+    	int arrayPosition = 0;
     		for (ContactGroup contactGroup : contactGroups) {
     	    	
     			contactGroup.getContacts();
-    			String[] contacts = new String[contactGroup.getContacts().size()];
+    			int counter = contactGroup.getContacts().size();
+    			String[] contacts = new String[counter];
     			int j = 0;
         		for (Contact contact : contactGroup.getContacts()) {
         				contacts[j] = contact.geteTag();
         				j++;
 				}
-    			contactGroupRecords[i] = new  ContactGroupRecord(contactGroup.getName()+" ("+j+")", contactGroup.getSelected(), contacts); 
-    			i++;
+        		if (counter > 0) {
+            		String displayedName = contactGroup.getName() + " (" + counter + ")"; 
+        			contactGroupRecords[arrayPosition] = new  ContactGroupRecord(contactGroup.getName(), contactGroup.getSelected(), contacts, displayedName); 
+        			arrayPosition++;
+        		}
 			}
 		
 
