@@ -85,7 +85,7 @@ public class ClientEngine implements EntryPoint {
 
 	private void loadLogout(final LoginInfo loginInfo) {
 		signInLink.setHref(loginInfo.getLogoutUrl());
-		signInLink.setText(loginInfo.getName()+"Ausloggen");
+		signInLink.setText("Ausloggen");
 		signInLink.setTitle("Ausloggen");
 	}
 
@@ -162,26 +162,26 @@ public class ClientEngine implements EntryPoint {
 							
 							signInLink.setText(loginInfo.getName());
 							signInLink.setStyleName("login-area");
-							loginImage.setVisible(false);
-							loginPanel.add(loginImage);
-							loginImage.addLoadHandler(new LoadHandler() {
-								@Override
-								public void onLoad(final LoadEvent event) {
-									final int newWidth = 24;
-									final com.google.gwt.dom.client.Element element = event
-											.getRelativeElement();
-									if (element.equals(loginImage.getElement())) {
-										final int originalHeight = loginImage.getOffsetHeight();
-										final int originalWidth = loginImage.getOffsetWidth();
-										if (originalHeight > originalWidth) {
-											loginImage.setHeight(newWidth + "px");
-										} else {
-											loginImage.setWidth(newWidth + "px");
-										}
-										loginImage.setVisible(true);
-									}
-								}
-							});
+//							loginImage.setVisible(false);
+//							loginPanel.add(loginImage);
+//							loginImage.addLoadHandler(new LoadHandler() {
+//								@Override
+//								public void onLoad(final LoadEvent event) {
+//									final int newWidth = 24;
+//									final com.google.gwt.dom.client.Element element = event
+//											.getRelativeElement();
+//									if (element.equals(loginImage.getElement())) {
+//										final int originalHeight = loginImage.getOffsetHeight();
+//										final int originalWidth = loginImage.getOffsetWidth();
+//										if (originalHeight > originalWidth) {
+//											loginImage.setHeight(newWidth + "px");
+//										} else {
+//											loginImage.setWidth(newWidth + "px");
+//										}
+//										loginImage.setVisible(true);
+//									}
+//								}
+//							});
 							
 						}
 					});
@@ -262,7 +262,7 @@ public class ClientEngine implements EntryPoint {
 				if (result.getName() != null && !result.getName().isEmpty()) {
 					addGoogleAuthHelper();
 					loadLogout(result);
-
+					
 
 
 				} else {
@@ -304,4 +304,10 @@ public class ClientEngine implements EntryPoint {
 			}
 		});
 	}
+
+	public Anchor getSignInLink() {
+		return signInLink;
+	}
+	
+	
 }
