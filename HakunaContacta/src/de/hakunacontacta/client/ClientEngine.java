@@ -198,7 +198,7 @@ public class ClientEngine implements EntryPoint {
 												
 						ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
 						contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
-						page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
+						page2 = Page2.getInstance(thisClientEngine, c);
 						historyListener.setPage2(page2);
 						History.newItem("page2", true);
 					}
