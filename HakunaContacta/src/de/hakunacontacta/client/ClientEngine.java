@@ -17,8 +17,6 @@ import de.hakunacontacta.shared.LoginInfo;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -64,6 +62,7 @@ public class ClientEngine implements EntryPoint {
 	private final HorizontalPanel loginPanel = new HorizontalPanel();
 	private final Anchor signInLink = new Anchor("");
 	private final Image loginImage = new Image();
+	private String logouturl;
 //	private final TextBox nameField = new TextBox();
 	// TODO #06:> end
 
@@ -163,33 +162,7 @@ public class ClientEngine implements EntryPoint {
 									
 								}
 								
-							});
-							
-
-							
-							signInLink.setText(loginInfo.getName());
-							signInLink.setStyleName("login-area");
-//							loginImage.setVisible(false);
-//							loginPanel.add(loginImage);
-//							loginImage.addLoadHandler(new LoadHandler() {
-//								@Override
-//								public void onLoad(final LoadEvent event) {
-//									final int newWidth = 24;
-//									final com.google.gwt.dom.client.Element element = event
-//											.getRelativeElement();
-//									if (element.equals(loginImage.getElement())) {
-//										final int originalHeight = loginImage.getOffsetHeight();
-//										final int originalWidth = loginImage.getOffsetWidth();
-//										if (originalHeight > originalWidth) {
-//											loginImage.setHeight(newWidth + "px");
-//										} else {
-//											loginImage.setWidth(newWidth + "px");
-//										}
-//										loginImage.setVisible(true);
-//									}
-//								}
-//							});
-							
+							});					
 						}
 					});
 				}
@@ -277,6 +250,7 @@ public class ClientEngine implements EntryPoint {
 				if (result.getName() != null && !result.getName().isEmpty()) {
 					addGoogleAuthHelper();
 					loadLogout(result);
+
 					
 
 
@@ -320,9 +294,25 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 
+	public HorizontalPanel getLoginPanel() {
+		return loginPanel;
+	}
+
 	public Anchor getSignInLink() {
 		return signInLink;
 	}
+
+	public String getLogouturl() {
+		return logouturl;
+	}
+
+	public void setLogouturl(String logouturl) {
+		this.logouturl = logouturl;
+	}
+
+	
+	
+	
 	
 	
 }

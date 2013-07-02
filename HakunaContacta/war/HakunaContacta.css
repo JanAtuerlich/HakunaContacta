@@ -35,9 +35,8 @@ h1 {
 	float: left;
 }
 #menu {
-	border: 1px solid;
 	width: 300px;
-	height: 20px;
+	padding: 15px;
 	float:right;
 }
 #content {
@@ -48,14 +47,34 @@ h1 {
 #footer {
 	height: 60px;
 }
+#arrow{
+	font-weight: bolder;
+}
 
 .next {
     float: right;
-    margin-right: 70px !important;
+    margin-right: 20px !important;
+    width: 203px;
 }
 
 .page1{
 	margin: 0 auto;
+}
+.page2{
+	margin: 0 auto;
+}
+.chooseFormat{
+    margin-bottom: 5px;
+    width: 140px;
+    position: relative;
+    top: 0px;
+    left: 555px;
+}
+
+.exportFormat{
+	position: relative;
+	top: 22px;
+	left: 470px;
 }
 
 .contactGrid{
@@ -78,16 +97,27 @@ h1 {
 }
 #gridHeader1{
 	float:left;
-	margin-left: 30px;
+	margin-left: 80px;
 	margin-bottom: 8px;
 }
 #gridHeader2{
 	float:left;
-	margin-left: 70px;
+	margin-left: 120px;
+	margin-right: 86px;
 }
 #gridHeader3{
-	float:left;
-	margin-left: 90px;
+
+
+}
+
+#gridHeader21{
+    float: left;
+    left: 78px;
+    position: relative
+}
+#gridHeader22{
+    left: 440px;
+    position: relative;
 }
 
 .sendButton {
@@ -138,7 +168,12 @@ h1 {
 
 /* Add Stock panel */
 .addPanel {
-  float: right;
+    float: right;
+    margin-right: -1px;
+    top: -26px;
+    width: 200px;
+    position: relative;
+    z-index: 200470;
 }
 
 
@@ -147,9 +182,32 @@ h1 {
 }
 
 .addExportfieldTextBox {
-	width: 150px;
+    width: 205px;
+	height: 22px;
 }
 
 .addExportfieldButton {
 	width: 44px;
+	margin-top: -1px;
+	height: 26px;
+}
+
+#tip2 {
+	margin: 0 20px;
+	text-align: center;
+}
+
+.exportButton{
+    left: 456px;
+    position: relative;
+    width: 120px;
+    top: -20px;
+}
+.downloadLink{
+    left: 600px;
+    position: relative;
+    top: -45px;
+}
+.grids2{
+	margin-top: 0px;
 }

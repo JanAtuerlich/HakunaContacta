@@ -547,12 +547,12 @@ public class ContactManager implements IContactManager{
 	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups) {
 		this.contacts = contacts;
 		this.contactGroups = contactGroups;
-		for (ContactGroup contactGroup : contactGroups) {
-			if(contactGroup.getSelected()) System.out.println("Selektiert: " + contactGroup.getName());
-		}
-		for (Contact contact : contacts) {
-			if(contact.getSelected()) System.out.println("Selektiert: " + contact.getName());
-		}
+//		for (ContactGroup contactGroup : contactGroups) {
+//			if(contactGroup.getSelected()) System.out.println("Selektiert: " + contactGroup.getName());
+//		}
+//		for (Contact contact : contacts) {
+//			if(contact.getSelected()) System.out.println("Selektiert: " + contact.getName());
+//		}
 	}
 	
 

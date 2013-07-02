@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
@@ -74,7 +75,7 @@ public class Page1 extends Composite {
 		
 		loadGroupGrid();
 		
-		contactGrid.setWidth(300);
+		contactGrid.setWidth(200);
 		contactGrid.setHeight(400);
 		contactGrid.setBorder("1px solid #ABABAB");
 		contactGrid.setEmptyMessage("Keine Kontakte vorhanden.");
@@ -164,21 +165,22 @@ public class Page1 extends Composite {
 		contactGrid.setStyleName("contactGrid");
 		selectionGrid.setStyleName("selectionGrid");
 		
-		HTML gridHeaders = new HTML("<div id=\"gridHeader1\">Gruppenauswahl</div><div id=\"gridHeader2\">Kontaktauswahl</div><div id=\"gridHeader3\">Ausgew\u00E4hlte Kontakte</div>");
-		gridHeaders.setStyleName("gridHeaders");
+		HTML gridHeaders1 = new HTML("<div id=\"gridHeader1\">Gruppenauswahl</div><div id=\"gridHeader2\">Kontaktauswahl</div><div id=\"gridHeader3\">Ausgew\u00E4hlte Kontakte</div>");
+		gridHeaders1.setStyleName("gridHeaders");
 		
-		HStack grids = new HStack(3);		grids.setStyleName("grids");
+		HStack grids = new HStack(3);		
+		grids.setStyleName("grids1");
 		grids.addMember(groupGrid);
 		grids.addMember(contactGrid);
 		grids.addMember(selectionGrid);
 		grids.draw();
 		
-		mainPanel.add(gridHeaders);
+		mainPanel.add(gridHeaders1);
 		mainPanel.add(grids);
 		mainPanel.setStyleName("mainPanel");
 		
 		//------------------------------------------
-		Button button = new Button("Weiter");
+		Button button = new Button("Weiter <span id=\"arrow\">\u2192</span>");
 		button.setStyleName("next");
 		button.addClickHandler(new ClickHandler() {
 			@Override
@@ -187,6 +189,7 @@ public class Page1 extends Composite {
 			clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
+		
 		page1.add(mainPanel);
 		page1.add(button);
 		page1.setStyleName("page1");

@@ -21,7 +21,7 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		System.out.println("Current State : " + event.getValue());
-		
+
 		if (event.getValue().equals("page1")){
     		RootPanel.get("content").clear();
     		RootPanel.get("content").add(page1);
