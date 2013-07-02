@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.MyHistoryListener;
+import de.hakunacontacta.shared.ContactData2Record;
+import de.hakunacontacta.shared.ContactGroupData2Record;
 import de.hakunacontacta.shared.ContactGroupRecord;
 import de.hakunacontacta.shared.ContactRecord;
-import de.hakunacontacta.shared.ContactSourceField;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ContactSourceTypes2Tree;
 import de.hakunacontacta.shared.LoginInfo;
@@ -40,6 +41,9 @@ public class ClientEngine implements EntryPoint {
 	// TODO #05: add constants for OAuth2 (don't forget to update GOOGLE_CLIENT_ID)
 	private ArrayList<Contact> contacts;
 	private ArrayList<ContactGroup> contactGroups;
+	private ContactRecord[] contactRecords;
+	private ContactGroupRecord[] contactGroupRecords;
+	
 	private MyHistoryListener historyListener;
 	private Tree contactSourceTypesTree = null;
 	public MyHistoryListener getHistoryListener() {
@@ -138,6 +142,9 @@ public class ClientEngine implements EntryPoint {
 												}
 												contactGroup.setContacts(tempContacts);
 											}
+											contactRecords = ContactData2Record.getNewRecords(contacts);
+											contactGroupRecords = ContactGroupData2Record.getNewRecords(contactGroups);
+											
 											final String initToken = History.getToken();
 											
 											page1 = Page1.getInstance(thisClientEngine);
@@ -227,6 +234,14 @@ public class ClientEngine implements EntryPoint {
 	
 	public ArrayList<ContactGroup> getContactGroups() {
 		return contactGroups;
+	}
+	
+	public ContactGroupRecord[] getContactGroupRecord(){
+		return contactGroupRecords;
+	}
+	
+	public ContactRecord[] getContactRecords(){
+		return contactRecords;
 	}
 	
 	public void sendExportFields(Tree exportTree){
