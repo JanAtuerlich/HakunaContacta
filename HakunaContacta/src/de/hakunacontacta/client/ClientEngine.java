@@ -11,7 +11,8 @@ import de.hakunacontacta.shared.ContactGroupData2Record;
 import de.hakunacontacta.shared.ContactGroupRecord;
 import de.hakunacontacta.shared.ContactRecord;
 import de.hakunacontacta.shared.ContactSourceType;
-import de.hakunacontacta.shared.ContactSourceTypes2Tree;
+import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportTreeManager;
 import de.hakunacontacta.shared.LoginInfo;
 
 import com.google.gwt.core.client.Callback;
@@ -52,7 +53,7 @@ public class ClientEngine implements EntryPoint {
 	
 	private Page1 page1;
 	private Page2 page2;
-	public boolean check = false;
+	private ExportTreeManager exportTreeManager = null;
 	private ClientEngine thisClientEngine = this;
 	private static final Auth AUTH = Auth.get();
 	private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
@@ -206,10 +207,12 @@ public class ClientEngine implements EntryPoint {
 		greetingService.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
 			@Override
 			public void onSuccess(ArrayList<ContactSourceType> result) {
-				ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
-				contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
+				exportTreeManager = new ExportTreeManager();
+				contactSourceTypesTree = exportTreeManager.getTree(result);
+				
 				page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
 				historyListener.setPage2(page2);
+				page2.updateData();
 				History.newItem("page2", true);
 			}
 
@@ -220,13 +223,43 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 	
-	public void writeExportTree(Tree exportTree){
-		TreeNode rootnode = exportTree.getRoot();
-		
-		for (TreeNode node : exportTree.getAllNodes(rootnode)) {
-			System.out.println(node.getAttribute("Name"));
-		}
+	public void writeExportOptions(Tree exportTree, String lastFormat, final String newFormat){
+		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {				
+				thisClientEngine.getExportFields(newFormat);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("ClientEngine failed to call \"writeExportOptions\" !!");
+			}
+		});
 	}
+	
+	public void getExportFields(String type) {
+		greetingService.getExportFields(type, new AsyncCallback<ArrayList<ExportField>>() {
+
+			@Override
+			public void onSuccess(ArrayList<ExportField> result) {
+				page2.setThisExportTypesTree(exportTreeManager.getExportFieldsTree(result));
+				page2.updateData();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("ClientEngine failed to call \"getExportFields\" !!");
+			}
+
+
+		});
+		
+		
+
+		
+	}
+	
+	
 
 	public ArrayList<Contact> getContacts() {
 		return contacts;

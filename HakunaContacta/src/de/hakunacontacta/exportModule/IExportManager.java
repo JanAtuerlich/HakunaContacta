@@ -1,8 +1,10 @@
 package de.hakunacontacta.exportModule;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import de.hakunacontacta.exportModule.ExportManager.exportTypeEnum;
+import de.hakunacontacta.shared.ExportField;
 
 /**
  * Interface für ExportManager
@@ -34,7 +36,7 @@ public interface IExportManager {
 	 * @param sourceFields Feldbezeichnung des hinzuzufügenden Feldes
 	 * @param priority Priorität, also Stelle an die das Feld in der GUI gezogen wurde
 	 */
-	public void addExportOption(String exportField, String sourceFieldName, String sourceType, int priority);
+	public void addExportOption(String exportField, String sourceFieldName, String sourceType, String displayName, int priority);
 
 	/**
 	 * Erstellt eine neues ExportField im aktuell in der Bearbeitung befindlichen ExportSet
@@ -48,13 +50,6 @@ public interface IExportManager {
 	 */
 	public void removeExportField(String name);
 
-	/**
-	 * Entfernt die entsprechende ExportOption aus dem entsprechenden ExportField im aktuell in der Bearbeitung befindlichen ExportSet
-	 * @param exportField au dem die ExportOption gel;scht werden soll
-	 * @param sourceType Quelltyp des hinzuzufügenden Feldes
-	 * @param sourceFields Feldbezeichnung des hinzuzufügenden Feldes
-	 */
-	public void removeExportOption(String exportField, String sourceType, String sourceField);
 
 	/**
 	 * Diese Methode liefert das sich aktuell in der Bearbeitung befindliche ExportSet zurueck
@@ -67,5 +62,7 @@ public interface IExportManager {
 	 * @return String mit dem Zielformat
 	 */
 	public String getExportFormat();
+	
+	public void setExportField(ArrayList<ExportField> exportFields);
 
 }

@@ -30,28 +30,44 @@ import net.sourceforge.cardme.vcard.types.params.AdrParamType;
 import net.sourceforge.cardme.vcard.types.params.EmailParamType;
 import net.sourceforge.cardme.vcard.types.params.TelParamType;
 
+import de.hakunacontacta.client.ClientEngine;
+import de.hakunacontacta.client.Page1;
 import de.hakunacontacta.contactModule.Contact;
-import de.hakunacontacta.exportModule.ExportField;
-import de.hakunacontacta.exportModule.ExportOption;
 import de.hakunacontacta.shared.ContactSourceField;
 import de.hakunacontacta.shared.ContactSourceType;
+import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportOption;
 
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 
 public class FileCreator implements IFileCreator {
 
+	static private FileCreator _instance = null;
 	private ArrayList<Contact> selectedContacts;
-	private ArrayList<ExportField> exportFields;
-	private ArrayList<Contact> cleansedContacts = new ArrayList<Contact>();
-	private String exportFormat;
+	private static ArrayList<ExportField> exportFields;
+	private static ArrayList<Contact> cleansedContacts = new ArrayList<Contact>();
+	private static String exportFormat;
 	private static VCardImpl vcardFull = null;
-
-	public FileCreator(ArrayList<Contact> selectedContacts, ArrayList<ExportField> exportFields, String exportFormat) {
-		this.selectedContacts = selectedContacts;
-		this.exportFields = exportFields;
-		this.exportFormat = exportFormat;
+	
+	
+	
+	
+	public static FileCreator getInstance(ArrayList<Contact> selectedContacts, ArrayList<ExportField> exportFieldsx, String exportFormatx){
+        if(null == _instance) {
+        	_instance = new FileCreator();
+        }
+        cleansedContacts = selectedContacts;
+        exportFields = exportFieldsx;
+        exportFormat = exportFormatx;
+        return _instance;
 	}
+
+//	public FileCreator(ArrayList<Contact> selectedContacts, ArrayList<ExportField> exportFields, String exportFormat) {
+//		this.selectedContacts = selectedContacts;
+//		this.exportFields = exportFields;
+//		this.exportFormat = exportFormat;
+//	}
 
 	@Override
 	public String cleanseContacts(){

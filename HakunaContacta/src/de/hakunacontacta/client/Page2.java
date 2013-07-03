@@ -16,13 +16,14 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.DragDataAction;
-import com.smartgwt.client.types.TreeModelType;
+
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.FolderDropEvent;
 import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
+
 
 public class Page2 extends Composite {
 	private VerticalPanel page2 = new VerticalPanel();
@@ -32,15 +33,24 @@ public class Page2 extends Composite {
 	private HorizontalPanel addPanel = new HorizontalPanel();
 	private TextBox addExportfieldTextBox = new TextBox();
 	private Button addExportfieldButton = new Button("Add");
-	private static Tree thisContactSourceTypesTree;
+	private static Tree thisSourceTypesTree = null;
+	private static Tree thisExportTypesTree = null;
+	TreeGrid sourceGrid = null;
+	TreeGrid exportGrid = null;
+	private static String currentFormat;
 
 	private Page2() {
 		initPage();
 		initWidget(page2);
 	}
 
+	public void setThisExportTypesTree(Tree thisExportTypesTree) {
+		Page2.thisExportTypesTree = thisExportTypesTree;
+	}
+
 	public static Page2 getInstance(ClientEngine cEngine, Tree contactSourceTypesTree) {
-		thisContactSourceTypesTree = contactSourceTypesTree;
+		thisSourceTypesTree = contactSourceTypesTree;
+
 		clientEngine = cEngine;
 		if (null == _instance) {
 			_instance = new Page2();
@@ -48,8 +58,17 @@ public class Page2 extends Composite {
 		return _instance;
 	}
 
+	public void updateData() { // wird beim erneuten Seitenaufbau geladen um den
+								// Inhalt der Grids zu aktuallisieren
+
+		sourceGrid.setData(thisSourceTypesTree);
+		sourceGrid.getData().openAll();
+		exportGrid.setData(thisExportTypesTree);
+		exportGrid.getData().openAll();
+
+	}
+
 	private void initPage() {
-		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setBorderWidth(2);
 		page2.setPixelSize(150, 150);
 		HTML content = new HTML("This is page2. Click to move to back page1");
@@ -59,55 +78,32 @@ public class Page2 extends Composite {
 		final String encoded = "QXVmZ2FiZW46DQoNCi0gRmlsZSBhbiBDbGllbnQgc2VuZGVuLCBiaXNoZXIgZ2lidHMgZXMgZWluZW4gZmVydGlnZW4gU3RyaW5nLiAtPiBSZWNoZXJjaGUsIFByb3RvdHlwZQ0KLSBHVUkgMyBtYWNoZW4NCi0gTWV0aG9kZW4gaW4gQ2xpZW50RW5naW5lIHp1ciBWZXJmw7xndW5nIHN0ZWxsZW4NCi0gTG9nbw0KLSBBbGxnLiBIb21lcGFnZSwgYnp3IGVyc3RlIFBhZ2UgDQotIA0KLSA=";
 
 		// ------------------------------------
-		
-		//Linke Seite
-		Tree sourceGridTree = thisContactSourceTypesTree;
 
-		final TreeGrid sourceGrid = new TreeGrid();
+		// Linke Seite
+
+		sourceGrid = new TreeGrid();
 		sourceGrid.setHeight(300);
 		sourceGrid.setWidth(200);
 		sourceGrid.setDragDataAction(DragDataAction.COPY);
 		sourceGrid.setCanDragRecordsOut(true);
-		sourceGrid.setData(sourceGridTree);
+		sourceGrid.setData(thisSourceTypesTree);
 		sourceGrid.getData().openAll();
 		sourceGrid.setShowHeader(false);
 		sourceGrid.setTreeFieldTitle("Quellfelder");
-		
-		//Rechte Seite
-		final Tree grid2Tree = new Tree();
-		grid2Tree.setModelType(TreeModelType.CHILDREN);
-		grid2Tree.setNameProperty("Name");
 
-		final TreeNode rootNode = new TreeNode();
-		rootNode.setAttribute("Name", "root");
-		grid2Tree.setRoot(rootNode);
+		// Rechte Seite
 
-		TreeNode childNode1 = new TreeNode();
-		childNode1.setAttribute("Name", "Exportfeld1");
-		childNode1.setAttribute("Feld1", "inhalt1");
-		childNode1.setCanDrag(false);
-		childNode1.setIsFolder(true);
-		grid2Tree.add(childNode1, rootNode);
-
-		TreeNode childNode2 = new TreeNode("Test");
-		childNode2.setAttribute("Name", "Exportfeld2");
-		childNode2.setCanDrag(false);
-		childNode2.setIsFolder(true);
-		grid2Tree.add(childNode2, rootNode);
-
-		final TreeGrid grid2 = new TreeGrid();
-		grid2.setData(grid2Tree);
-		grid2.getData().openAll();
-		grid2.setCanAcceptDroppedRecords(true);
-		grid2.setCanRemoveRecords(true);
-		grid2.setCanReorderRecords(true);
-		grid2.setShowHeader(false);
-		grid2.setCanAcceptDrop(false);
-		grid2.setTreeFieldTitle("Exportfelder");
-		grid2.setHeight(300);
-		grid2.setWidth(200);
-		grid2.setAlternateRecordStyles(true);
-		grid2.addFolderDropHandler(new FolderDropHandler() {
+		exportGrid = new TreeGrid();
+		exportGrid.setCanAcceptDroppedRecords(true);
+		exportGrid.setCanRemoveRecords(true);
+		exportGrid.setCanReorderRecords(true);
+		exportGrid.setShowHeader(false);
+		exportGrid.setCanAcceptDrop(false);
+		exportGrid.setTreeFieldTitle("Exportfelder");
+		exportGrid.setHeight(300);
+		exportGrid.setWidth(200);
+		exportGrid.setAlternateRecordStyles(true);
+		exportGrid.addFolderDropHandler(new FolderDropHandler() {
 
 			@Override
 			public void onFolderDrop(FolderDropEvent folderDropEvent) {
@@ -118,30 +114,50 @@ public class Page2 extends Composite {
 			}
 		});
 
-		//Dropdown-Menu
+		clientEngine.getExportFields("CSV");
+
+		// Dropdown-Menu
 		final ListBox formatList = new ListBox();
 		formatList.setTitle("Exportformat");
-		formatList.addItem("CSV"); //Index 0
-		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); //Index 1
-		formatList.addItem("vCard"); //Index 2
-		formatList.addItem("XML (xCard)"); //Index 3
-		
+		formatList.addItem("CSV"); // Index 0
+		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); // Index 1
+		formatList.addItem("vCard"); // Index 2
+		formatList.addItem("XML (xCard)"); // Index 3
+		currentFormat = "CSV";
+
 		formatList.addChangeHandler(new ChangeHandler() {
-			
+
 			@Override
 			public void onChange(ChangeEvent event) {
 				int selectedIndex = formatList.getSelectedIndex();
-				if(selectedIndex == 0){
-					//Methode für CSV
-					clientEngine.writeExportTree(grid2Tree);
+
+				if (selectedIndex == 0) {
+					// Methode für CSV
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "CSV");
+					currentFormat = "CSV";
+					clientEngine.getExportFields(currentFormat);
 				}
-				if(selectedIndex == 1){
-					//Methode für CSV-Word-Serienbriefe
-					clientEngine.writeExportTree(grid2Tree);
+				if (selectedIndex == 1) {
+					// Methode für CSV-Word-Serienbriefe
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "CSVWord");
+					currentFormat = "CSVWord";
+					clientEngine.getExportFields(currentFormat);
+				}
+				if (selectedIndex == 2) {
+					// Methode für vCard
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "vCard");
+					currentFormat = "vCard";
+					clientEngine.getExportFields(currentFormat);
+				}
+				if (selectedIndex == 3) {
+					// Methode für XML
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "XML");
+					currentFormat = "XML";
+					clientEngine.getExportFields(currentFormat);
 				}
 			}
 		});
-		
+
 		// Move cursor focus to the input box.
 		addExportfieldTextBox.setFocus(true);
 
@@ -151,19 +167,17 @@ public class Page2 extends Composite {
 				final String name = addExportfieldTextBox.getText().trim();
 				addExportfieldTextBox.setFocus(true);
 
-				// Stock code must be between 1 and 10 chars that are numbers,
+				// Stock code must be between 1 and 15 chars that are numbers,
 				// letters, or dots.
-				if (!name.matches("^[0-9A-Za-z\\.]{1,10}$")) {
-					Window.alert("Der Exportfeldname \"" + name
-							+ "\" enth\u00E4lt ung\u00FCltige Zeichen.");
+				if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
+					Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
 					addExportfieldTextBox.selectAll();
 					return;
 				}
 
 				// Don't add the stock if it's already in the table.
-				if (grid2Tree.find("Name", name) != null) {
-					Window.alert("Es ist bereits ein Exportfeld mit dem Namen \""
-							+ name + "\" vorhanden.");
+				if (thisExportTypesTree.find("Name", name) != null) {
+					Window.alert("Es ist bereits ein Exportfeld mit dem Namen \"" + name + "\" vorhanden.");
 					return;
 				}
 
@@ -173,7 +187,7 @@ public class Page2 extends Composite {
 				childNode.setAttribute("Name", name);
 				childNode.setCanDrag(false);
 				childNode.setIsFolder(true);
-				grid2Tree.add(childNode, rootNode);
+				thisExportTypesTree.add(childNode, thisExportTypesTree.getRoot());
 			}
 		});
 
@@ -185,14 +199,14 @@ public class Page2 extends Composite {
 					childNode.setAttribute("Name", "Exportfeld");
 					childNode.setCanDrag(false);
 					childNode.setIsFolder(true);
-					grid2Tree.add(childNode, rootNode);
+					thisExportTypesTree.add(childNode, thisExportTypesTree.getRoot());
 				}
 			}
 		});
 
 		sourceGrid.setStyleName("sourceGrid");
-		grid2.setStyleName("grid2");
-		grid2.setBaseStyle("grid2records");
+		exportGrid.setStyleName("exportGrid");
+		exportGrid.setBaseStyle("grid2records");
 
 		addExportfieldButton.setStyleName("addExportfieldButton");
 		addExportfieldTextBox.setStyleName("addExportfieldTextBox");
@@ -202,7 +216,7 @@ public class Page2 extends Composite {
 
 		HStack grids = new HStack(2);
 		grids.addMember(sourceGrid);
-		grids.addMember(grid2);
+		grids.addMember(exportGrid);
 		grids.setStyleName("grids");
 		grids.draw();
 		mainPanel.add(grids);
@@ -215,10 +229,10 @@ public class Page2 extends Composite {
 		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				final HTML html = new HTML("<a download=\"Contactexport."
-						+ dateiendung + "\" href=data:application/"
-						+ dateiendung + ";base64," + encoded + ">Download</a>");
-				// final HTML html = new HTML("<a download=\"MyFile." + dateiendung + "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
+				final HTML html = new HTML("<a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">Download</a>");
+				// final HTML html = new HTML("<a download=\"MyFile." +
+				// dateiendung +
+				// "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
 				page2.add(html);
 
 				// String uri
@@ -231,7 +245,6 @@ public class Page2 extends Composite {
 		page2.add(mainPanel);
 		page2.add(content);
 		page2.add(button);
-
 
 	}
 }

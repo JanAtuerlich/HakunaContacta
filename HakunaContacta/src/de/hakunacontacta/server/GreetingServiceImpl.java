@@ -46,7 +46,11 @@ import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.GreetingService;
 import de.hakunacontacta.contactModule.ContactManager;
+import de.hakunacontacta.exportModule.ExportManager;
+import de.hakunacontacta.exportModule.ExportManager.exportTypeEnum;
+import de.hakunacontacta.fileModule.FileCreator;
 import de.hakunacontacta.shared.ContactSourceType;
+import de.hakunacontacta.shared.ExportField;
 import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
 
@@ -75,6 +79,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 
 	private static Logger log = Logger.getLogger(GreetingServiceImpl.class.getCanonicalName());
 	ContactManager contactManager;
+	ExportManager exportManager;
+	FileCreator fileCreator;
 
 	@Override
 	public String greetServer(String input) throws IllegalArgumentException {
@@ -225,4 +231,39 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return contactManager.getSourceTypesOfSelectedContacts();
 	}	// TODO #11:> end	
 
+	@Override
+	public void setExportFields(ArrayList<ExportField> exportFields, String type) {
+		exportManager = ExportManager.getExportManager();
+		
+		if (type == "XML") {
+			exportManager.setExportFormat(exportTypeEnum.XML);
+		} else if (type == "CSVWord") {
+			exportManager.setExportFormat(exportTypeEnum.CSVWord);
+		} else if (type == "vCard") {
+			exportManager.setExportFormat(exportTypeEnum.vCard);
+		} else {
+			exportManager.setExportFormat(exportTypeEnum.CSV);
+		}
+
+		exportManager.setExportField(exportFields);
+	}
+	
+
+	public ArrayList<ExportField> getExportFields(String type) {
+		exportManager = ExportManager.getExportManager();
+		
+		if (type == "XML") {
+			exportManager.setExportFormat(exportTypeEnum.XML);
+		} else if (type == "CSVWord") {
+			exportManager.setExportFormat(exportTypeEnum.CSVWord);
+		} else if (type == "vCard") {
+			exportManager.setExportFormat(exportTypeEnum.vCard);
+		} else {
+			System.out.println("ELSE");
+			exportManager.setExportFormat(exportTypeEnum.CSV);
+		}
+		System.out.println("Return !");
+		return exportManager.getChosenExportFields();
+	}
+	
 }
