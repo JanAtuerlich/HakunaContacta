@@ -66,6 +66,7 @@ public class Page1 extends Composite {
 		groupGrid.setCanSort(true);
 		groupGrid.setCanGroupBy(false);
 		groupGrid.setSelectionType(SelectionStyle.SIMPLE);
+		groupGrid.setShowSelectedStyle(false);
 		groupGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
 		ListGridField groupnameField = new ListGridField("displayedName",
 				"Gruppenname");
@@ -82,6 +83,7 @@ public class Page1 extends Composite {
 		contactGrid.setCanGroupBy(false);
 		contactGrid.setSelectionType(SelectionStyle.SIMPLE);
 		contactGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
+		contactGrid.setShowSelectedStyle(false);
 		ListGridField nameField = new ListGridField("name", "Kontaktnamen");
 		contactGrid.setFields(nameField);
 		
@@ -97,7 +99,6 @@ public class Page1 extends Composite {
 		ListGridField selectedContactsField = new ListGridField("name",
 				"Kontaktnamen");
 		selectionGrid.setFields(selectedContactsField);
-		selectionGrid.setCanRemoveRecords(true);
 		
 		groupGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 			
