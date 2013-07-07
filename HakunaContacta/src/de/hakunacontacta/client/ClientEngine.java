@@ -13,6 +13,7 @@ import de.hakunacontacta.shared.ContactRecord;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ExportField;
 import de.hakunacontacta.shared.ExportTreeManager;
+import de.hakunacontacta.shared.ExportTypeEnum;
 import de.hakunacontacta.shared.LoginInfo;
 
 import com.google.gwt.core.client.Callback;
@@ -223,7 +224,7 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 	
-	public void writeExportOptions(Tree exportTree, String lastFormat, final String newFormat){
+	public void writeExportOptions(Tree exportTree, ExportTypeEnum lastFormat, final ExportTypeEnum newFormat){
 		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {				
@@ -237,7 +238,7 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 	
-	public void getExportFields(String type) {
+	public void getExportFields(ExportTypeEnum type) {
 		greetingService.getExportFields(type, new AsyncCallback<ArrayList<ExportField>>() {
 
 			@Override
@@ -249,6 +250,28 @@ public class ClientEngine implements EntryPoint {
 			@Override
 			public void onFailure(Throwable caught) {
 				System.out.println("ClientEngine failed to call \"getExportFields\" !!");
+			}
+
+
+		});
+		
+		
+
+		
+	}
+	
+	public void getFile() {
+		greetingService.getFile(new AsyncCallback<String>(){
+
+			@Override
+			public void onSuccess(String result) {
+				page2.setEncoded(result);
+				page2.createDownloadLink();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("ClientEnginegetFile failed to call \"getExportFields\" !!");
 			}
 
 
@@ -277,9 +300,6 @@ public class ClientEngine implements EntryPoint {
 		return contactRecords;
 	}
 	
-	public void sendExportFields(Tree exportTree){
-		
-	}
 	
 	/**
 	 * This is the entry point method.

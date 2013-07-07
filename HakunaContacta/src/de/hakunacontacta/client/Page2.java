@@ -24,6 +24,8 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.FolderDropEvent;
 import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 
+import de.hakunacontacta.shared.ExportTypeEnum;
+
 
 public class Page2 extends Composite {
 	private VerticalPanel page2 = new VerticalPanel();
@@ -37,7 +39,9 @@ public class Page2 extends Composite {
 	private static Tree thisExportTypesTree = null;
 	TreeGrid sourceGrid = null;
 	TreeGrid exportGrid = null;
-	private static String currentFormat;
+	private static ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
+	private String dateiendung = "csv";
+	private String encoded = "";
 
 	private Page2() {
 		initPage();
@@ -67,6 +71,24 @@ public class Page2 extends Composite {
 		exportGrid.getData().openAll();
 
 	}
+	
+	public void createDownloadLink(){
+		if (currentFormat == ExportTypeEnum.CSV) {
+			dateiendung = "csv";
+		} else if (currentFormat == ExportTypeEnum.XML) {
+			dateiendung = "xml";
+		} else if (currentFormat == ExportTypeEnum.vCard) {
+			dateiendung = "vCard";
+		} else if (currentFormat == ExportTypeEnum.CSVWord) {
+			dateiendung = "csv";
+		}
+		HTML html = new HTML("<a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">Download</a>");
+		page2.add(html);
+	}
+
+	public void setEncoded(String encoded) {
+		this.encoded = encoded;
+	}
 
 	private void initPage() {
 		page2.setBorderWidth(2);
@@ -74,9 +96,7 @@ public class Page2 extends Composite {
 		HTML content = new HTML("This is page2. Click to move to back page1");
 		Button button = new Button("Create Export");
 
-		final String dateiendung = "csv";
-		final String encoded = "QXVmZ2FiZW46DQoNCi0gRmlsZSBhbiBDbGllbnQgc2VuZGVuLCBiaXNoZXIgZ2lidHMgZXMgZWluZW4gZmVydGlnZW4gU3RyaW5nLiAtPiBSZWNoZXJjaGUsIFByb3RvdHlwZQ0KLSBHVUkgMyBtYWNoZW4NCi0gTWV0aG9kZW4gaW4gQ2xpZW50RW5naW5lIHp1ciBWZXJmw7xndW5nIHN0ZWxsZW4NCi0gTG9nbw0KLSBBbGxnLiBIb21lcGFnZSwgYnp3IGVyc3RlIFBhZ2UgDQotIA0KLSA=";
-
+		
 		// ------------------------------------
 
 		// Linke Seite
@@ -114,7 +134,7 @@ public class Page2 extends Composite {
 			}
 		});
 
-		clientEngine.getExportFields("CSV");
+		clientEngine.getExportFields(ExportTypeEnum.CSV);
 
 		// Dropdown-Menu
 		final ListBox formatList = new ListBox();
@@ -123,37 +143,34 @@ public class Page2 extends Composite {
 		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); // Index 1
 		formatList.addItem("vCard"); // Index 2
 		formatList.addItem("XML (xCard)"); // Index 3
-		currentFormat = "CSV";
+		
 
 		formatList.addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
 				int selectedIndex = formatList.getSelectedIndex();
+				System.out.println("Dropdown change to: " + selectedIndex);
 
 				if (selectedIndex == 0) {
 					// Methode für CSV
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "CSV");
-					currentFormat = "CSV";
-					clientEngine.getExportFields(currentFormat);
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSV);
+					currentFormat = ExportTypeEnum.CSV;
 				}
 				if (selectedIndex == 1) {
 					// Methode für CSV-Word-Serienbriefe
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "CSVWord");
-					currentFormat = "CSVWord";
-					clientEngine.getExportFields(currentFormat);
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSVWord);
+					currentFormat = ExportTypeEnum.CSVWord;
 				}
 				if (selectedIndex == 2) {
 					// Methode für vCard
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "vCard");
-					currentFormat = "vCard";
-					clientEngine.getExportFields(currentFormat);
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.vCard);
+					currentFormat = ExportTypeEnum.vCard;
 				}
 				if (selectedIndex == 3) {
 					// Methode für XML
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, "XML");
-					currentFormat = "XML";
-					clientEngine.getExportFields(currentFormat);
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.XML);
+					currentFormat = ExportTypeEnum.XML;
 				}
 			}
 		});
@@ -229,11 +246,16 @@ public class Page2 extends Composite {
 		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				final HTML html = new HTML("<a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">Download</a>");
+				
+				clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, currentFormat);
+				clientEngine.getFile();
+				
+				
+				
 				// final HTML html = new HTML("<a download=\"MyFile." +
 				// dateiendung +
 				// "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
-				page2.add(html);
+				
 
 				// String uri
 				// ="<a download=\"MyFile.csv\" href=data:text/csv;charset=utf-8,\"test\">Download</a>";

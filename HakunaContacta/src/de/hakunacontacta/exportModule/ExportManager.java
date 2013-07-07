@@ -3,6 +3,8 @@ package de.hakunacontacta.exportModule;
 import java.util.ArrayList;
 
 import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportOption;
+import de.hakunacontacta.shared.ExportTypeEnum;
 
 /**
  * ExportManager verwaltet ExportFields und ExportOptions
@@ -25,18 +27,14 @@ public class ExportManager implements IExportManager {
 
 	}
 
-	public enum exportTypeEnum {
-		CSV, XML, vCard, CSVWord
-	}; // Steht in Klassendiagramm noch als String
 
-	private String exportType;
+	private ExportTypeEnum exportType;
 	private ArrayList<ExportField> exportFieldsCSV = new ArrayList<ExportField>();
 	private ArrayList<ExportField> exportFieldsXML = new ArrayList<ExportField>();
 	private ArrayList<ExportField> exportFieldsvCard = new ArrayList<ExportField>();
 	private ArrayList<ExportField> exportFieldsCSVWord = new ArrayList<ExportField>();
 
-	private ArrayList<ExportField> currentFields = exportFieldsCSV; // aktueller
-																	// Bearbeitungszeiger
+	private ArrayList<ExportField> currentFields = exportFieldsCSV; // aktueller Bearbeitungszeiger
 
 	public ExportManager() {
 		super();
@@ -44,8 +42,6 @@ public class ExportManager implements IExportManager {
 		this.addExportField("Nachname", exportFieldsCSVWord);
 		this.addExportField("Adresse", exportFieldsCSVWord);
 		
-		this.addExportField("Test1", exportFieldsCSV);
-
 		this.addExportField("Vorname", exportFieldsvCard);
 		this.addExportField("Nachname", exportFieldsvCard);
 		this.addExportField("Adresse", exportFieldsvCard);
@@ -54,37 +50,37 @@ public class ExportManager implements IExportManager {
 		this.addExportField("E-Mail privat", exportFieldsvCard);
 		this.addExportField("E-Mail geschäftlich", exportFieldsvCard);
 		this.addExportField("Kommentar", exportFieldsvCard);
+		
+		this.addExportField("Vorname", exportFieldsXML);
+		this.addExportField("Nachname", exportFieldsXML);
+		this.addExportField("Adresse", exportFieldsXML);
+		this.addExportField("Telefon", exportFieldsXML);
+		this.addExportField("Handy", exportFieldsXML);
+		this.addExportField("E-Mail privat", exportFieldsXML);
+		this.addExportField("E-Mail geschäftlich", exportFieldsXML);
+		this.addExportField("Kommentar", exportFieldsXML);
 
-		// hier sollte VCard die entsprechenden Standardfelder zugewiesen
-		// bekommen
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * exportAuswahlModul.IExportManager#setExportFormat(exportAuswahlModul.
-	 * ExportManager.exportTypeEnum)
-	 */
-	public void setExportFormat(exportTypeEnum type) {
+	public void setExportFormat(ExportTypeEnum type) {
 		System.out.println("Methode");
-		if (type == exportTypeEnum.CSV) {
+		if (type == ExportTypeEnum.CSV) {
 			currentFields = exportFieldsCSV;
-			this.exportType = "CSV";
-		} else if (type == exportTypeEnum.XML) {
+			this.exportType = ExportTypeEnum.CSV;
+		} else if (type == ExportTypeEnum.XML) {
 			currentFields = exportFieldsXML;
-			this.exportType = "XML";
-		} else if (type == exportTypeEnum.vCard) {
+			this.exportType = ExportTypeEnum.XML;
+		} else if (type == ExportTypeEnum.vCard) {
 			currentFields = exportFieldsvCard;
-			this.exportType = "vCard";
-		} else if (type == exportTypeEnum.CSVWord) {
+			this.exportType = ExportTypeEnum.vCard;
+		} else if (type == ExportTypeEnum.CSVWord) {
 			currentFields = exportFieldsCSVWord;
-			this.exportType = "CSVWord";
+			this.exportType = ExportTypeEnum.CSVWord;
 		}
 
 	}
 
-	public String getExportFormat() {
+	public ExportTypeEnum getExportFormat() {
 		return exportType;
 	}
 
@@ -101,19 +97,19 @@ public class ExportManager implements IExportManager {
 		exportFields.add(exportField);
 	}
 
-	public ArrayList<ExportField> changeExportFormat(exportTypeEnum type) {
-		if (type == exportTypeEnum.CSV) {
+	public ArrayList<ExportField> changeExportFormat(ExportTypeEnum type) {
+		if (type == ExportTypeEnum.CSV) {
 			currentFields = exportFieldsCSV;
-			this.exportType = "CSV";
-		} else if (type == exportTypeEnum.XML) {
+			this.exportType = ExportTypeEnum.CSV;
+		} else if (type == ExportTypeEnum.XML) {
 			currentFields = exportFieldsXML;
-			this.exportType = "XML";
-		} else if (type == exportTypeEnum.vCard) {
+			this.exportType = ExportTypeEnum.XML;
+		} else if (type == ExportTypeEnum.vCard) {
 			currentFields = exportFieldsvCard;
-			this.exportType = "Costum";
-		} else if (type == exportTypeEnum.CSVWord) {
+			this.exportType = ExportTypeEnum.vCard;
+		} else if (type == ExportTypeEnum.CSVWord) {
 			currentFields = exportFieldsCSVWord;
-			this.exportType = "CSVWord";
+			this.exportType = ExportTypeEnum.CSVWord;
 		}
 		return currentFields;
 	}
@@ -156,11 +152,26 @@ public class ExportManager implements IExportManager {
 
 	@Override
 	public void setExportField(ArrayList<ExportField> exportFields) {
-		currentFields = exportFields;
+
+		currentFields.clear();
+		
+		System.out.println("setExportOption Ausgabe:");
+		for (ExportField exportField : exportFields) {
+			currentFields.add(exportField);
+			System.out.println(exportField.getName());
+			for (ExportOption exportOption : exportField.getExportOptions()) {
+				System.out.println(" - " +exportOption.getSourceField() + " " + exportOption.getSourceType());
+			}
+		}
 	}
 
 	public ArrayList<ExportField> getChosenExportFields() {
 		return currentFields;
 	}
+	
+	public ExportTypeEnum getExportType() {
+		return exportType;
+	}
+
 
 }

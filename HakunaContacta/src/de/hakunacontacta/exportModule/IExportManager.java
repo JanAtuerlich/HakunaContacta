@@ -3,8 +3,8 @@ package de.hakunacontacta.exportModule;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import de.hakunacontacta.exportModule.ExportManager.exportTypeEnum;
 import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportTypeEnum;
 
 /**
  * Interface für ExportManager
@@ -20,14 +20,14 @@ public interface IExportManager {
 	 * Setzt den Bearbeitungszeiger für das Exportset anhand der übergeben Enum
 	 * @param type Enum die den zu bearbeitenden Typ angibt
 	 */
-	public void setExportFormat(exportTypeEnum type);
+	public void setExportFormat(ExportTypeEnum type);
 
 	/**
 	 * Aendert das ExportSet anhand des uebergebenen Enums und liefert das neues Set als Collection zurueck
 	 * @param type Enum die den zu bearbeitenden Typ angibt
 	 * @return die sich aktuell in bearbeitung befindliche Collection aus ExportFields
 	 */
-	public Collection<ExportField> changeExportFormat(exportTypeEnum type);
+	public Collection<ExportField> changeExportFormat(ExportTypeEnum type);
 
 	/**
 	 * Fuegt eine ExportOption dem entsprechenden ExportField hinzu
@@ -61,7 +61,7 @@ public interface IExportManager {
 	 * Diese Methode gibt das Zielformat als String zurueck
 	 * @return String mit dem Zielformat
 	 */
-	public String getExportFormat();
+	public ExportTypeEnum getExportFormat();
 	
 	public void setExportField(ArrayList<ExportField> exportFields);
 

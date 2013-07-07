@@ -37,6 +37,7 @@ import de.hakunacontacta.shared.ContactSourceField;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ExportField;
 import de.hakunacontacta.shared.ExportOption;
+import de.hakunacontacta.shared.ExportTypeEnum;
 
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
@@ -47,13 +48,12 @@ public class FileCreator implements IFileCreator {
 	private ArrayList<Contact> selectedContacts;
 	private static ArrayList<ExportField> exportFields;
 	private static ArrayList<Contact> cleansedContacts = new ArrayList<Contact>();
-	private static String exportFormat;
-	private static VCardImpl vcardFull = null;
+	private static ExportTypeEnum exportFormat;
 	
 	
 	
 	
-	public static FileCreator getInstance(ArrayList<Contact> selectedContacts, ArrayList<ExportField> exportFieldsx, String exportFormatx){
+	public static FileCreator getInstance(ArrayList<Contact> selectedContacts, ArrayList<ExportField> exportFieldsx, ExportTypeEnum exportFormatx){
         if(null == _instance) {
         	_instance = new FileCreator();
         }
@@ -71,6 +71,7 @@ public class FileCreator implements IFileCreator {
 
 	@Override
 	public String cleanseContacts(){
+		System.out.println("Entered cleanseContacts");
 
 		for (Contact incomingContact : selectedContacts) {
 			ArrayList<ContactSourceType> initSourceTypeList = new ArrayList<ContactSourceType>();
@@ -117,16 +118,16 @@ public class FileCreator implements IFileCreator {
 		}
 		
 		String output;
-		if (exportFormat == "CSV") {
+		if (exportFormat == ExportTypeEnum.CSV) {
 			output = createCSV();
 
-		} else if (exportFormat == "CSVWord") {
+		} else if (exportFormat == ExportTypeEnum.CSVWord) {
 			output = createCSVWord();
 
-		} else if (exportFormat == "XML") {
+		} else if (exportFormat == ExportTypeEnum.XML) {
 			output = createXML();
 
-		} else if (exportFormat == "vCard") {
+		} else if (exportFormat == ExportTypeEnum.vCard) {
 			output = createVCard();
 
 		} else {

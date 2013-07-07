@@ -11,6 +11,7 @@ import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportTypeEnum;
 import de.hakunacontacta.shared.LoginInfo;
 
 /**
@@ -36,7 +37,9 @@ public interface GreetingService extends RemoteService {
 
 	ArrayList<ContactSourceType> getContactSourceTypes();
 	
-	void setExportFields(ArrayList<ExportField> exportFields, String type);
+	void setExportFields(ArrayList<ExportField> exportFields, ExportTypeEnum type);
 	
-	ArrayList<ExportField> getExportFields(String type);
+	ArrayList<ExportField> getExportFields(ExportTypeEnum type);
+	
+	String getFile();
 }
