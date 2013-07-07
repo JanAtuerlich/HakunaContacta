@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
@@ -55,7 +54,6 @@ public class Page1 extends Composite {
 
 	private void initPage() {
 		page1.setPixelSize(800, 400);
-	
 		contacts = clientEngine.getContactRecords();
 		contactGroups = clientEngine.getContactGroupRecord();
 		

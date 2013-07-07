@@ -49,6 +49,8 @@ public class Page2 extends Composite {
 	}
 
 	private void initPage() {
+		
+		clientEngine.setPage2(_instance);
 		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
 		Button exportButton = new Button("Create Export");
@@ -247,6 +249,7 @@ public class Page2 extends Composite {
 		page2.add(exportButton);
 		page2.setStyleName("page2");
 
-
+		
 	}
+	
 }

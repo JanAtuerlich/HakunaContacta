@@ -147,6 +147,7 @@ public class ClientEngine implements EntryPoint {
 											final String initToken = History.getToken();
 											
 											page1 = Page1.getInstance(thisClientEngine);
+
 									    	
 										    if (initToken.length() == 0) {
 										      History.newItem("page1");
@@ -226,8 +227,6 @@ public class ClientEngine implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
-		
-
 		signInLink.getElement().setClassName("login-area");
 		signInLink.setTitle("sign out");
 		loginImage.getElement().setClassName("login-area");
@@ -308,6 +307,10 @@ public class ClientEngine implements EntryPoint {
 
 	public void setLogouturl(String logouturl) {
 		this.logouturl = logouturl;
+	}
+
+	public void setPage2(Page2 page2) {
+		this.page2 = page2;
 	}
 
 	
