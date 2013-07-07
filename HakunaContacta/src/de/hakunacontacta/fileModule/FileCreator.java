@@ -45,21 +45,24 @@ import ezvcard.VCard;
 public class FileCreator implements IFileCreator {
 
 	static private FileCreator _instance = null;
-	private ArrayList<Contact> selectedContacts;
+	private static ArrayList<Contact> selectedContacts;
 	private static ArrayList<ExportField> exportFields;
 	private static ArrayList<Contact> cleansedContacts = new ArrayList<Contact>();
 	private static ExportTypeEnum exportFormat;
 	
 	
+	private FileCreator(){}
 	
-	
-	public static FileCreator getInstance(ArrayList<Contact> selectedContacts, ArrayList<ExportField> exportFieldsx, ExportTypeEnum exportFormatx){
+	public static FileCreator getInstance(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX){
         if(null == _instance) {
         	_instance = new FileCreator();
         }
-        cleansedContacts = selectedContacts;
-        exportFields = exportFieldsx;
-        exportFormat = exportFormatx;
+        selectedContacts = selectedContactsX;
+        exportFields = exportFieldsX;
+        if(exportFields==null){
+        	System.out.println("nullpointer in consctructor of FileCreator");
+        }
+        exportFormat = exportFormatX;
         return _instance;
 	}
 
@@ -74,9 +77,11 @@ public class FileCreator implements IFileCreator {
 		System.out.println("Entered cleanseContacts");
 
 		for (Contact incomingContact : selectedContacts) {
+			System.out.println(incomingContact.getName());
 			ArrayList<ContactSourceType> initSourceTypeList = new ArrayList<ContactSourceType>();
 			Collections.sort(exportFields);
 			for (ExportField exportField : exportFields) {
+				System.out.println("New initSourceType and Field are: "+exportField.getName());
 				ContactSourceType initSourceType = new ContactSourceType();
 				initSourceType.setType(exportField.getName());
 				ContactSourceField initSourceField = new ContactSourceField();
@@ -89,19 +94,26 @@ public class FileCreator implements IFileCreator {
 			Contact cleansedContact = new Contact();
 			cleansedContact.seteTag(incomingContact.geteTag());
 			cleansedContact.setName(incomingContact.getName());
+			System.out.println(incomingContact.getName());
 			cleansedContact.setSourceTypes(initSourceTypeList);
 			for (ExportField exportField : exportFields) {
 				for (ExportOption exportOption : exportField.getExportOptions()) {
+					System.out.println(exportOption.getSourceField());
 					boolean foundbest = false;
 					for (ContactSourceType incomingSourceType : incomingContact.getSourceTypes()) {
 						for (ContactSourceField incomingSourceField : incomingSourceType.getSourceFields()) {
-							if (exportOption.getSourceType() == incomingSourceType.getType()
-									&& exportOption.getSourceField() == incomingSourceField.getName()) {
+							System.out.println("Match searched in exportOption and incomingSourceType in Type and Field: " + exportOption.getSourceType() + ", " + incomingSourceType.getType() + " && "+exportOption.getSourceField() +", "+ incomingSourceField.getName());
+							if (exportOption.getSourceType().equals(incomingSourceType.getType())
+									&& exportOption.getSourceField().equals(incomingSourceField.getName())) {
+								System.out.println("Match in exportOption and incomingSourceType in Type and Field: " + exportOption.getSourceType() + ", " + exportOption.getSourceField());
 								for (ContactSourceType cleansedSourceType : cleansedContact.getSourceTypes()) {
+									System.out.println("Match searched in: " + cleansedSourceType.getType() +", "+ exportField.getName());
 									if (cleansedSourceType.getType() == exportField.getName()) {
 										System.out.println(cleansedContact.getName() + ", " + cleansedSourceType.getType());
 										for (ContactSourceField cleansedSourceField : cleansedSourceType.getSourceFields()) {
+											System.out.println("Setting SourceField_name: " + exportField.getName());
 											cleansedSourceField.setName(exportField.getName());
+											System.out.println("Setting SourceField_value: " + exportField.getName());
 											cleansedSourceField.setValue(incomingSourceField.getValue());
 										}
 									}
@@ -114,6 +126,7 @@ public class FileCreator implements IFileCreator {
 						break;
 				}
 			}
+			System.out.println(cleansedContact.getName());
 			cleansedContacts.add(cleansedContact);
 		}
 		
@@ -134,13 +147,9 @@ public class FileCreator implements IFileCreator {
 			output = null;
 		}
 		
-		
 		byte[] encoded = Base64.encodeBase64(output.getBytes()); 
 		
-		  
-		  return new String(encoded);
-
-		
+		return new String(encoded);
 	}
 
 	private String createCSV() {
@@ -163,14 +172,12 @@ public class FileCreator implements IFileCreator {
 			csv += contact.getName();
 			for (ContactSourceType sourceType : contact.getSourceTypes()) {
 				for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-					// System.out.println(sourceType.getType() + " of contact "
-					// + contact.getName() + " " + sourceField.getName() + ", "
-					// + sourceField.getValue());
 					csv += seperator + sourceField.getValue();
 				}
 			}
 			csv += seperator + "\n";
 		}
+		System.out.println("\n"+csv);
 		return csv;
 	}
 
