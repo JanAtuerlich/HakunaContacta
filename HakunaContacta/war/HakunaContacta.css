@@ -20,6 +20,40 @@ h1 {
     font-family: 'Alef', normal;
 }
 
+h2 {
+    color: #FFFFFF;
+    font-size: 24pt;
+    text-align: center;
+    font-family: 'Alef',normal;
+}
+.whitetext {
+	color: #fff;
+}
+
+#gcontacts2word {
+	text-align: center;	
+	margin-top: 50px;
+	font-size: 11.5pt;
+	font-family: 'Alef',normal;
+}
+#startlogin {
+    color: #FFFFFF;
+    font-size: 16pt;
+    margin-top: 40px;
+    text-align: center;
+}
+#arrow1 {
+    bottom: 496px;
+    left: 770px;
+    position: relative;
+	
+}
+
+#goodbye {
+    margin-top: 100px;
+    text-align: center;
+}
+
 #wrapper {
 	border: 0px solid;
 	width: 1000px;
@@ -31,13 +65,13 @@ h1 {
 	height: 56px;
 }
 #logo {
-	border: 0px solid;
-	width: 64px;
-	height: 64px;
-	float: left;
-	background-image: url(images/logo2.png);
-	position:relative;
-	top: -8px;
+    background-image: url("images/logo.png");
+    border: 0 solid;
+    float: left;
+    height: 50px;
+    position: relative;
+    top: -1px;
+    width: 50px;
 }
 #title {
 	border: 0px solid;
@@ -59,6 +93,20 @@ h1 {
    	border-bottom-right-radius: 20px;
 	height: 480px;
 	padding: 10px;
+}
+#content2 {
+	background-color: #4d4d4d;
+	border: 1px solid 4d4d4d;
+	border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+   	border-bottom-right-radius: 20px;
+	height: 480px;
+	padding: 10px;
+}
+#finallink{
+	font-size: 16pt;
+	color: #fff;
 }
 #footer {
 	height: 60px;

@@ -19,10 +19,7 @@ import java.util.logging.Logger;
 public class ContactManager implements IContactManager{
 	private ArrayList<Contact> contacts = new ArrayList<Contact>();
 	private ArrayList<ContactGroup> contactGroups = new ArrayList<ContactGroup>();
-	private final static Logger LOGGER = Logger.getLogger(ContactManager.class
-			.getName());
-	
-	
+	private final static Logger LOGGER = Logger.getLogger(ContactManager.class.getName());
 
 	/*
 	 * (non-Javadoc)

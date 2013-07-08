@@ -6,10 +6,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.smartgwt.client.types.AutoFitEvent;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.HeaderDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.HeaderDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RemoveRecordClickEvent;
@@ -62,6 +65,8 @@ public class Page1 extends Composite {
 		groupGrid.setWidth(300);
 		groupGrid.setHeight(400);
 		groupGrid.setEmptyMessage("Keine Gruppen vorhanden.");
+		groupGrid.setShowHeaderContextMenu(false);
+		groupGrid.setShowHeaderMenuButton(false); 
 		groupGrid.setShowAllRecords(true);
 		groupGrid.setCanSort(true);
 		groupGrid.setCanGroupBy(false);
@@ -79,6 +84,8 @@ public class Page1 extends Composite {
 		contactGrid.setBorder("1px solid #ABABAB");
 		contactGrid.setEmptyMessage("Keine Kontakte vorhanden.");
 		contactGrid.setShowAllRecords(true);
+		contactGrid.setShowHeaderContextMenu(false);
+		contactGrid.setShowHeaderMenuButton(false); 
 		contactGrid.setCanSort(true);
 		contactGrid.setCanGroupBy(false);
 		contactGrid.setSelectionType(SelectionStyle.SIMPLE);
@@ -93,6 +100,8 @@ public class Page1 extends Composite {
 		selectionGrid.setHeight(400);
 		selectionGrid.setBorder("1px solid #ABABAB");
 		selectionGrid.setEmptyMessage("Keine Kontakte ausgew\u00E4hlt.");
+		selectionGrid.setShowHeaderContextMenu(false);
+		selectionGrid.setShowHeaderMenuButton(false); 
 		selectionGrid.setShowAllRecords(true);
 		selectionGrid.setCanRemoveRecords(true);
 		selectionGrid.setCanGroupBy(false);
@@ -194,6 +203,12 @@ public class Page1 extends Composite {
 		page1.setStyleName("page1");
 	}
 	
+	private void addHeaderDoubleClickHandler(
+			HeaderDoubleClickHandler headerDoubleClickHandler) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void loadGroupGrid(){
 		select = false;
 		groupGrid.setData(contactGroups);

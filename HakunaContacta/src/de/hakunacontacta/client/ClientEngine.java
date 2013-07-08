@@ -231,8 +231,8 @@ public class ClientEngine implements EntryPoint {
 		signInLink.setTitle("sign out");
 		loginImage.getElement().setClassName("login-area");
 		loginPanel.add(signInLink);
-		HTML start = new HTML("<p>Startseite Inhalt YEEEHAAA</p>");
-		RootPanel.get("content").add(start);
+		HTML starttext = new HTML("<h2>Willkommen bei Hakuna Contacta</h2><div id=\"startlogin\">So funktionierts:<br>1. Kontakte ausw\u00E4hlen<br>2. Exportfelder ausw\u00E4hlen<br>3. Download der Exportdatei<br>(4. Als Quelldatei f\u00FCr Word Serienbrief verwenden)</div><div id=\"gcontacts2word\"><img src=\"images/gcontacts2word.png\"><p class=\"whitetext\">Exportformate - CSV(Word-Serienbrief), CSV(Komma getrennt), vCARD  </p></div><div id=\"arrow1\"><img src=\"images/arrow1.png\"/></div>");
+		RootPanel.get("content").add(starttext);
 		RootPanel.get("loginPanelContainer").add(loginPanel);
 		RootPanel.get("footer").clear();
 		HTML footerimage = new HTML("<img src=\"images/1.jpg\">");
@@ -313,7 +313,9 @@ public class ClientEngine implements EntryPoint {
 		this.page2 = page2;
 	}
 
-	
+	public void setPage3(Page3 page3) {
+		this.page2 = page2;
+	}
 	
 	
 	
