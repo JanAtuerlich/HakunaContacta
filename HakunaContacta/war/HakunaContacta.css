@@ -243,6 +243,20 @@ h2 {
     text-decoration: none;
     top: 14px;
 }
+
+.login-image {
+    background-color: #4D4D4D;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 0;
+    color: #FFFFFF;
+    font-size: 13pt;
+    font-weight: 300;
+    left: 22px;
+    padding: 9px;
+    position: relative;
+    text-decoration: none;
+    top: 5px;
+}
 /** TODO #01:> end   */
 
 /* Add Stock panel */

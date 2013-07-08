@@ -84,6 +84,7 @@ public class ClientEngine implements EntryPoint {
 		signInLink.setHref(loginInfo.getLoginUrl());
 		signInLink.setText("Einloggen");
 		signInLink.setTitle("Einloggen");
+		loginImage.setUrl("images/login.png");
 	}
 
 	private void loadLogout(final LoginInfo loginInfo) {
@@ -229,9 +230,9 @@ public class ClientEngine implements EntryPoint {
 	public void onModuleLoad() {
 		signInLink.getElement().setClassName("login-area");
 		signInLink.setTitle("sign out");
-		loginImage.getElement().setClassName("login-area");
+		loginImage.getElement().setClassName("login-image");
 		loginPanel.add(signInLink);
-		HTML starttext = new HTML("<h2>Willkommen bei Hakuna Contacta</h2><div id=\"startlogin\">So funktionierts:<br>1. Kontakte ausw\u00E4hlen<br>2. Exportfelder ausw\u00E4hlen<br>3. Download der Exportdatei<br>(4. Als Quelldatei f\u00FCr Word Serienbrief verwenden)</div><div id=\"gcontacts2word\"><img src=\"images/gcontacts2word.png\"><p class=\"whitetext\">Exportformate - CSV(Word-Serienbrief), CSV(Komma getrennt), vCARD  </p></div><div id=\"arrow1\"><img src=\"images/arrow1.png\"/></div>");
+		HTML starttext = new HTML("<h2>Willkommen bei Hakuna Contacta</h2><div id=\"startlogin\">So funktionierts:<br>1. Kontakte ausw\u00E4hlen<br>2. Exportfelder ausw\u00E4hlen<br>3. Download der Exportdatei<br>(4. Als Quelldatei f\u00FCr Word Serienbrief verwenden)</div><div id=\"gcontacts2word\"><img src=\"images/gcontacts2word.png\"><p class=\"whitetext\">Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)  </p></div><div id=\"arrow1\"><img src=\"images/arrow1.png\"/></div>");
 		RootPanel.get("content").add(starttext);
 		RootPanel.get("loginPanelContainer").add(loginPanel);
 		RootPanel.get("footer").clear();
