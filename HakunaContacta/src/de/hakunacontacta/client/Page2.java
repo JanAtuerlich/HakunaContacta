@@ -84,6 +84,7 @@ public class Page2 extends Composite {
 		}
 		HTML html = new HTML("<a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">Download</a>");
 		page2.add(html);
+		//Downloadlink wird erstellt
 	}
 
 	public void setEncoded(String encoded) {
@@ -247,10 +248,7 @@ public class Page2 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, currentFormat);
-				clientEngine.getFile();
-				
-				
+				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
 				
 				// final HTML html = new HTML("<a download=\"MyFile." +
 				// dateiendung +

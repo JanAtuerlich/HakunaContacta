@@ -260,22 +260,33 @@ public class ClientEngine implements EntryPoint {
 		
 	}
 	
-	public void getFile() {
-		greetingService.getFile(new AsyncCallback<String>(){
-
+	public void getFile(Tree exportTree, ExportTypeEnum lastFormat, final ExportTypeEnum newFormat) {	
+		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
 			@Override
-			public void onSuccess(String result) {
-				page2.setEncoded(result);
-				page2.createDownloadLink();
+			public void onSuccess(Void result) {				
+				greetingService.getFile(new AsyncCallback<String>(){
+
+					@Override
+					public void onSuccess(String result) {
+						page2.setEncoded(result);
+						page2.createDownloadLink();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						System.out.println("ClientEnginegetFile failed to call \"getExportFields\" !!");
+					}
+				});
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
-				System.out.println("ClientEnginegetFile failed to call \"getExportFields\" !!");
+				System.out.println("ClientEngine failed to call \"writeExportOptions\" !!");
 			}
-
-
 		});
+		
+		
+
 		
 		
 

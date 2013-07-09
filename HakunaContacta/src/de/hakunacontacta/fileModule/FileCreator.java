@@ -130,7 +130,7 @@ public class FileCreator implements IFileCreator {
 			cleansedContacts.add(cleansedContact);
 		}
 		
-		String output;
+		String output ="";
 		if (exportFormat == ExportTypeEnum.CSV) {
 			output = createCSV();
 
@@ -147,7 +147,10 @@ public class FileCreator implements IFileCreator {
 			output = null;
 		}
 		
+		System.out.println("AusgabeString: \n" + output);
+		
 		byte[] encoded = Base64.encodeBase64(output.getBytes()); 
+		
 		
 		return new String(encoded);
 	}
