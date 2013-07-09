@@ -47,7 +47,7 @@ public class FileCreator implements IFileCreator {
 	static private FileCreator _instance = null;
 	private static ArrayList<Contact> selectedContacts;
 	private static ArrayList<ExportField> exportFields;
-	private static ArrayList<Contact> cleansedContacts = new ArrayList<Contact>();
+	private static ArrayList<Contact> cleansedContacts;
 	private static ExportTypeEnum exportFormat;
 	
 	
@@ -75,6 +75,7 @@ public class FileCreator implements IFileCreator {
 	@Override
 	public String cleanseContacts(){
 		System.out.println("Entered cleanseContacts");
+		cleansedContacts = new ArrayList<Contact>();
 
 		for (Contact incomingContact : selectedContacts) {
 			System.out.println(incomingContact.getName());
@@ -189,15 +190,21 @@ public class FileCreator implements IFileCreator {
 		// TODO einfach den Namen aus dem Kontaktobjekt übernehmen ist schlecht,
 		// da wird Felder Vorname Nachname bekommen werden,
 
-		String csv = "Contact Name";
+		String csv = "";
 		String seperator = ";";
-
+		
+		int i = 0;
 		for (ExportField exportField : exportFields) {
-			csv += seperator + exportField.getName();
+			//Nachfolgende if/else durch "csv += exportField.getName() + seperator;" ersetzen, um einen Seperator am Ende jeder Zeile zu haben
+			if(i==0){
+				csv += exportField.getName();
+				i++;
+			}
+			else{
+				csv += seperator + exportField.getName();
+			}
 		}
-
-		csv += seperator + "\n";
-
+		
 		for (Contact contact : cleansedContacts) {
 
 			Collections.sort(contact.getSourceTypes());
