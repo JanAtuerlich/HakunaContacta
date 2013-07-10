@@ -152,8 +152,8 @@ public class Page2 extends Composite {
 		final ListBox formatList = new ListBox();
 		formatList.addStyleName("chooseFormat");
 		formatList.setTitle("Exportformat");
-		formatList.addItem("CSV"); // Index 0
-		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); // Index 1
+		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); // Index 0
+		formatList.addItem("CSV"); // Index 1
 		formatList.addItem("vCard"); // Index 2
 		formatList.addItem("XML (xCard)"); // Index 3
 		
@@ -166,14 +166,14 @@ public class Page2 extends Composite {
 				System.out.println("Dropdown change to: " + selectedIndex);
 
 				if (selectedIndex == 0) {
-					// Methode für CSV
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSV);
-					currentFormat = ExportTypeEnum.CSV;
-				}
-				if (selectedIndex == 1) {
 					// Methode für CSV-Word-Serienbriefe
 					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSVWord);
 					currentFormat = ExportTypeEnum.CSVWord;
+				}
+				if (selectedIndex == 1) {
+					// Methode für CSV
+					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSV);
+					currentFormat = ExportTypeEnum.CSV;
 				}
 				if (selectedIndex == 2) {
 					// Methode für vCard

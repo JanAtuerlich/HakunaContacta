@@ -378,10 +378,6 @@ public class ClientEngine implements EntryPoint {
 		this.page2 = page2;
 	}
 
-	public void setPage3(Page3 page3) {
-		this.page2 = page2;
-	}
-	
 	
 	
 	
