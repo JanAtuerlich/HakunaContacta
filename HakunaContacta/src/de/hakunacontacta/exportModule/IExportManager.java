@@ -1,8 +1,10 @@
 package de.hakunacontacta.exportModule;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-import de.hakunacontacta.exportModule.ExportManager.exportTypeEnum;
+import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportTypeEnum;
 
 /**
  * Interface für ExportManager
@@ -18,14 +20,14 @@ public interface IExportManager {
 	 * Setzt den Bearbeitungszeiger für das Exportset anhand der übergeben Enum
 	 * @param type Enum die den zu bearbeitenden Typ angibt
 	 */
-	public void setExportFormat(exportTypeEnum type);
+	public void setExportFormat(ExportTypeEnum type);
 
 	/**
 	 * Aendert das ExportSet anhand des uebergebenen Enums und liefert das neues Set als Collection zurueck
 	 * @param type Enum die den zu bearbeitenden Typ angibt
 	 * @return die sich aktuell in bearbeitung befindliche Collection aus ExportFields
 	 */
-	public Collection<ExportField> changeExportFormat(exportTypeEnum type);
+	public Collection<ExportField> changeExportFormat(ExportTypeEnum type);
 
 	/**
 	 * Fuegt eine ExportOption dem entsprechenden ExportField hinzu
@@ -34,7 +36,7 @@ public interface IExportManager {
 	 * @param sourceFields Feldbezeichnung des hinzuzufügenden Feldes
 	 * @param priority Priorität, also Stelle an die das Feld in der GUI gezogen wurde
 	 */
-	public void addExportOption(String exportField, String sourceFieldName, String sourceType, int priority);
+	public void addExportOption(String exportField, String sourceFieldName, String sourceType, String displayName, int priority);
 
 	/**
 	 * Erstellt eine neues ExportField im aktuell in der Bearbeitung befindlichen ExportSet
@@ -48,13 +50,6 @@ public interface IExportManager {
 	 */
 	public void removeExportField(String name);
 
-	/**
-	 * Entfernt die entsprechende ExportOption aus dem entsprechenden ExportField im aktuell in der Bearbeitung befindlichen ExportSet
-	 * @param exportField au dem die ExportOption gel;scht werden soll
-	 * @param sourceType Quelltyp des hinzuzufügenden Feldes
-	 * @param sourceFields Feldbezeichnung des hinzuzufügenden Feldes
-	 */
-	public void removeExportOption(String exportField, String sourceType, String sourceField);
 
 	/**
 	 * Diese Methode liefert das sich aktuell in der Bearbeitung befindliche ExportSet zurueck
@@ -66,6 +61,8 @@ public interface IExportManager {
 	 * Diese Methode gibt das Zielformat als String zurueck
 	 * @return String mit dem Zielformat
 	 */
-	public String getExportFormat();
+	public ExportTypeEnum getExportFormat();
+	
+	public void setExportField(ArrayList<ExportField> exportFields);
 
 }

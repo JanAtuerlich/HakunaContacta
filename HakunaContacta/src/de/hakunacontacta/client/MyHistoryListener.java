@@ -32,7 +32,7 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
 		
 		if (event.getValue().equals("page2")){
     		RootPanel.get("content").clear();
-			RootPanel.get("content").add(page2);
+    		RootPanel.get("content").add(page2);
     		RootPanel.get("footer").clear();
     		HTML footerimage = new HTML("<img src=\"images/3.jpg\">");
     		RootPanel.get("footer").add(footerimage);

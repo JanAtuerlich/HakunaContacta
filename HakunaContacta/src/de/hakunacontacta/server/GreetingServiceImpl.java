@@ -46,7 +46,11 @@ import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.GreetingService;
 import de.hakunacontacta.contactModule.ContactManager;
+import de.hakunacontacta.exportModule.ExportManager;
+import de.hakunacontacta.fileModule.FileCreator;
 import de.hakunacontacta.shared.ContactSourceType;
+import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportTypeEnum;
 import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
 
@@ -54,6 +58,7 @@ import de.hakunacontacta.shared.LoginInfo;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import java.util.ArrayList;
@@ -75,6 +80,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 
 	private static Logger log = Logger.getLogger(GreetingServiceImpl.class.getCanonicalName());
 	ContactManager contactManager;
+	ExportManager exportManager;
+	FileCreator fileCreator;
 
 	@Override
 	public String greetServer(String input) throws IllegalArgumentException {
@@ -225,4 +232,61 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return contactManager.getSourceTypesOfSelectedContacts();
 	}	// TODO #11:> end	
 
+	@Override
+	public void setExportFields(ArrayList<ExportField> exportFields, ExportTypeEnum type) {
+		System.out.println("setExportFields wurde aufgerufen:");
+		
+		exportManager = ExportManager.getExportManager();
+		
+		
+		if (type == ExportTypeEnum.XML) {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.XML);");
+			exportManager.setExportFormat(ExportTypeEnum.XML);
+		} else if (type == ExportTypeEnum.CSVWord) {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSVWord);");
+			exportManager.setExportFormat(ExportTypeEnum.CSVWord);
+		} else if (type == ExportTypeEnum.vCard) {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.vCard);");
+			exportManager.setExportFormat(ExportTypeEnum.vCard);
+		} else {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSV);");
+			exportManager.setExportFormat(ExportTypeEnum.CSV);
+		}
+
+		exportManager.setExportField(exportFields);
+	}
+	
+
+	public ArrayList<ExportField> getExportFields(ExportTypeEnum type) {
+		exportManager = ExportManager.getExportManager();
+		
+		System.out.println("getExportFields aufgerufen! Übergabeparameter String type: " + type);
+		
+		if (type == ExportTypeEnum.XML) {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.XML);");
+			exportManager.setExportFormat(ExportTypeEnum.XML);
+		} else if (type == ExportTypeEnum.CSVWord) {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSVWord);");
+			exportManager.setExportFormat(ExportTypeEnum.CSVWord);
+		} else if (type == ExportTypeEnum.vCard) {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.vCard);");
+			exportManager.setExportFormat(ExportTypeEnum.vCard);
+		} else {
+			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSV);");
+			exportManager.setExportFormat(ExportTypeEnum.CSV);
+		}
+
+		
+		return exportManager.getChosenExportFields();
+	}
+	
+	public String getFile(){
+		System.out.println("getFile - GreetingServiceImpl");
+		fileCreator = FileCreator.getInstance(contactManager.getSelectedContacts(), exportManager.getChosenExportFields(), exportManager.getExportType());
+		
+		String x = fileCreator.cleanseContacts();
+		System.out.println(x);
+		return x;
+	}
+	
 }
