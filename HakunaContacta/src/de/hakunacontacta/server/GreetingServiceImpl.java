@@ -140,6 +140,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			loginInfo.setLoggedIn(true);
 			loginInfo.setName(user.getEmail());
 			loginInfo.setLogoutUrl(userService.createLogoutURL("http://127.0.0.1:8888/logout.html"));
+//			loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
+
 		} else {
 			loginInfo.setLoggedIn(false);
 //			loginInfo.setLoginUrl(userService.createLoginURL("http://hakunacontacta.appspot.com/HakunaContacta.html"));

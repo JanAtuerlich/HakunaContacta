@@ -132,18 +132,19 @@ h2 {
 	margin: 0 auto;
 }
 .chooseFormat{
+    font-size: 9pt;
+    left: 535px;
     margin-bottom: 5px;
-    width: 140px;
     position: relative;
-    top: 0px;
-    left: 555px;
+    top: 0;
+    width: 170px;
 }
 
 .exportFormat{
-	position: relative;
-	top: 22px;
-	left: 470px;
-	color: #fff;
+    color: #FFFFFF;
+    left: 456px;
+    position: relative;
+    top: 22px;
 }
 
 .contactGrid{
@@ -297,10 +298,11 @@ h2 {
     width: 120px;
     top: -20px;
 }
-.downloadLink{
+#downloadLink{
     left: 600px;
     position: relative;
     top: -45px;
+    color: #fff;
 }
 .grids2{
 	margin-top: 0px;

@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.DragDataAction;
@@ -42,6 +43,7 @@ public class Page2 extends Composite {
 	private static ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
 	private String dateiendung = "csv";
 	private String encoded = "";
+	private HTML downloadLink=null;
 
 	private Page2() {
 		initPage();
@@ -82,8 +84,17 @@ public class Page2 extends Composite {
 		} else if (currentFormat == ExportTypeEnum.CSVWord) {
 			dateiendung = "csv";
 		}
-		HTML html = new HTML("<a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">Download</a>");
-		page2.add(html);
+		
+		if (downloadLink!=null) {
+			System.out.println("ich war hier");
+			page2.remove(downloadLink);
+		}
+		
+		downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
+		
+
+
+		page2.add(downloadLink);
 		//Downloadlink wird erstellt
 	}
 
@@ -92,75 +103,24 @@ public class Page2 extends Composite {
 	}
 
 	private void initPage() {
-<<<<<<< HEAD
-		
 		clientEngine.setPage2(_instance);
 //		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
 		Button exportButton = new Button("Create Export");
 		exportButton.addStyleName("exportButton");
-=======
-		page2.setBorderWidth(2);
-		page2.setPixelSize(150, 150);
-		HTML content = new HTML("This is page2. Click to move to back page1");
-		Button button = new Button("Create Export");
-		exportButton.addStyleName("exportButton");
->>>>>>> Page2Construction
-
-		
-		// ------------------------------------
 
 		// Linke Seite
 
 		sourceGrid = new TreeGrid();
-		sourceGrid.setHeight(300);
-		sourceGrid.setWidth(200);
->>>>>>> Page2Construction
+		sourceGrid.setHeight(350);
+		sourceGrid.setWidth(250);
+		sourceGrid.setBorder("1px solid #ABABAB");
 		sourceGrid.setDragDataAction(DragDataAction.COPY);
 		sourceGrid.setCanDragRecordsOut(true);
 		sourceGrid.setData(thisSourceTypesTree);
 		sourceGrid.getData().openAll();
 		sourceGrid.setShowHeader(false);
 		sourceGrid.setTreeFieldTitle("Quellfelder");
-<<<<<<< HEAD
-		
-		//Rechte Seite
-		final Tree grid2Tree = new Tree();
-		grid2Tree.setModelType(TreeModelType.CHILDREN);
-		grid2Tree.setNameProperty("Name");
-
-		final TreeNode rootNode = new TreeNode();
-		rootNode.setAttribute("Name", "root");
-		grid2Tree.setRoot(rootNode);
-
-		TreeNode childNode1 = new TreeNode();
-		childNode1.setAttribute("Name", "Exportfeld1");
-		childNode1.setAttribute("Feld1", "inhalt1");
-		childNode1.setCanDrag(false);
-		childNode1.setIsFolder(true);
-		grid2Tree.add(childNode1, rootNode);
-
-		TreeNode childNode2 = new TreeNode("Test");
-		childNode2.setAttribute("Name", "Exportfeld2");
-		childNode2.setCanDrag(false);
-		childNode2.setIsFolder(true);
-		grid2Tree.add(childNode2, rootNode);
-
-		final TreeGrid grid2 = new TreeGrid();
-		grid2.setBorder("1px solid #ABABAB");
-		grid2.setData(grid2Tree);
-		grid2.getData().openAll();
-		grid2.setCanAcceptDroppedRecords(true);
-		grid2.setCanRemoveRecords(true);
-		grid2.setCanReorderRecords(true);
-		grid2.setShowHeader(false);
-		grid2.setCanAcceptDrop(false);
-		grid2.setTreeFieldTitle("Exportfelder");
-		grid2.setHeight(320);
-		grid2.setWidth(250);
-		grid2.setAlternateRecordStyles(true);
-		grid2.addFolderDropHandler(new FolderDropHandler() {
-=======
 
 		// Rechte Seite
 
@@ -171,11 +131,11 @@ public class Page2 extends Composite {
 		exportGrid.setShowHeader(false);
 		exportGrid.setCanAcceptDrop(false);
 		exportGrid.setTreeFieldTitle("Exportfelder");
-		exportGrid.setHeight(300);
-		exportGrid.setWidth(200);
+		exportGrid.setHeight(320);
+		exportGrid.setWidth(250);
+		exportGrid.setBorder("1px solid #ABABAB");
 		exportGrid.setAlternateRecordStyles(true);
 		exportGrid.addFolderDropHandler(new FolderDropHandler() {
->>>>>>> Page2Construction
 
 			@Override
 			public void onFolderDrop(FolderDropEvent folderDropEvent) {
@@ -190,21 +150,14 @@ public class Page2 extends Composite {
 
 		// Dropdown-Menu
 		final ListBox formatList = new ListBox();
-		formatList.setTitle("Exportformat");
-<<<<<<< HEAD
-		formatList.addItem("CSV"); //Index 0
-		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); //Index 1
-		formatList.addItem("vCard"); //Index 2
-		formatList.addItem("XML (xCard)"); //Index 3
 		formatList.addStyleName("chooseFormat");
-=======
+		formatList.setTitle("Exportformat");
 		formatList.addItem("CSV"); // Index 0
 		formatList.addItem("CSV f\u00FCr Word-Serienbriefe"); // Index 1
 		formatList.addItem("vCard"); // Index 2
 		formatList.addItem("XML (xCard)"); // Index 3
 		
 
->>>>>>> Page2Construction
 		formatList.addChangeHandler(new ChangeHandler() {
 
 			@Override
@@ -285,7 +238,6 @@ public class Page2 extends Composite {
 		exportGrid.setStyleName("exportGrid");
 		exportGrid.setBaseStyle("grid2records");
 
-
 		addExportfieldButton.setStyleName("addExportfieldButton");
 		addExportfieldTextBox.setStyleName("addExportfieldTextBox");
 		addPanel.add(addExportfieldTextBox);
@@ -296,14 +248,9 @@ public class Page2 extends Composite {
 		tip2.setPixelSize(200, 350);
 		HStack grids = new HStack(3);
 		grids.addMember(sourceGrid);
-<<<<<<< HEAD
 		grids.addMember(tip2);
-		grids.addMember(grid2);
-		grids.setStyleName("grids2");
-=======
 		grids.addMember(exportGrid);
-		grids.setStyleName("grids");
->>>>>>> Page2Construction
+		grids.setStyleName("grids2");
 		grids.draw();
 		final HTML exportFormat = new HTML("Exportformat: ");
 		exportFormat.addStyleName("exportFormat");
@@ -318,20 +265,11 @@ public class Page2 extends Composite {
 		mainPanel.add(addPanel);
 		mainPanel.addStyleName("mainPanel");
 
-
 		// ------------------------------------
 
 		exportButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-<<<<<<< HEAD
-				final HTML downloadLink = new HTML("<a download=\"Contactexport."
-						+ dateiendung + "\" href=data:application/"
-						+ dateiendung + ";base64," + encoded + ">Exportdatei</a>");
-				// final HTML html = new HTML("<a download=\"MyFile." + dateiendung + "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
-				downloadLink.addStyleName("downloadLink");
-				page2.add(downloadLink);
-=======
 				
 				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
 				
@@ -339,7 +277,6 @@ public class Page2 extends Composite {
 				// dateiendung +
 				// "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
 				
->>>>>>> Page2Construction
 
 				// String uri
 				// ="<a download=\"MyFile.csv\" href=data:text/csv;charset=utf-8,\"test\">Download</a>";
@@ -349,16 +286,8 @@ public class Page2 extends Composite {
 			}
 		});
 		page2.add(mainPanel);
-<<<<<<< HEAD
 		page2.add(exportButton);
 		page2.setStyleName("page2");
 
-		
-=======
-		page2.add(content);
-		page2.add(button);
-
->>>>>>> Page2Construction
 	}
-	
 }
