@@ -274,14 +274,14 @@ public class ClientEngine implements EntryPoint {
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						System.out.println("ClientEnginegetFile failed to call \"getExportFields\" !!");
+						System.out.println("ClientEnginegetFile failed to call \"getFiles\" !!");
 					}
 				});
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				System.out.println("ClientEngine failed to call \"writeExportOptions\" !!");
+				System.out.println("ClientEngine failed to call \"setExportOptions\" !!");
 			}
 		});
 		

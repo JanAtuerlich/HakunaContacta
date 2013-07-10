@@ -160,26 +160,26 @@ public class FileCreator implements IFileCreator {
 
 		// TODO einfach den Namen aus dem Kontaktobjekt übernehmen ist schlecht,
 		// da wird Felder Vorname Nachname bekommen werden,
-		String csv = "Contact Name";
+		String csv = "";
 		String seperator = ",";
 
 		for (ExportField exportField : exportFields) {
-			csv += seperator + exportField.getName();
+			csv += exportField.getName() + seperator;
 		}
 
-		csv += seperator + "\n";
+		csv += "\n";
 
 		for (Contact contact : cleansedContacts) {
 
 			Collections.sort(contact.getSourceTypes());
-
-			csv += contact.getName();
 			for (ContactSourceType sourceType : contact.getSourceTypes()) {
 				for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-					csv += seperator + sourceField.getValue();
+					csv += sourceField.getValue().replace(seperator,"") + seperator;
 				}
 			}
-			csv += seperator + "\n";
+			
+			csv = csv.substring(0, csv.length()-1);
+			csv +="\n";
 		}
 		System.out.println("\n"+csv);
 		return csv;
@@ -193,29 +193,23 @@ public class FileCreator implements IFileCreator {
 		String csv = "";
 		String seperator = ";";
 		
-		int i = 0;
 		for (ExportField exportField : exportFields) {
-			//Nachfolgende if/else durch "csv += exportField.getName() + seperator;" ersetzen, um einen Seperator am Ende jeder Zeile zu haben
-			if(i==0){
-				csv += exportField.getName();
-				i++;
-			}
-			else{
-				csv += seperator + exportField.getName();
-			}
+			csv += exportField.getName() + seperator;
 		}
+		csv = csv.substring(0, csv.length()-1);
+		csv +="\n";
 		
 		for (Contact contact : cleansedContacts) {
 
 			Collections.sort(contact.getSourceTypes());
 
-			csv += contact.getName();
 			for (ContactSourceType sourceType : contact.getSourceTypes()) {
 				for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-					csv += seperator + sourceField.getValue();
+					csv += sourceField.getValue().replace(", ","\n") +seperator;
 				}
 			}
-			csv += seperator + "\n";
+			csv = csv.substring(0, csv.length()-1);
+			csv += "*\n";
 		}
 
 		return csv;
@@ -251,118 +245,118 @@ public class FileCreator implements IFileCreator {
 			n.setEncodingType(EncodingType.QUOTED_PRINTABLE);
 			n.setCharset(Charset.forName("UTF-8"));
 			n.setLanguage(LanguageType.DE);
-
+			
+			System.out.println("SourceTypes vCard!!!!!!!!!");
 			for (ContactSourceType sourceType : contact.getSourceTypes()) {
-
-				if (sourceType.getType() == "Vorname") {
+				System.out.println(sourceType.getType());
+				
+				if (sourceType.getType().equals("Vorname")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+						System.out.println("SourceField Value: " + sourceField.getValue());
 						n.setGivenName(sourceField.getValue());
 					}
-				} else if (sourceType.getType() == "Nachname") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-						n.setFamilyName(sourceField.getValue());
-					}
-				} else if (sourceType.getType() == "Homepage") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-						
-						try {
-							vcard.addUrl(new UrlType(new URL(sourceField.getValue())));
-						} catch (NullPointerException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (MalformedURLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				} else if (sourceType.getType() == "Adresse") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-
-						AdrType address1 = new AdrType();
-						address1.setCharset("UTF-8");
-						address1.setExtendedAddress(sourceField.getValue());
-						// address1.setCountryName("U.S.A.");
-						// address1.setLocality("New York");
-						// address1.setRegion("New York");
-						// address1.setPostalCode("NYC887");
-						// address1.setPostOfficeBox("25334");
-						// address1.setStreetAddress("South cresent drive, Building 5, 3rd floor");
-						// address1.addParam(AdrParamType.HOME)
-						// .addParam(AdrParamType.PARCEL)
-						address1.addParam(AdrParamType.PREF);
-						// .addExtendedParam(new
-						// ExtendedParamType("CUSTOM-PARAM-TYPE",
-						// VCardTypeName.ADR))
-						// .addExtendedParam(new
-						// ExtendedParamType("CUSTOM-PARAM-TYPE",
-						// "WITH-CUSTOM-VALUE", VCardTypeName.ADR));
-						
-
-						vcard.addAdr(address1);
-						// TODO sourceField.getValue())));
-					}
-				} else if (sourceType.getType() == "Telefon") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-
-						TelType telephone = new TelType();
-						telephone.setCharset("UTF-8");
-						telephone.setTelephone(sourceField.getValue());
-						telephone.addParam(TelParamType.HOME).setParameterTypeStyle(ParameterTypeStyle.PARAMETER_VALUE_LIST);
-						vcard.addTel(telephone);
-
-					}
-				} else if (sourceType.getType() == "Handy") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-
-						TelType telephone = new TelType();
-						telephone.setCharset("UTF-8");
-						telephone.setTelephone(sourceField.getValue());
-						telephone.addParam(TelParamType.CELL).setParameterTypeStyle(ParameterTypeStyle.PARAMETER_VALUE_LIST);
-						vcard.addTel(telephone);
-
-					}
-				} else if (sourceType.getType() == "E-Mail Privat") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-
-						EmailType email = new EmailType();
-						email.setEmail(sourceField.getValue());
-						email.addParam(EmailParamType.HOME).setCharset("UTF-8");
-						vcard.addEmail(email);
-
-					}
-				} else if (sourceType.getType() == "E-Mail geschäftlich") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-
-						EmailType email = new EmailType();
-						email.setEmail(sourceField.getValue());
-						email.addParam(EmailParamType.WORK).setCharset("UTF-8");
-						vcard.addEmail(email);
-
-					}
-				} else if (sourceType.getType() == "Kommentar") {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-
-						NoteType note = new NoteType();
-						note.setNote(sourceField.getValue());
-						vcard.addNote(note);
-
-					}
-				} else {
-					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
-						vcard.addExtendedType(new ExtendedType("X-" + sourceField.getName(), sourceField.getValue()));
-					}
+//				} else if (sourceType.getType().equals("Nachname")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//						n.setFamilyName(sourceField.getValue());
+//					}
+//				} else if (sourceType.getType().equals("Homepage")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//						
+//						try {
+//							vcard.addUrl(new UrlType(new URL(sourceField.getValue())));
+//						} catch (NullPointerException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						} catch (MalformedURLException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//					}
+//				} else if (sourceType.getType().equals("Adresse")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//
+//						AdrType address1 = new AdrType();
+//						address1.setCharset("UTF-8");
+//						address1.setExtendedAddress(sourceField.getValue());
+//						// address1.setCountryName("U.S.A.");
+//						// address1.setLocality("New York");
+//						// address1.setRegion("New York");
+//						// address1.setPostalCode("NYC887");
+//						// address1.setPostOfficeBox("25334");
+//						// address1.setStreetAddress("South cresent drive, Building 5, 3rd floor");
+//						// address1.addParam(AdrParamType.HOME)
+//						// .addParam(AdrParamType.PARCEL)
+//						address1.addParam(AdrParamType.PREF);
+//						// .addExtendedParam(new
+//						// ExtendedParamType("CUSTOM-PARAM-TYPE",
+//						// VCardTypeName.ADR))
+//						// .addExtendedParam(new
+//						// ExtendedParamType("CUSTOM-PARAM-TYPE",
+//						// "WITH-CUSTOM-VALUE", VCardTypeName.ADR));						
+//
+//						vcard.addAdr(address1);
+//						// TODO sourceField.getValue())));
+//					}
+//				} else if (sourceType.getType().equals("Telefon")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//
+//						TelType telephone = new TelType();
+//						telephone.setCharset("UTF-8");
+//						telephone.setTelephone(sourceField.getValue());
+//						telephone.addParam(TelParamType.HOME).setParameterTypeStyle(ParameterTypeStyle.PARAMETER_VALUE_LIST);
+//						vcard.addTel(telephone);
+//
+//					}
+//				} else if (sourceType.getType().equals("Handy")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//
+//						TelType telephone = new TelType();
+//						telephone.setCharset("UTF-8");
+//						telephone.setTelephone(sourceField.getValue());
+//						telephone.addParam(TelParamType.CELL).setParameterTypeStyle(ParameterTypeStyle.PARAMETER_VALUE_LIST);
+//						vcard.addTel(telephone);
+//
+//					}
+//				} else if (sourceType.getType().equals("E-Mail Privat")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//
+//						EmailType email = new EmailType();
+//						email.setEmail(sourceField.getValue());
+//						email.addParam(EmailParamType.HOME).setCharset("UTF-8");
+//						vcard.addEmail(email);
+//
+//					}
+//				} else if (sourceType.getType().equals("E-Mail geschäftlich")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//
+//						EmailType email = new EmailType();
+//						email.setEmail(sourceField.getValue());
+//						email.addParam(EmailParamType.WORK).setCharset("UTF-8");
+//						vcard.addEmail(email);
+//
+//					}
+//				} else if (sourceType.getType().equals("Kommentar")) {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//
+//						NoteType note = new NoteType();
+//						note.setNote(sourceField.getValue());
+//						vcard.addNote(note);
+//
+//					}
+//				} else {
+//					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
+//						vcard.addExtendedType(new ExtendedType("X-" + sourceField.getName(), sourceField.getValue()));
+//					}
 				}
-
 				vcard.setN(n);
-
 			}
 			
 			VCardWriter writer = new VCardWriter();
 			writer.setVCard(vcard);
 			try {
-				vCard  += writer.buildVCardString();
+				vCard += writer.buildVCardString();
 			} catch (VCardBuildException e) {
-				// TODO Auto-generated catch block
+				System.out.println("VCard Builder failed!");
 				e.printStackTrace();
 			}
 		}
