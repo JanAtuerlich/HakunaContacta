@@ -293,15 +293,18 @@ h2 {
 }
 
 .exportButton{
-    left: 456px;
+    left: 458px;
     position: relative;
     width: 120px;
     top: -20px;
 }
-#downloadLink{
-    left: 600px;
+#downloadLink {
+    left: 590px;
     position: relative;
     top: -45px;
+}
+#downloadLink a{
+
     color: #fff;
 }
 .grids2{
