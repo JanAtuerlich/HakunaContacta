@@ -6,10 +6,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.smartgwt.client.types.AutoFitEvent;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.HeaderDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.HeaderDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RemoveRecordClickEvent;
@@ -54,7 +57,6 @@ public class Page1 extends Composite {
 
 	private void initPage() {
 		page1.setPixelSize(800, 400);
-	
 		contacts = clientEngine.getContactRecords();
 		contactGroups = clientEngine.getContactGroupRecord();
 		
@@ -63,10 +65,13 @@ public class Page1 extends Composite {
 		groupGrid.setWidth(300);
 		groupGrid.setHeight(400);
 		groupGrid.setEmptyMessage("Keine Gruppen vorhanden.");
+		groupGrid.setShowHeaderContextMenu(false);
+		groupGrid.setShowHeaderMenuButton(false); 
 		groupGrid.setShowAllRecords(true);
 		groupGrid.setCanSort(true);
 		groupGrid.setCanGroupBy(false);
 		groupGrid.setSelectionType(SelectionStyle.SIMPLE);
+		groupGrid.setShowSelectedStyle(false);
 		groupGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
 		ListGridField groupnameField = new ListGridField("displayedName",
 				"Gruppenname");
@@ -74,15 +79,18 @@ public class Page1 extends Composite {
 		
 		loadGroupGrid();
 		
-		contactGrid.setWidth(300);
+		contactGrid.setWidth(200);
 		contactGrid.setHeight(400);
 		contactGrid.setBorder("1px solid #ABABAB");
 		contactGrid.setEmptyMessage("Keine Kontakte vorhanden.");
 		contactGrid.setShowAllRecords(true);
+		contactGrid.setShowHeaderContextMenu(false);
+		contactGrid.setShowHeaderMenuButton(false); 
 		contactGrid.setCanSort(true);
 		contactGrid.setCanGroupBy(false);
 		contactGrid.setSelectionType(SelectionStyle.SIMPLE);
 		contactGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
+		contactGrid.setShowSelectedStyle(false);
 		ListGridField nameField = new ListGridField("name", "Kontaktnamen");
 		contactGrid.setFields(nameField);
 		
@@ -92,13 +100,14 @@ public class Page1 extends Composite {
 		selectionGrid.setHeight(400);
 		selectionGrid.setBorder("1px solid #ABABAB");
 		selectionGrid.setEmptyMessage("Keine Kontakte ausgew\u00E4hlt.");
+		selectionGrid.setShowHeaderContextMenu(false);
+		selectionGrid.setShowHeaderMenuButton(false); 
 		selectionGrid.setShowAllRecords(true);
 		selectionGrid.setCanRemoveRecords(true);
 		selectionGrid.setCanGroupBy(false);
 		ListGridField selectedContactsField = new ListGridField("name",
 				"Kontaktnamen");
 		selectionGrid.setFields(selectedContactsField);
-		selectionGrid.setCanRemoveRecords(true);
 		
 		groupGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 			
@@ -164,21 +173,22 @@ public class Page1 extends Composite {
 		contactGrid.setStyleName("contactGrid");
 		selectionGrid.setStyleName("selectionGrid");
 		
-		HTML gridHeaders = new HTML("<div id=\"gridHeader1\">Gruppenauswahl</div><div id=\"gridHeader2\">Kontaktauswahl</div><div id=\"gridHeader3\">Ausgew\u00E4hlte Kontakte</div>");
-		gridHeaders.setStyleName("gridHeaders");
+		HTML gridHeaders1 = new HTML("<div id=\"gridHeader1\">Gruppenauswahl</div><div id=\"gridHeader2\">Kontaktauswahl</div><div id=\"gridHeader3\">Ausgew\u00E4hlte Kontakte</div>");
+		gridHeaders1.setStyleName("gridHeaders");
 		
-		HStack grids = new HStack(3);		grids.setStyleName("grids");
+		HStack grids = new HStack(3);		
+		grids.setStyleName("grids1");
 		grids.addMember(groupGrid);
 		grids.addMember(contactGrid);
 		grids.addMember(selectionGrid);
 		grids.draw();
 		
-		mainPanel.add(gridHeaders);
+		mainPanel.add(gridHeaders1);
 		mainPanel.add(grids);
 		mainPanel.setStyleName("mainPanel");
 		
 		//------------------------------------------
-		Button button = new Button("Weiter");
+		Button button = new Button("Weiter <span id=\"arrow\">\u2192</span>");
 		button.setStyleName("next");
 		button.addClickHandler(new ClickHandler() {
 			@Override
@@ -187,11 +197,18 @@ public class Page1 extends Composite {
 			clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
+		
 		page1.add(mainPanel);
 		page1.add(button);
 		page1.setStyleName("page1");
 	}
 	
+	private void addHeaderDoubleClickHandler(
+			HeaderDoubleClickHandler headerDoubleClickHandler) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void loadGroupGrid(){
 		select = false;
 		groupGrid.setData(contactGroups);

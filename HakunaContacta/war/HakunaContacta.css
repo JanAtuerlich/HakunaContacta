@@ -5,57 +5,146 @@
 	padding:0;
 }
 
+body{
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
 h1 {
-	font-size: 2em;
-	font-weight: bold;
-	color: #777777;
-	text-align: left;
+    bottom: 16px;
+    color: #777777;
+    font-size: 4.5em;
+    font-weight: bold;
+    position: relative;
+    text-align: left;
+    font-family: 'Alef', normal;
+}
+
+h2 {
+    color: #FFFFFF;
+    font-size: 24pt;
+    text-align: center;
+    font-family: 'Alef',normal;
+}
+.whitetext {
+	color: #fff;
+}
+
+#gcontacts2word {
+	text-align: center;	
+	margin-top: 50px;
+	font-size: 11.5pt;
+	font-family: 'Alef',normal;
+}
+#startlogin {
+    color: #FFFFFF;
+    font-size: 16pt;
+    margin-top: 40px;
+    text-align: center;
+}
+#arrow1 {
+    bottom: 496px;
+    left: 770px;
+    position: relative;
+	
+}
+
+#goodbye {
+    margin-top: 100px;
+    text-align: center;
 }
 
 #wrapper {
+	border: 0px solid;
 	width: 1000px;
 	height: 620px;
 	margin: 0 auto;
 }
 #top {
-	border: 1px solid;
-	height: 60px;
+	border: 0px solid;
+	height: 56px;
 }
 #logo {
-	border: 1px solid;
-	width: 200px;
-	height: 60px;
-	float: left;
+    background-image: url("images/logo.png");
+    border: 0 solid;
+    float: left;
+    height: 50px;
+    position: relative;
+    top: -1px;
+    width: 50px;
 }
 #title {
-	border: 1px solid;
-	width: 400px;
-	height: 60px;
+	border: 0px solid;
+	height: 56px;
 	margin-left:10px;
 	float: left;
 }
 #menu {
-	border: 1px solid;
 	width: 300px;
-	height: 20px;
+	padding: 15px;
 	float:right;
 }
 #content {
-	border: 1px solid;
+	background-color: #4d4d4d;
+	border: 1px solid 4d4d4d;
+	border-top-left-radius: 20px;
+    border-top-right-radius: 0px;
+	border-bottom-left-radius: 20px;
+   	border-bottom-right-radius: 20px;
 	height: 480px;
 	padding: 10px;
+}
+#content2 {
+	background-color: #4d4d4d;
+	border: 1px solid 4d4d4d;
+	border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+   	border-bottom-right-radius: 20px;
+	height: 480px;
+	padding: 10px;
+}
+#finallink{
+	font-size: 16pt;
+	color: #fff;
 }
 #footer {
 	height: 60px;
 }
+#arrow{
+	font-weight: bolder;
+}
+
+.firstBlue{
+	color: #45a5fd;
+}
 
 .next {
     float: right;
-    margin-right: 70px !important;
+    margin-right: 20px !important;
+    width: 203px;
 }
 
 .page1{
 	margin: 0 auto;
+}
+.page2{
+	margin: 0 auto;
+}
+.chooseFormat{
+    font-size: 9pt;
+    left: 535px;
+    margin-bottom: 5px;
+    position: relative;
+    top: 0;
+    width: 170px;
+}
+
+.exportFormat{
+    color: #FFFFFF;
+    left: 456px;
+    position: relative;
+    top: 22px;
 }
 
 .contactGrid{
@@ -78,16 +167,30 @@ h1 {
 }
 #gridHeader1{
 	float:left;
-	margin-left: 30px;
+	margin-left: 80px;
 	margin-bottom: 8px;
+	color: #fff;
 }
 #gridHeader2{
 	float:left;
-	margin-left: 70px;
+	margin-left: 120px;
+	margin-right: 86px;
+	color: #fff;
 }
 #gridHeader3{
-	float:left;
-	margin-left: 90px;
+	color: #fff;
+}
+
+#gridHeader21{
+	color: #fff;
+    float: left;
+    left: 78px;
+    position: relative
+}
+#gridHeader22{
+	color: #fff;
+    left: 440px;
+    position: relative;
 }
 
 .sendButton {
@@ -129,16 +232,42 @@ h1 {
 }
 
 .login-area,.login-area:hover,.login-area:visited {
-	font-size: 13pt;
-	font-weight: 300;
-	color: #000;
-	text-decoration: none;
+    background-color: #4D4D4D;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    color: #FFFFFF;
+    font-size: 13pt;
+    font-weight: 300;
+    left: 15px;
+    padding: 9px;
+    position: relative;
+    text-decoration: none;
+    top: 14px;
+}
+
+.login-image {
+    background-color: #4D4D4D;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 0;
+    color: #FFFFFF;
+    font-size: 13pt;
+    font-weight: 300;
+    left: 22px;
+    padding: 9px;
+    position: relative;
+    text-decoration: none;
+    top: 5px;
 }
 /** TODO #01:> end   */
 
 /* Add Stock panel */
 .addPanel {
-  float: right;
+    float: right;
+    margin-right: -1px;
+    top: -26px;
+    width: 200px;
+    position: relative;
+    z-index: 200470;
 }
 
 
@@ -147,9 +276,34 @@ h1 {
 }
 
 .addExportfieldTextBox {
-	width: 150px;
+    width: 205px;
+	height: 22px;
 }
 
 .addExportfieldButton {
 	width: 44px;
+	margin-top: -1px;
+	height: 26px;
+}
+
+#tip2 {
+	margin: 0 20px;
+	text-align: center;
+	color: #fff;
+}
+
+.exportButton{
+    left: 456px;
+    position: relative;
+    width: 120px;
+    top: -20px;
+}
+#downloadLink{
+    left: 600px;
+    position: relative;
+    top: -45px;
+    color: #fff;
+}
+.grids2{
+	margin-top: 0px;
 }

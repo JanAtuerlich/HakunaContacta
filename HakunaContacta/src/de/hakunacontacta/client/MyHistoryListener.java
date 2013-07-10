@@ -21,7 +21,7 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		System.out.println("Current State : " + event.getValue());
-		
+
 		if (event.getValue().equals("page1")){
     		RootPanel.get("content").clear();
     		RootPanel.get("content").add(page1);
@@ -36,6 +36,7 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
     		RootPanel.get("footer").clear();
     		HTML footerimage = new HTML("<img src=\"images/3.jpg\">");
     		RootPanel.get("footer").add(footerimage);
+
 		}	
 	}
 

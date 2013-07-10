@@ -11,14 +11,14 @@ import de.hakunacontacta.shared.ContactGroupData2Record;
 import de.hakunacontacta.shared.ContactGroupRecord;
 import de.hakunacontacta.shared.ContactRecord;
 import de.hakunacontacta.shared.ContactSourceType;
-import de.hakunacontacta.shared.ContactSourceTypes2Tree;
+import de.hakunacontacta.shared.ExportField;
+import de.hakunacontacta.shared.ExportTreeManager;
+import de.hakunacontacta.shared.ExportTypeEnum;
 import de.hakunacontacta.shared.LoginInfo;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -52,7 +52,7 @@ public class ClientEngine implements EntryPoint {
 	
 	private Page1 page1;
 	private Page2 page2;
-	public boolean check = false;
+	private ExportTreeManager exportTreeManager = null;
 	private ClientEngine thisClientEngine = this;
 	private static final Auth AUTH = Auth.get();
 	private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
@@ -64,6 +64,7 @@ public class ClientEngine implements EntryPoint {
 	private final HorizontalPanel loginPanel = new HorizontalPanel();
 	private final Anchor signInLink = new Anchor("");
 	private final Image loginImage = new Image();
+	private String logouturl;
 //	private final TextBox nameField = new TextBox();
 	// TODO #06:> end
 
@@ -85,11 +86,12 @@ public class ClientEngine implements EntryPoint {
 		signInLink.setHref(loginInfo.getLoginUrl());
 		signInLink.setText("Einloggen");
 		signInLink.setTitle("Einloggen");
+		loginImage.setUrl("images/login.png");
 	}
 
 	private void loadLogout(final LoginInfo loginInfo) {
 		signInLink.setHref(loginInfo.getLogoutUrl());
-		signInLink.setText(loginInfo.getName()+"Ausloggen");
+		signInLink.setText("Ausloggen");
 		signInLink.setTitle("Ausloggen");
 	}
 
@@ -148,6 +150,7 @@ public class ClientEngine implements EntryPoint {
 											final String initToken = History.getToken();
 											
 											page1 = Page1.getInstance(thisClientEngine);
+
 									    	
 										    if (initToken.length() == 0) {
 										      History.newItem("page1");
@@ -163,33 +166,7 @@ public class ClientEngine implements EntryPoint {
 									
 								}
 								
-							});
-							
-
-							
-							signInLink.setText(loginInfo.getName());
-							signInLink.setStyleName("login-area");
-							loginImage.setVisible(false);
-							loginPanel.add(loginImage);
-							loginImage.addLoadHandler(new LoadHandler() {
-								@Override
-								public void onLoad(final LoadEvent event) {
-									final int newWidth = 24;
-									final com.google.gwt.dom.client.Element element = event
-											.getRelativeElement();
-									if (element.equals(loginImage.getElement())) {
-										final int originalHeight = loginImage.getOffsetHeight();
-										final int originalWidth = loginImage.getOffsetWidth();
-										if (originalHeight > originalWidth) {
-											loginImage.setHeight(newWidth + "px");
-										} else {
-											loginImage.setWidth(newWidth + "px");
-										}
-										loginImage.setVisible(true);
-									}
-								}
-							});
-							
+							});					
 						}
 					});
 				}
@@ -206,10 +183,12 @@ public class ClientEngine implements EntryPoint {
 		greetingService.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
 			@Override
 			public void onSuccess(ArrayList<ContactSourceType> result) {
-				ContactSourceTypes2Tree contactSourceTypes2Tree = new ContactSourceTypes2Tree();
-				contactSourceTypesTree = contactSourceTypes2Tree.getTree(result);
+				exportTreeManager = new ExportTreeManager();
+				contactSourceTypesTree = exportTreeManager.getTree(result);
+				
 				page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
 				historyListener.setPage2(page2);
+				page2.updateData();
 				History.newItem("page2", true);
 			}
 
@@ -220,13 +199,76 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 	
-	public void writeExportTree(Tree exportTree){
-		TreeNode rootnode = exportTree.getRoot();
-		
-		for (TreeNode node : exportTree.getAllNodes(rootnode)) {
-			System.out.println(node.getAttribute("Name"));
-		}
+	public void writeExportOptions(Tree exportTree, ExportTypeEnum lastFormat, final ExportTypeEnum newFormat){
+		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {				
+				thisClientEngine.getExportFields(newFormat);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("ClientEngine failed to call \"writeExportOptions\" !!");
+			}
+		});
 	}
+	
+	public void getExportFields(ExportTypeEnum type) {
+		greetingService.getExportFields(type, new AsyncCallback<ArrayList<ExportField>>() {
+
+			@Override
+			public void onSuccess(ArrayList<ExportField> result) {
+				page2.setThisExportTypesTree(exportTreeManager.getExportFieldsTree(result));
+				page2.updateData();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("ClientEngine failed to call \"getExportFields\" !!");
+			}
+
+
+		});
+		
+		
+
+		
+	}
+	
+	public void getFile(Tree exportTree, ExportTypeEnum lastFormat, final ExportTypeEnum newFormat) {	
+		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {				
+				greetingService.getFile(new AsyncCallback<String>(){
+
+					@Override
+					public void onSuccess(String result) {
+						page2.setEncoded(result);
+						page2.createDownloadLink();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						System.out.println("ClientEnginegetFile failed to call \"getFiles\" !!");
+					}
+				});
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("ClientEngine failed to call \"setExportOptions\" !!");
+			}
+		});
+		
+		
+
+		
+		
+
+		
+	}
+	
+	
 
 	public ArrayList<Contact> getContacts() {
 		return contacts;
@@ -244,23 +286,18 @@ public class ClientEngine implements EntryPoint {
 		return contactRecords;
 	}
 	
-	public void sendExportFields(Tree exportTree){
-		
-	}
 	
 	/**
 	 * This is the entry point method.
 	 */
 	@Override
 	public void onModuleLoad() {
-		
-
 		signInLink.getElement().setClassName("login-area");
 		signInLink.setTitle("sign out");
-		loginImage.getElement().setClassName("login-area");
+		loginImage.getElement().setClassName("login-image");
 		loginPanel.add(signInLink);
-		HTML start = new HTML("<p>Startseite Inhalt YEEEHAAA</p>");
-		RootPanel.get("content").add(start);
+		HTML starttext = new HTML("<h2>Willkommen bei Hakuna Contacta</h2><div id=\"startlogin\">So funktionierts:<br>1. Kontakte ausw\u00E4hlen<br>2. Exportfelder ausw\u00E4hlen<br>3. Download der Exportdatei<br>(4. Als Quelldatei f\u00FCr Word Serienbrief verwenden)</div><div id=\"gcontacts2word\"><img src=\"images/gcontacts2word.png\"><p class=\"whitetext\">Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)  </p></div><div id=\"arrow1\"><img src=\"images/arrow1.png\"/></div>");
+		RootPanel.get("content").add(starttext);
 		RootPanel.get("loginPanelContainer").add(loginPanel);
 		RootPanel.get("footer").clear();
 		HTML footerimage = new HTML("<img src=\"images/1.jpg\">");
@@ -278,6 +315,7 @@ public class ClientEngine implements EntryPoint {
 					addGoogleAuthHelper();
 					loadLogout(result);
 
+					
 
 
 				} else {
@@ -319,4 +357,32 @@ public class ClientEngine implements EntryPoint {
 			}
 		});
 	}
+
+	public HorizontalPanel getLoginPanel() {
+		return loginPanel;
+	}
+
+	public Anchor getSignInLink() {
+		return signInLink;
+	}
+
+	public String getLogouturl() {
+		return logouturl;
+	}
+
+	public void setLogouturl(String logouturl) {
+		this.logouturl = logouturl;
+	}
+
+	public void setPage2(Page2 page2) {
+		this.page2 = page2;
+	}
+
+	public void setPage3(Page3 page3) {
+		this.page2 = page2;
+	}
+	
+	
+	
+	
 }

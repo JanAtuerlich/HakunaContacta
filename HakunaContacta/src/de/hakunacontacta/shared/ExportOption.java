@@ -1,4 +1,6 @@
-package de.hakunacontacta.exportModule;
+package de.hakunacontacta.shared;
+
+import java.io.Serializable;
 
 
 /**
@@ -7,16 +9,27 @@ package de.hakunacontacta.exportModule;
  * @category exportauswahlModul
  * @version 0.1beta
  */
-public class ExportOption implements Comparable<ExportOption> {
+public class ExportOption implements Comparable<ExportOption>, Serializable {
 
 	private String sourceType;
 	private String sourceField;
+	private String displayName;
 	private int priority;
+	//
 
-	public ExportOption(String sourceType, String sourceField, int priority) {
-		this.sourceType = sourceType;
-		this.sourceField = sourceField;
-		this.priority = priority;
+//	public ExportOption(String sourceType, String sourceField, int priority) {
+//		this.sourceType = sourceType;
+//		this.sourceField = sourceField;
+//		this.priority = priority;
+//	}
+	
+	
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public String getSourceType() {
