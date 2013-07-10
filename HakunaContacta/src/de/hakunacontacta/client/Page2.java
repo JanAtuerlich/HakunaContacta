@@ -90,7 +90,7 @@ public class Page2 extends Composite {
 			page2.remove(downloadLink);
 		}
 		
-		downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
+		downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"ContactExport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">ContactExport."+dateiendung+"</a></div>");
 		
 
 
@@ -106,7 +106,7 @@ public class Page2 extends Composite {
 		clientEngine.setPage2(_instance);
 //		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
-		Button exportButton = new Button("Create Export");
+		Button exportButton = new Button("Exportdatei erstellen");
 		exportButton.addStyleName("exportButton");
 
 		// Linke Seite
@@ -146,7 +146,7 @@ public class Page2 extends Composite {
 			}
 		});
 
-		clientEngine.getExportFields(ExportTypeEnum.CSV);
+		clientEngine.getExportFields(ExportTypeEnum.CSVWord);
 
 		// Dropdown-Menu
 		final ListBox formatList = new ListBox();
