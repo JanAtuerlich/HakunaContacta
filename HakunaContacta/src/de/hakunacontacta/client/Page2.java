@@ -93,8 +93,7 @@ public class Page2 extends Composite {
 			page2.remove(downloadLink);
 		}
 		
-		class MyModule{
-			// Defines a global var in Js accesible by Java code
+		class MyModule{	
 			public native void openURL(String url, String filename) /*-{
 				
 			  $wnd.url = url;
@@ -103,24 +102,26 @@ public class Page2 extends Composite {
 				var downloadLink = document.createElement("a");
 				downloadLink.href = uri;
 				downloadLink.download = filename;
+				downloadLink.id = "download"
 				
 				document.body.appendChild(downloadLink);
-				downloadLink.click();
+				document.getElementById('download').click();
 				document.body.removeChild(downloadLink);
+
 				
 			}-*/;
 		}
-////		if (!ClientEngine.isIEBrowser()) {
-////			
-////			MyModule embeddedJavaScript = new MyModule();
-////			embeddedJavaScript.openURL("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung);	
-////		}
-//			
-//		else{
-			downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
-			page2.add(downloadLink);
+		if (!ClientEngine.isIEBrowser()) {
+			
+			MyModule embeddedJavaScript = new MyModule();
+			embeddedJavaScript.openURL("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung);	
+		}
+			
+		else{
+//			downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
+			Window.open("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung, "");
 			//Downloadlink wird erstellt
-//		}
+		}
 			
 
 			
