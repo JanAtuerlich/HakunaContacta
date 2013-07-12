@@ -269,11 +269,11 @@ public class Page1 extends Composite {
 
 	private void checkGroupsForSelection() {
 		for (ContactGroupRecord groupRecord : contactGroups) {
-			String contactsInGroup = groupRecord.getAttributeAsString("contacts");
+			String contactsInGroup = groupRecord.getAttributeAsString("contacts") + ",";
 			boolean allContactsAreSelected = true;
 			boolean isEmpty = true;
-			for (ContactRecord contactRecord : contacts) {
-				if (contactsInGroup.contains(contactRecord.getEtag())) {
+			for(ContactRecord contactRecord : contacts){
+				if (contactsInGroup.contains(contactRecord.getEtag() + ",")){
 					isEmpty = false;
 					if (!contactRecord.getSelected()) {
 						allContactsAreSelected = false;
