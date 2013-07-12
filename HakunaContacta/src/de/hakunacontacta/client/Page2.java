@@ -14,12 +14,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.DragDataAction;
 
-import com.smartgwt.client.widgets.events.ValueChangedEvent;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
@@ -32,39 +30,31 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 
 public class Page2 extends Composite {
 	private VerticalPanel page2 = new VerticalPanel();
-	static private Page2 _instance = null;
-	private static ClientEngine clientEngine;
+	private ClientEngine clientEngine;
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private HorizontalPanel addPanel = new HorizontalPanel();
 	private TextBox addExportfieldTextBox = new TextBox();
 	private Button addExportfieldButton = new Button("Add");
-	private static Tree thisSourceTypesTree = null;
-	private static Tree thisExportTypesTree = null;
+	private Tree thisSourceTypesTree = null;
+	private Tree thisExportTypesTree = null;
 	TreeGrid sourceGrid = null;
 	TreeGrid exportGrid = null;
-	private static ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
+	private ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
 	private String dateiendung = "csv";
 	private String encoded = "";
 	private HTML downloadLink=null;
 
-	private Page2() {
+	public Page2(ClientEngine cEngine, Tree contactSourceTypesTree) {
+		thisSourceTypesTree = contactSourceTypesTree;
+		clientEngine = cEngine;
 		initPage();
 		initWidget(page2);
 	}
 
-	public void setThisExportTypesTree(Tree thisExportTypesTree) {
-		Page2.thisExportTypesTree = thisExportTypesTree;
+	public void setThisExportTypesTree(Tree ExportTypesTree) {
+		thisExportTypesTree = ExportTypesTree;
 	}
 
-	public static Page2 getInstance(ClientEngine cEngine, Tree contactSourceTypesTree) {
-		thisSourceTypesTree = contactSourceTypesTree;
-
-		clientEngine = cEngine;
-		if (null == _instance) {
-			_instance = new Page2();
-		}
-		return _instance;
-	}
 
 	public void updateData() { // wird beim erneuten Seitenaufbau geladen um den
 								// Inhalt der Grids zu aktuallisieren
@@ -105,7 +95,7 @@ public class Page2 extends Composite {
 	}
 
 	private void initPage() {
-		clientEngine.setPage2(_instance);
+		clientEngine.setPage2(this);
 //		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
 		Button exportButton = new Button("Exportdatei erstellen");
