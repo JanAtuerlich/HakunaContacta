@@ -224,7 +224,8 @@ public class Page1 extends Composite {
 		} else {
 			contactGrid.setData(new ContactRecord[] {});
 			for (ContactRecord record : contacts) {
-				if (record.getAttributeAsString("groups").contains(groupName)) {
+				String groups = record.getAttributeAsString("groups") + ",";
+				if(groups.contains(groupName + ",")){
 					contactGrid.addData(record);
 					if (record.getSelected()) {
 						contactGrid.selectRecord(record);
@@ -248,9 +249,9 @@ public class Page1 extends Composite {
 		for (ContactGroupRecord groupRecord : contactGroups) {
 			if (groupRecord.getGroupname().equals(groupname)) {
 				groupRecord.setSelected(selected);
-				String groupContacts = groupRecord.getAttributeAsString("contacts");
+				String groupContacts = groupRecord.getAttributeAsString("contacts") + ",";
 				for (ContactRecord contactRecord : contacts) {
-					if (groupContacts.contains(contactRecord.getEtag())) {
+					if (groupContacts.contains(contactRecord.getEtag() + ",")) {
 						contactRecord.setSelected(selected);
 					}
 				}
