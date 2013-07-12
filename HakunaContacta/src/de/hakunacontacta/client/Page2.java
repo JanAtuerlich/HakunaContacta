@@ -7,11 +7,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -90,12 +93,38 @@ public class Page2 extends Composite {
 			page2.remove(downloadLink);
 		}
 		
-		downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"ContactExport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">ContactExport."+dateiendung+"</a></div>");
-		
+		class MyModule{
+			// Defines a global var in Js accesible by Java code
+			public native void openURL(String url, String filename) /*-{
+				
+			  $wnd.url = url;
+			  var uri = $wnd.url;
+				
+				var downloadLink = document.createElement("a");
+				downloadLink.href = uri;
+				downloadLink.download = filename;
+				
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+				
+			}-*/;
+		}
+////		if (!ClientEngine.isIEBrowser()) {
+////			
+////			MyModule embeddedJavaScript = new MyModule();
+////			embeddedJavaScript.openURL("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung);	
+////		}
+//			
+//		else{
+			downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
+			page2.add(downloadLink);
+			//Downloadlink wird erstellt
+//		}
+			
 
-
-		page2.add(downloadLink);
-		//Downloadlink wird erstellt
+			
+			
 	}
 
 	public void setEncoded(String encoded) {
@@ -106,7 +135,7 @@ public class Page2 extends Composite {
 		clientEngine.setPage2(_instance);
 //		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
-		Button exportButton = new Button("Exportdatei erstellen");
+		Button exportButton = new Button("Download Exportdatei");
 		exportButton.addStyleName("exportButton");
 
 		// Linke Seite
@@ -272,7 +301,8 @@ public class Page2 extends Composite {
 			public void onClick(ClickEvent event) {
 				
 				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
-				
+//				Window.Location.assign("http://www.someurl.com");
+
 				// final HTML html = new HTML("<a download=\"MyFile." +
 				// dateiendung +
 				// "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
