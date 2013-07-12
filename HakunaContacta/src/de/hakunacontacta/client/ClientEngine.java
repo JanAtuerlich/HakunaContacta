@@ -158,6 +158,7 @@ public class ClientEngine implements EntryPoint {
 										    
 										    historyListener = new MyHistoryListener();
 										    historyListener.setPage1(page1);
+
 										    
 									    	History.addValueChangeHandler(historyListener);
 									    	History.fireCurrentHistoryState(); 
