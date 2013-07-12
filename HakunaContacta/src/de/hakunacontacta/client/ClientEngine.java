@@ -187,7 +187,7 @@ public class ClientEngine implements EntryPoint {
 				exportTreeManager = new ExportTreeManager();
 				contactSourceTypesTree = exportTreeManager.getTree(result);
 				
-				page2 = Page2.getInstance(thisClientEngine, contactSourceTypesTree);
+				page2 = new Page2(thisClientEngine, contactSourceTypesTree);
 				historyListener.setPage2(page2);
 				page2.updateData();
 				History.newItem("page2", true);

@@ -7,7 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.DragDataAction;
@@ -33,39 +32,36 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 
 public class Page2 extends Composite {
 	private VerticalPanel page2 = new VerticalPanel();
-	static private Page2 _instance = null;
-	private static ClientEngine clientEngine;
+
+	private ClientEngine clientEngine;
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private HorizontalPanel addPanel = new HorizontalPanel();
 	private TextBox addExportfieldTextBox = new TextBox();
 	private Button addExportfieldButton = new Button("Add");
-	private static Tree thisSourceTypesTree = null;
-	private static Tree thisExportTypesTree = null;
+
+	private Tree thisSourceTypesTree = null;
+	private Tree thisExportTypesTree = null;
 	TreeGrid sourceGrid = null;
 	TreeGrid exportGrid = null;
-	private static ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
+
+	private ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
 	private String dateiendung = "csv";
 	private String encoded = "";
 	private HTML downloadLink=null;
 
-	private Page2() {
+
+	public Page2(ClientEngine cEngine, Tree contactSourceTypesTree) {
+		thisSourceTypesTree = contactSourceTypesTree;
+		clientEngine = cEngine;
 		initPage();
 		initWidget(page2);
 	}
 
-	public void setThisExportTypesTree(Tree thisExportTypesTree) {
-		Page2.thisExportTypesTree = thisExportTypesTree;
+
+	public void setThisExportTypesTree(Tree ExportTypesTree) {
+		thisExportTypesTree = ExportTypesTree;
 	}
 
-	public static Page2 getInstance(ClientEngine cEngine, Tree contactSourceTypesTree) {
-		thisSourceTypesTree = contactSourceTypesTree;
-
-		clientEngine = cEngine;
-		if (null == _instance) {
-			_instance = new Page2();
-		}
-		return _instance;
-	}
 
 	public void updateData() { // wird beim erneuten Seitenaufbau geladen um den
 								// Inhalt der Grids zu aktuallisieren
@@ -93,6 +89,7 @@ public class Page2 extends Composite {
 			page2.remove(downloadLink);
 		}
 		
+
 		class MyModule{	
 			public native void openURL(String url, String filename) /*-{
 				
@@ -133,11 +130,15 @@ public class Page2 extends Composite {
 	}
 
 	private void initPage() {
-		clientEngine.setPage2(_instance);
+
+		clientEngine.setPage2(this);
 //		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
+
 		Button exportButton = new Button("Download Exportdatei");
 		exportButton.addStyleName("exportButton");
+		Button zurueckButton = new Button("Zur\u00FCck");
+		zurueckButton.addStyleName("zurueckButton");
 
 		// Linke Seite
 
@@ -302,22 +303,19 @@ public class Page2 extends Composite {
 			public void onClick(ClickEvent event) {
 				
 				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
-//				Window.Location.assign("http://www.someurl.com");
+}
 
-				// final HTML html = new HTML("<a download=\"MyFile." +
-				// dateiendung +
-				// "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
-				
-
-				// String uri
-				// ="<a download=\"MyFile.csv\" href=data:text/csv;charset=utf-8,\"test\">Download</a>";
-				// String uri ="href=data:text/csv;charset=utf-8,\"test\"";
-				// Window.open(uri, "TEST", "");
-				// History.newItem("page1", true);
+		});
+		
+		zurueckButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("page1", true);
 			}
 		});
 		page2.add(mainPanel);
 		page2.add(exportButton);
+		page2.add(zurueckButton);
 		page2.setStyleName("page2");
 
 	}
