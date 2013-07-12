@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -18,6 +19,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.DragDataAction;
 
+import com.smartgwt.client.widgets.events.ValueChangedEvent;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
@@ -108,6 +110,8 @@ public class Page2 extends Composite {
 		page2.setPixelSize(500, 350);
 		Button exportButton = new Button("Exportdatei erstellen");
 		exportButton.addStyleName("exportButton");
+		Button zurueckButton = new Button("Zur\u00FCck");
+		zurueckButton.addStyleName("zurueckButton");
 
 		// Linke Seite
 
@@ -272,21 +276,18 @@ public class Page2 extends Composite {
 			public void onClick(ClickEvent event) {
 				
 				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
-				
-				// final HTML html = new HTML("<a download=\"MyFile." +
-				// dateiendung +
-				// "\" href=data:application/vnd.ms-excel;base64,77u/Vm9ybmFtZTtOYWNobmFtZTtBZHJlc3NlO1RlbGVmb25udW1tZXI7DQpNYXJjZWw7UHLDvGdlbDtUb25hdXN0ci4gNDEgNzIxODkgVsO2aHJpbmdlbjsgMDE3NjYxNjc3NTAxOw0KTWF4OyBNdXN0ZXJtYW5uOyBNdXN0ZXJzdHIuIDEgNzg0NjcgS29uc3Rhbno7IDAxMjU2NDU0NTU7DQo=>Download</a>");
-				
-
-				// String uri
-				// ="<a download=\"MyFile.csv\" href=data:text/csv;charset=utf-8,\"test\">Download</a>";
-				// String uri ="href=data:text/csv;charset=utf-8,\"test\"";
-				// Window.open(uri, "TEST", "");
-				// History.newItem("page1", true);
+			}
+		});
+		
+		zurueckButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("page1", true);
 			}
 		});
 		page2.add(mainPanel);
 		page2.add(exportButton);
+		page2.add(zurueckButton);
 		page2.setStyleName("page2");
 
 	}

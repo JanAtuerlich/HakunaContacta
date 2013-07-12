@@ -298,6 +298,14 @@ h2 {
     width: 120px;
     top: -20px;
 }
+
+.zurueckButton{
+    left: 0px;
+    position: relative;
+    width: 110px;
+    top: -69px;
+}
+
 #downloadLink {
     left: 590px;
     position: relative;

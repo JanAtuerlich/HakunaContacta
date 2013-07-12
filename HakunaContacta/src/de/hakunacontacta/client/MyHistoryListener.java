@@ -23,21 +23,28 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
 		System.out.println("Current State : " + event.getValue());
 
 		if (event.getValue().equals("page1")){
-    		RootPanel.get("content").clear();
-    		RootPanel.get("content").add(page1);
-    		RootPanel.get("footer").clear();
-    		HTML footerimage = new HTML("<img src=\"images/2.jpg\">");
-    		RootPanel.get("footer").add(footerimage);
+    		goToPage1();
 		}
 		
 		if (event.getValue().equals("page2")){
-    		RootPanel.get("content").clear();
-    		RootPanel.get("content").add(page2);
-    		RootPanel.get("footer").clear();
-    		HTML footerimage = new HTML("<img src=\"images/3.jpg\">");
-    		RootPanel.get("footer").add(footerimage);
+			goToPage2();
+		}
 
-		}	
+	}
+	
+	public void goToPage1(){
+		RootPanel.get("content").clear();
+		RootPanel.get("content").add(page1);
+		RootPanel.get("footer").clear();
+		HTML footerimage = new HTML("<img src=\"images/2.jpg\">");
+		RootPanel.get("footer").add(footerimage);	
+	}
+	public void goToPage2(){
+		RootPanel.get("content").clear();
+		RootPanel.get("content").add(page2);
+		RootPanel.get("footer").clear();
+		HTML footerimage = new HTML("<img src=\"images/3.jpg\">");
+		RootPanel.get("footer").add(footerimage);	
 	}
 
 }

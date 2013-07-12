@@ -44,21 +44,29 @@ public class ExportManager implements IExportManager {
 		
 		this.addExportField("Vorname", exportFieldsvCard);
 		this.addExportField("Nachname", exportFieldsvCard);
+		this.addExportField("Zweitname", exportFieldsvCard);
+		this.addExportField("Preffix", exportFieldsvCard);
+		this.addExportField("Suffix", exportFieldsvCard);
 		this.addExportField("Adresse", exportFieldsvCard);
 		this.addExportField("Telefon", exportFieldsvCard);
 		this.addExportField("Handy", exportFieldsvCard);
 		this.addExportField("E-Mail privat", exportFieldsvCard);
 		this.addExportField("E-Mail geschäftlich", exportFieldsvCard);
 		this.addExportField("Kommentar", exportFieldsvCard);
+		this.addExportField("Homepage", exportFieldsvCard);
 		
 		this.addExportField("Vorname", exportFieldsXML);
 		this.addExportField("Nachname", exportFieldsXML);
+		this.addExportField("Zweitname", exportFieldsXML);
+		this.addExportField("Preffix", exportFieldsXML);
+		this.addExportField("Suffix", exportFieldsXML);
 		this.addExportField("Adresse", exportFieldsXML);
 		this.addExportField("Telefon", exportFieldsXML);
 		this.addExportField("Handy", exportFieldsXML);
 		this.addExportField("E-Mail privat", exportFieldsXML);
 		this.addExportField("E-Mail geschäftlich", exportFieldsXML);
 		this.addExportField("Kommentar", exportFieldsXML);
+		this.addExportField("Homepage", exportFieldsvCard);
 
 	}
 
