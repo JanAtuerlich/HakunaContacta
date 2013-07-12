@@ -57,6 +57,7 @@ public class ClientEngine implements EntryPoint {
 	private static final Auth AUTH = Auth.get();
 	private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
 	private static final String GOOGLE_CLIENT_ID = "21423817686-ganfq9ap8qed1bffutk67eib8mvdsud6.apps.googleusercontent.com";
+//	private static final String GOOGLE_CLIENT_ID = "21423817686-7lae8ruqd2i5q27147j66hqq3ifuvkuc.apps.googleusercontent.com";
 	private static final String PLUS_ME_SCOPE = "http://www.google.com/m8/feeds";
 	// TODO #05:> end
 
@@ -379,7 +380,31 @@ public class ClientEngine implements EntryPoint {
 		this.page2 = page2;
 	}
 
-	
+	public static native String getBrowserName() /*-{
+    return navigator.userAgent.toLowerCase();
+	}-*/;
+
+	/**
+	* Returns true if the current browser is Chrome.
+	*/
+	public static boolean isChromeBrowser() {
+	    return getBrowserName().toLowerCase().contains("chrome");
+	}
+
+	/**
+	* Returns true if the current browser is Firefox.
+	*/
+	public static boolean isFirefoxBrowser() {
+	    return getBrowserName().toLowerCase().contains("firefox");
+	}
+
+	/**
+	* Returns true if the current browser is IE (Internet Explorer).
+	*/
+	public static boolean isIEBrowser() {
+	    return getBrowserName().toLowerCase().contains("msie");
+	}
+
 	
 	
 }

@@ -9,10 +9,12 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -30,19 +32,23 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 
 public class Page2 extends Composite {
 	private VerticalPanel page2 = new VerticalPanel();
+
 	private ClientEngine clientEngine;
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private HorizontalPanel addPanel = new HorizontalPanel();
 	private TextBox addExportfieldTextBox = new TextBox();
 	private Button addExportfieldButton = new Button("Add");
+
 	private Tree thisSourceTypesTree = null;
 	private Tree thisExportTypesTree = null;
 	TreeGrid sourceGrid = null;
 	TreeGrid exportGrid = null;
+
 	private ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
 	private String dateiendung = "csv";
 	private String encoded = "";
 	private HTML downloadLink=null;
+
 
 	public Page2(ClientEngine cEngine, Tree contactSourceTypesTree) {
 		thisSourceTypesTree = contactSourceTypesTree;
@@ -50,6 +56,7 @@ public class Page2 extends Composite {
 		initPage();
 		initWidget(page2);
 	}
+
 
 	public void setThisExportTypesTree(Tree ExportTypesTree) {
 		thisExportTypesTree = ExportTypesTree;
@@ -82,12 +89,40 @@ public class Page2 extends Composite {
 			page2.remove(downloadLink);
 		}
 		
-		downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"ContactExport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">ContactExport."+dateiendung+"</a></div>");
-		
 
+		class MyModule{	
+			public native void openURL(String url, String filename) /*-{
+				
+			  $wnd.url = url;
+			  var uri = $wnd.url;
+				
+				var downloadLink = document.createElement("a");
+				downloadLink.href = uri;
+				downloadLink.download = filename;
+				downloadLink.id = "download"
+				
+				document.body.appendChild(downloadLink);
+				document.getElementById('download').click();
+				document.body.removeChild(downloadLink);
 
-		page2.add(downloadLink);
-		//Downloadlink wird erstellt
+				
+			}-*/;
+		}
+		if (!ClientEngine.isIEBrowser()) {
+			
+			MyModule embeddedJavaScript = new MyModule();
+			embeddedJavaScript.openURL("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung);	
+		}
+			
+		else{
+//			downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
+			Window.open("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung, "");
+			//Downloadlink wird erstellt
+		}
+			
+
+			
+			
 	}
 
 	public void setEncoded(String encoded) {
@@ -95,10 +130,12 @@ public class Page2 extends Composite {
 	}
 
 	private void initPage() {
+
 		clientEngine.setPage2(this);
 //		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
-		Button exportButton = new Button("Exportdatei erstellen");
+
+		Button exportButton = new Button("Download Exportdatei");
 		exportButton.addStyleName("exportButton");
 		Button zurueckButton = new Button("Zur\u00FCck");
 		zurueckButton.addStyleName("zurueckButton");
@@ -266,7 +303,8 @@ public class Page2 extends Composite {
 			public void onClick(ClickEvent event) {
 				
 				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
-			}
+}
+
 		});
 		
 		zurueckButton.addClickHandler(new ClickHandler() {
