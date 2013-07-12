@@ -161,7 +161,8 @@ public class FileCreator implements IFileCreator {
 		for (ExportField exportField : exportFields) {
 			csv += exportField.getName() + seperator;
 		}
-
+		
+		csv = csv.substring(0, csv.length() - 1);
 		csv += "\n";
 
 		for (Contact contact : cleansedContacts) {
