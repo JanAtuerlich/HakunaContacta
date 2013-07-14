@@ -277,13 +277,16 @@ h2 {
 
 .addExportfieldTextBox {
     width: 205px;
-	height: 22px;
+	height: 24px;
+	margin-top: 2px;
+	z-index: 200780;
 }
 
 .addExportfieldButton {
 	width: 44px;
-	margin-top: -1px;
+	margin-top: 1px;
 	height: 26px;
+	z-index: 200780;
 }
 
 #tip2 {
@@ -300,10 +303,10 @@ h2 {
 }
 
 .zurueckButton{
-    left: 0px;
+    left: 0;
     position: relative;
-    width: 110px;
-    top: -69px;
+    top: -452px;
+    width: 250px;
 }
 
 #downloadLink {
