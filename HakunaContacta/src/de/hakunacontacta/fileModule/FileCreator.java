@@ -1,5 +1,6 @@
 package de.hakunacontacta.fileModule;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,17 +37,14 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 
-public class FileCreator implements IFileCreator {
+public class FileCreator implements IFileCreator, Serializable{
 
 	private static ArrayList<Contact> selectedContacts;
 	private static ArrayList<ExportField> exportFields;
 	private static ArrayList<Contact> cleansedContacts;
 	private static ExportTypeEnum exportFormat;
 
-	public FileCreator(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX) {
-		selectedContacts = selectedContactsX;
-		exportFields = exportFieldsX;
-		exportFormat = exportFormatX;
+	public FileCreator(){
 	}
 
 
@@ -378,6 +376,12 @@ public class FileCreator implements IFileCreator {
 		}
 
 		return vCard;
+	}
+	
+	public void setFields(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX) {
+		selectedContacts = selectedContactsX;
+		exportFields = exportFieldsX;
+		exportFormat = exportFormatX;
 	}
 
 }

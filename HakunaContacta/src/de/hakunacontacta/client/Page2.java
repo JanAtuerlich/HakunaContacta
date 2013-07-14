@@ -44,7 +44,7 @@ public class Page2 extends Composite {
 	TreeGrid sourceGrid = null;
 	TreeGrid exportGrid = null;
 
-	private ExportTypeEnum currentFormat = ExportTypeEnum.CSV;
+	private ExportTypeEnum currentFormat = ExportTypeEnum.CSVWord;
 	private String dateiendung = "csv";
 	private String encoded = "";
 	private HTML downloadLink=null;

@@ -12,11 +12,12 @@ import de.hakunacontacta.shared.ContactSourceField;
 import de.hakunacontacta.shared.ContactSourceType;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class ContactManager implements IContactManager{
+public class ContactManager implements IContactManager, Serializable{
 	private ArrayList<Contact> contacts = new ArrayList<Contact>();
 	private ArrayList<ContactGroup> contactGroups = new ArrayList<ContactGroup>();
 	private final static Logger LOGGER = Logger.getLogger(ContactManager.class.getName());
@@ -34,6 +35,11 @@ public class ContactManager implements IContactManager{
 	/* (non-Javadoc)
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
+	
+	public ContactManager(){
+		
+	}
+	
 	public void load(String token){
 
 		LOGGER.fine("Running ContactManager");
@@ -48,6 +54,7 @@ public class ContactManager implements IContactManager{
 		try {
 			// Gruppen anfordern
 			// Request the feed
+			System.out.println("Jans Dings Google Feed");
 			URL groupFeedUrl = new URL(
 					"https://www.google.com/m8/feeds/groups/default/full");
 			ContactGroupFeed groupResultFeed = myService.getFeed(groupFeedUrl,

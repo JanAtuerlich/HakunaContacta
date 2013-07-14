@@ -1,5 +1,6 @@
 package de.hakunacontacta.exportModule;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hakunacontacta.shared.ExportField;
@@ -14,7 +15,7 @@ import de.hakunacontacta.shared.ExportTypeEnum;
  * @version 0.1beta
  */
 
-public class ExportManager implements IExportManager {
+public class ExportManager implements IExportManager, Serializable {
 
 	private ExportTypeEnum exportType;
 	private ArrayList<ExportField> exportFieldsCSV = new ArrayList<ExportField>();
