@@ -156,7 +156,6 @@ public class ClientEngine implements EntryPoint {
 											final String initToken = History.getToken();
 											
 											page1 = Page1.getInstance(thisClientEngine);
-
 									    	
 										    if (initToken.length() == 0) {
 										      History.newItem("page1");
