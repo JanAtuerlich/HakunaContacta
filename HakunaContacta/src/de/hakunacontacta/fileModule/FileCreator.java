@@ -39,10 +39,10 @@ import ezvcard.VCard;
 
 public class FileCreator implements IFileCreator, Serializable{
 
-	private static ArrayList<Contact> selectedContacts;
-	private static ArrayList<ExportField> exportFields;
-	private static ArrayList<Contact> cleansedContacts;
-	private static ExportTypeEnum exportFormat;
+	private ArrayList<Contact> selectedContacts;
+	private ArrayList<ExportField> exportFields;
+	private ArrayList<Contact> cleansedContacts;
+	private ExportTypeEnum exportFormat;
 
 	public FileCreator(){
 	}

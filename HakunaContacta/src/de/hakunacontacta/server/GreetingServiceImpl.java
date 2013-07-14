@@ -43,9 +43,6 @@ import org.codehaus.jackson.JsonToken;
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
 
 	private static Logger log = Logger.getLogger(GreetingServiceImpl.class.getCanonicalName());
-	ContactManager contactManager;
-	ExportManager exportManager;
-	FileCreator fileCreator;
 
 	@Override
 	public String greetServer(String input) throws IllegalArgumentException {
@@ -124,7 +121,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			session.setAttribute("contactManager", new ContactManager());
 		}
 		session.setAttribute("TEST", "Hallo");
-		contactManager = (ContactManager) session.getAttribute("contactManager");
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		
 //		Ersetzt in Session-Handling: Versuch 1
 //		contactManager = new ContactManager();
@@ -198,7 +195,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		if(session.getAttribute("contactManager")==null){
 			session.setAttribute("contactManager", new ContactManager());
 		}
-		contactManager = (ContactManager) session.getAttribute("contactManager");	
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
 		System.out.println("TEST noch da ? Mal schauen: "+ session.getAttribute("TEST"));
 		return contactManager.getContacts();
 	}
@@ -211,7 +208,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		if(session.getAttribute("contactManager")==null){
 			session.setAttribute("contactManager", new ContactManager());
 		}
-		contactManager = (ContactManager) session.getAttribute("contactManager");
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		
 		return contactManager.getGroups();
 	}
@@ -222,7 +219,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		if(session.getAttribute("contactManager")==null){
 			session.setAttribute("contactManager", new ContactManager());
 		}
-		contactManager = (ContactManager) session.getAttribute("contactManager");	
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
 		
 		contactManager.setSelections(contacts, contactGroups);
 		
@@ -234,7 +231,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		if(session.getAttribute("contactManager")==null){
 			session.setAttribute("contactManager", new ContactManager());
 		}
-		contactManager = (ContactManager) session.getAttribute("contactManager");	
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
 		return contactManager.getSourceTypesOfSelectedContacts();
 	}	// TODO #11:> end	
 
@@ -246,7 +243,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			System.out.println("Neuer exportManager wird angelegt");
 			session.setAttribute("exportManager", new ExportManager());
 		}
-		exportManager = (ExportManager) session.getAttribute("exportManager");
+		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
 		
 //		ersetzt durch session: versuch 1
 //		exportManager = ExportManager.getExportManager();
@@ -282,7 +279,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			session.setAttribute("exportManager", new ExportManager());
 		}
 		System.out.println("exportManager wird zugewiesen mit: " + session.getAttribute("exportManager"));
-		exportManager = (ExportManager) session.getAttribute("exportManager");
+		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
 		
 //		ersetzt durch session: versuch 1
 //		exportManager = ExportManager.getExportManager();
@@ -310,12 +307,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("Ausgabe der Session in getFile" + session);
-		contactManager = (ContactManager) session.getAttribute("contactManager");
-		exportManager = (ExportManager) session.getAttribute("exportManager");
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
+		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
 		if(session.getAttribute("fileCreator")==null){
 			session.setAttribute("fileCreator", new FileCreator());
 		}
-		fileCreator = (FileCreator)session.getAttribute("fileCreator");
+		FileCreator fileCreator = (FileCreator)session.getAttribute("fileCreator");
 		fileCreator.setFields(contactManager.getSelectedContacts(), exportManager.getChosenExportFields(), exportManager.getExportType());
 //		session.setAttribute("fileCreator", fileCreator);
 		
