@@ -211,8 +211,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		} catch (final IOException e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}
-		exportManager =  new ExportManager();
-		
 		return loginInfo;
 	}
  
@@ -239,7 +237,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	@Override
 	public void setExportFields(ArrayList<ExportField> exportFields, ExportTypeEnum type) {
 		System.out.println("setExportFields wurde aufgerufen:");
-	
+		
+		exportManager = ExportManager.getExportManager();
+		
+		
 		if (type == ExportTypeEnum.XML) {
 			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.XML);");
 			exportManager.setExportFormat(ExportTypeEnum.XML);
@@ -259,6 +260,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	
 
 	public ArrayList<ExportField> getExportFields(ExportTypeEnum type) {
+		exportManager = ExportManager.getExportManager();
 		
 		System.out.println("getExportFields aufgerufen! Übergabeparameter String type: " + type);
 		
@@ -282,7 +284,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	
 	public String getFile(){
 		System.out.println("getFile - GreetingServiceImpl");
-		fileCreator = new FileCreator(contactManager.getSelectedContacts(), exportManager.getChosenExportFields(), exportManager.getExportType());
+		fileCreator = FileCreator.getInstance(contactManager.getSelectedContacts(), exportManager.getChosenExportFields(), exportManager.getExportType());
 		
 		String x = fileCreator.cleanseContacts();
 		System.out.println(x);

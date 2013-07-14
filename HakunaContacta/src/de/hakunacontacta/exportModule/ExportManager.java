@@ -16,6 +16,18 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 
 public class ExportManager implements IExportManager {
 
+	private static ExportManager instance;
+
+	// singleton pattern
+	public static ExportManager getExportManager() {
+		if (null == instance) {
+			instance = new ExportManager();
+		}
+		return instance;
+
+	}
+
+
 	private ExportTypeEnum exportType;
 	private ArrayList<ExportField> exportFieldsCSV = new ArrayList<ExportField>();
 	private ArrayList<ExportField> exportFieldsXML = new ArrayList<ExportField>();
