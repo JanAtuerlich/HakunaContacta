@@ -48,6 +48,7 @@ import de.hakunacontacta.client.GreetingService;
 import de.hakunacontacta.contactModule.ContactManager;
 import de.hakunacontacta.exportModule.ExportManager;
 import de.hakunacontacta.fileModule.FileCreator;
+import de.hakunacontacta.shared.Constant;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ExportField;
 import de.hakunacontacta.shared.ExportTypeEnum;
@@ -139,13 +140,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		if (user != null) {
 			loginInfo.setLoggedIn(true);
 			loginInfo.setName(user.getEmail());
-			loginInfo.setLogoutUrl(userService.createLogoutURL("http://127.0.0.1:8888/logout.html"));
+			loginInfo.setLogoutUrl(userService.createLogoutURL("/logout.html"));
 //			loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 
 		} else {
 			loginInfo.setLoggedIn(false);
-//			loginInfo.setLoginUrl(userService.createLoginURL("http://hakunacontacta.appspot.com/HakunaContacta.html"));
-			loginInfo.setLoginUrl(userService.createLoginURL("http://127.0.0.1:8888/HakunaContacta.html?gwt.codesvr=127.0.0.1:9997"));
+			loginInfo.setLoginUrl(userService.createLoginURL(Constant.APP_LINK));
 		}
 		return loginInfo;
 	}

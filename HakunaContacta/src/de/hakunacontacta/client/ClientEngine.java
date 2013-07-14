@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
 import de.hakunacontacta.client.MyHistoryListener;
+import de.hakunacontacta.shared.Constant;
 import de.hakunacontacta.shared.ContactData2Record;
 import de.hakunacontacta.shared.ContactGroupData2Record;
 import de.hakunacontacta.shared.ContactGroupRecord;
@@ -56,8 +57,8 @@ public class ClientEngine implements EntryPoint {
 	private ClientEngine thisClientEngine = this;
 	private static final Auth AUTH = Auth.get();
 	private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
-	private static final String GOOGLE_CLIENT_ID = "21423817686-ganfq9ap8qed1bffutk67eib8mvdsud6.apps.googleusercontent.com";
-//	private static final String GOOGLE_CLIENT_ID = "21423817686-7lae8ruqd2i5q27147j66hqq3ifuvkuc.apps.googleusercontent.com";
+//	private static final String GOOGLE_CLIENT_ID = "21423817686-ganfq9ap8qed1bffutk67eib8mvdsud6.apps.googleusercontent.com";
+	private static final String GOOGLE_CLIENT_ID = Constant.GOOGLE_CLIENT_ID;
 	private static final String PLUS_ME_SCOPE = "http://www.google.com/m8/feeds";
 	// TODO #05:> end
 

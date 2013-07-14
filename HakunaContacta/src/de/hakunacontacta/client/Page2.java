@@ -137,7 +137,7 @@ public class Page2 extends Composite {
 
 		Button exportButton = new Button("Download Exportdatei");
 		exportButton.addStyleName("exportButton");
-		Button zurueckButton = new Button("Zur\u00FCck");
+		Button zurueckButton = new Button("Zur\u00FCck zur Kontaktauswahl");
 		zurueckButton.addStyleName("zurueckButton");
 
 		// Linke Seite
@@ -227,6 +227,7 @@ public class Page2 extends Composite {
 			public void onClick(ClickEvent event) {
 				final String name = addExportfieldTextBox.getText().trim();
 				addExportfieldTextBox.setFocus(true);
+				
 
 				// Stock code must be between 1 and 15 chars that are numbers,
 				// letters, or dots.
@@ -256,8 +257,26 @@ public class Page2 extends Composite {
 		addExportfieldTextBox.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					final String name = addExportfieldTextBox.getText().trim();
+					addExportfieldTextBox.setFocus(true);
+					
+
+					// Stock code must be between 1 and 15 chars that are numbers,
+					// letters, or dots.
+					if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
+						Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
+						addExportfieldTextBox.selectAll();
+						return;
+					}
+
+					// Don't add the stock if it's already in the table.
+					if (thisExportTypesTree.find("Name", name) != null) {
+						Window.alert("Es ist bereits ein Exportfeld mit dem Namen \"" + name + "\" vorhanden.");
+						return;
+					}
+					
 					TreeNode childNode = new TreeNode();
-					childNode.setAttribute("Name", "Exportfeld");
+					childNode.setAttribute("Name", name);
 					childNode.setCanDrag(false);
 					childNode.setIsFolder(true);
 					thisExportTypesTree.add(childNode, thisExportTypesTree.getRoot());
