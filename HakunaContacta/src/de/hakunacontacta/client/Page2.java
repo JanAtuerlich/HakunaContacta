@@ -49,6 +49,7 @@ public class Page2 extends Composite {
 	private String encoded = "";
 	private HTML downloadLink=null;
 
+	
 
 	public Page2(ClientEngine cEngine, Tree contactSourceTypesTree) {
 		thisSourceTypesTree = contactSourceTypesTree;
@@ -57,6 +58,7 @@ public class Page2 extends Composite {
 		initWidget(page2);
 	}
 
+	
 
 	public void setThisExportTypesTree(Tree ExportTypesTree) {
 		thisExportTypesTree = ExportTypesTree;
