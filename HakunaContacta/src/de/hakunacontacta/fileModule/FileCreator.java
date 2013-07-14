@@ -39,27 +39,21 @@ import ezvcard.VCard;
 
 public class FileCreator implements IFileCreator {
 
-	static private FileCreator _instance = null;
-	private static ArrayList<Contact> selectedContacts;
-	private static ArrayList<ExportField> exportFields;
-	private static ArrayList<Contact> cleansedContacts;
-	private static ExportTypeEnum exportFormat;
+	private ArrayList<Contact> selectedContacts;
+	private ArrayList<ExportField> exportFields;
+	private ArrayList<Contact> cleansedContacts;
+	private ExportTypeEnum exportFormat;
 
 	private FileCreator() {
 	}
 
-	public static FileCreator getInstance(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX) {
-		if (null == _instance) {
-			_instance = new FileCreator();
-		}
+	public FileCreator(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX) {
 		selectedContacts = selectedContactsX;
 		exportFields = exportFieldsX;
 		if (exportFields == null) {
 			System.out.println("nullpointer in consctructor of FileCreator");
 		}
 		exportFormat = exportFormatX;
-
-		return _instance;
 	}
 
 	// public FileCreator(ArrayList<Contact> selectedContacts,
