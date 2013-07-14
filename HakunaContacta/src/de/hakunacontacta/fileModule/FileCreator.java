@@ -10,7 +10,6 @@ import net.sourceforge.cardme.vcard.VCardImpl;
 import net.sourceforge.cardme.vcard.arch.ParameterTypeStyle;
 import net.sourceforge.cardme.vcard.arch.VCardVersion;
 import net.sourceforge.cardme.vcard.exceptions.VCardBuildException;
-import net.sourceforge.cardme.vcard.features.NameFeature;
 import net.sourceforge.cardme.vcard.types.AdrType;
 import net.sourceforge.cardme.vcard.types.EmailType;
 import net.sourceforge.cardme.vcard.types.ExtendedType;
@@ -39,28 +38,17 @@ import ezvcard.VCard;
 
 public class FileCreator implements IFileCreator {
 
-	static private FileCreator _instance = null;
 	private static ArrayList<Contact> selectedContacts;
 	private static ArrayList<ExportField> exportFields;
 	private static ArrayList<Contact> cleansedContacts;
 	private static ExportTypeEnum exportFormat;
 
-	private FileCreator() {
-	}
-
-	public static FileCreator getInstance(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX) {
-		if (null == _instance) {
-			_instance = new FileCreator();
-		}
+	public FileCreator(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX) {
 		selectedContacts = selectedContactsX;
 		exportFields = exportFieldsX;
-		if (exportFields == null) {
-			System.out.println("nullpointer in consctructor of FileCreator");
-		}
 		exportFormat = exportFormatX;
-
-		return _instance;
 	}
+
 
 	// public FileCreator(ArrayList<Contact> selectedContacts,
 	// ArrayList<ExportField> exportFields, String exportFormat) {
@@ -72,6 +60,7 @@ public class FileCreator implements IFileCreator {
 	@Override
 	public String cleanseContacts() {
 		System.out.println("Entered cleanseContacts");
+		
 		cleansedContacts = new ArrayList<Contact>();
 
 		for (Contact incomingContact : selectedContacts) {
