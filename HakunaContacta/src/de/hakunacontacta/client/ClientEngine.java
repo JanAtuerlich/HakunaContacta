@@ -60,6 +60,7 @@ public class ClientEngine implements EntryPoint {
 //	private static final String GOOGLE_CLIENT_ID = "21423817686-ganfq9ap8qed1bffutk67eib8mvdsud6.apps.googleusercontent.com";
 	private static final String GOOGLE_CLIENT_ID = Constant.GOOGLE_CLIENT_ID;
 	private static final String PLUS_ME_SCOPE = "http://www.google.com/m8/feeds";
+	private String user_token;
 	// TODO #05:> end
 
 	// TODO #06: define controls for login
@@ -103,9 +104,12 @@ public class ClientEngine implements EntryPoint {
 		AUTH.login(req, new Callback<String, Throwable>() {
 			@Override
 			public void onSuccess(final String token) {
-
+				
 				if (!token.isEmpty()) {
+					user_token=token;	
 					greetingService.loginDetails(token, new AsyncCallback<LoginInfo>() {
+						
+						
 						@Override
 						public void onFailure(final Throwable caught) {
 							GWT.log("loginDetails -> onFailure");
@@ -114,7 +118,7 @@ public class ClientEngine implements EntryPoint {
 						@Override
 						public void onSuccess(final LoginInfo loginInfo) {
 							greetingService.getContactGroups(new AsyncCallback<ArrayList<ContactGroup>>(){
-							
+								
 								@Override
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
@@ -403,6 +407,10 @@ public class ClientEngine implements EntryPoint {
 	*/
 	public static boolean isIEBrowser() {
 	    return getBrowserName().toLowerCase().contains("msie");
+	}
+
+	public String getUser_token() {
+		return user_token;
 	}
 
 	
