@@ -27,8 +27,7 @@ import de.hakunacontacta.shared.ContactRecord;
 public class Page1 extends Composite {
 
 	private VerticalPanel page1 = new VerticalPanel();
-	static private Page1 _instance = null;
-	private static ClientEngine clientEngine;
+	private ClientEngine clientEngine;
 	private VerticalPanel mainPanel = new VerticalPanel();
 
 	private ContactRecord[] contacts;
@@ -46,12 +45,10 @@ public class Page1 extends Composite {
 		initWidget(page1);
 	}
 
-	public static Page1 getInstance(ClientEngine cEngine) {
+	public Page1(ClientEngine cEngine) {
 		clientEngine = cEngine;
-		if (null == _instance) {
-			_instance = new Page1();
-		}
-		return _instance;
+		initPage();
+		initWidget(page1);
 	}
 
 	private void initPage() {

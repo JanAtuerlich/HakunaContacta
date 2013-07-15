@@ -117,9 +117,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("loginDetails(): die Session-ID lautet: " + session.getId());
-		if(session.getAttribute("contactManager")==null){
-			session.setAttribute("contactManager", new ContactManager());
-		}
+
+		session.setAttribute("contactManager", new ContactManager());
+
 		session.setAttribute("TEST", "Hallo");
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		

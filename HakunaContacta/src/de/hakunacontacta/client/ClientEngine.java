@@ -149,13 +149,16 @@ public class ClientEngine implements EntryPoint {
 													}
 												}
 												contactGroup.setContacts(tempContacts);
-											}
-											contactRecords = ContactData2Record.getNewRecords(contacts);
-											contactGroupRecords = ContactGroupData2Record.getNewRecords(contactGroups);
+											} 
+											ContactData2Record contactData2Record = new ContactData2Record();
+											ContactGroupData2Record contactGroupData2Record = new ContactGroupData2Record();
+											
+											contactRecords = contactData2Record.getNewRecords(contacts);
+											contactGroupRecords = contactGroupData2Record.getNewRecords(contactGroups);
 											
 											final String initToken = History.getToken();
 											
-											page1 = Page1.getInstance(thisClientEngine);
+											page1 = new Page1(thisClientEngine);
 									    	
 										    if (initToken.length() == 0) {
 										      History.newItem("page1");

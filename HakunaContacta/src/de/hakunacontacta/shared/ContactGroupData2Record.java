@@ -8,13 +8,13 @@ import de.hakunacontacta.contactModule.ContactGroup;
 
 public class ContactGroupData2Record {
 	
-    private static ContactGroupRecord[] records;  
+    private ContactGroupRecord[] records;  
     
-    public static ContactGroupRecord[] getRecords() {  
+    public ContactGroupRecord[] getRecords() {  
         return records;  
     }  
   
-    public static ContactGroupRecord[] getNewRecords(ArrayList<ContactGroup> contactGroups) {  
+    public ContactGroupRecord[] getNewRecords(ArrayList<ContactGroup> contactGroups) {  
     	
     	int arraySize = 0;
     	for (ContactGroup contactGroup : contactGroups) {
