@@ -1,6 +1,7 @@
 package de.hakunacontacta.fileModule;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -133,7 +134,13 @@ public class FileCreator implements IFileCreator, Serializable{
 
 		System.out.println("AusgabeString: \n" + output);
 
-		byte[] encoded = Base64.encodeBase64(output.getBytes());
+		byte[] encoded = null;
+		try {
+			encoded = Base64.encodeBase64(output.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return new String(encoded);
 	}
@@ -279,7 +286,8 @@ public class FileCreator implements IFileCreator, Serializable{
 
 							AdrType address1 = new AdrType();
 							address1.setCharset("UTF-8");
-							address1.setExtendedAddress(sourceField.getValue());
+							
+							address1.setExtendedAddress(sourceField.getValue().replace("\n", " "));
 							// address1.setCountryName("U.S.A.");
 							// address1.setLocality("New York");
 							// address1.setRegion("New York");
