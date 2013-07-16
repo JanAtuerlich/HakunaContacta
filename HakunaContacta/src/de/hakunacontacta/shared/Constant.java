@@ -31,8 +31,8 @@ public interface Constant {
 //	final static String APP_LINK = "http://127.0.0.1:8888/HakunaContacta.html?gwt.codesvr=127.0.0.1:9997"; 
 	
 //	Online
-	final static String GOOGLE_CLIENT_ID = "21423817686-7lae8ruqd2i5q27147j66hqq3ifuvkuc.apps.googleusercontent.com"; 
-	final static String APP_LINK = "http://hakunacontacta.appspot.com/HakunaContacta.html"; 
+	final static String GOOGLE_CLIENT_ID = "163881565295-ngpkhb4hie9emdmki7mta52sitbiinbt.apps.googleusercontent.com"; 
+	final static String APP_LINK = "http://hakuna-contacta.appspot.com/HakunaContacta.html"; 
 	
 	
 	final static String VIDEO_FAVS = "VideoFavs";
