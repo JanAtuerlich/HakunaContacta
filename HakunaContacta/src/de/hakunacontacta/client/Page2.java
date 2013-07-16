@@ -315,9 +315,6 @@ public class Page2 extends Composite {
 		mainPanel.add(formatList);
 		mainPanel.add(grids);
 		mainPanel.add(addPanel);
-		String link = "https://accounts.google.com/o/oauth2/revoke?token={"+clientEngine.getUser_token()+"}";
-		HTML revokelink = new HTML("<a href=\""+link+"\">Revoke-Link</a>");
-		mainPanel.add(revokelink);
 		mainPanel.addStyleName("mainPanel");
 
 		// ------------------------------------

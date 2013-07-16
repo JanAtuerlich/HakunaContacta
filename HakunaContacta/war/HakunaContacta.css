@@ -243,6 +243,7 @@ h2 {
     position: relative;
     text-decoration: none;
     top: 14px;
+    z-index: 1000000;
 }
 
 .login-image {
