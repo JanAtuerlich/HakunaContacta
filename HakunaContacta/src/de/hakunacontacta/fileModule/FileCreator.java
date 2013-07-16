@@ -134,15 +134,16 @@ public class FileCreator implements IFileCreator, Serializable{
 
 		System.out.println("AusgabeString: \n" + output);
 
-		byte[] encoded = null;
-		try {
-			encoded = Base64.encodeBase64(output.getBytes("UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return new String(encoded);
+//		byte[] encoded = null;
+//		try {
+//			encoded = Base64.encodeBase64(output.getBytes("UTF-8"));
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		return new String(encoded);
+		return new String(output);
 	}
 
 	private String createCSV() {

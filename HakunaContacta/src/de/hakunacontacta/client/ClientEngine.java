@@ -1,6 +1,7 @@
 package de.hakunacontacta.client;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import de.hakunacontacta.contactModule.Contact;
@@ -28,6 +29,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.smartgwt.client.widgets.tree.Tree;
@@ -252,6 +254,13 @@ public class ClientEngine implements EntryPoint {
 
 					@Override
 					public void onSuccess(String result) {
+						
+						try {
+							result = new String(Base64.encodeBase64(result.getBytes("UTF-8")));
+						} catch (UnsupportedEncodingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						page2.setEncoded(result);
 						page2.createDownloadLink();
 					}
