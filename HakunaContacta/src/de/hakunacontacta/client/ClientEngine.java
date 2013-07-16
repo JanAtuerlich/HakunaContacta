@@ -33,7 +33,7 @@ import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.smartgwt.client.widgets.tree.Tree;
-import com.smartgwt.client.widgets.tree.TreeNode;
+
 
  
 /**
@@ -255,12 +255,8 @@ public class ClientEngine implements EntryPoint {
 					@Override
 					public void onSuccess(String result) {
 						
-						try {
-							result = new String(Base64.encodeBase64(result.getBytes("UTF-8")));
-						} catch (UnsupportedEncodingException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						result = de.hakunacontacta.client.Base64.encode(result);
+						
 						page2.setEncoded(result);
 						page2.createDownloadLink();
 					}

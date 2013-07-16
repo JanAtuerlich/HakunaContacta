@@ -188,7 +188,7 @@ public class FileCreator implements IFileCreator, Serializable{
 			csv += exportField.getName() + seperator;
 		}
 		csv = csv.substring(0, csv.length() - 1);
-		csv += "\n";
+		csv += "*\n";
 
 		for (Contact contact : cleansedContacts) {
 
