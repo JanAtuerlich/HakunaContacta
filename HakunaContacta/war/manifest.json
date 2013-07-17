@@ -1,0 +1,16 @@
+{
+  "name": "Hakuna Contacta ",
+  "description": "Einfache Kontaktexporte in die Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)",
+  "version": "1",
+  "app": {
+    "urls": [
+      "http://hakuna-contacta.appspot.com/*"
+    ],
+    "launch": {
+      "web_url": "http://hakuna-contacta.appspot.com/"
+    }
+  },
+  "icons": {
+    "128": "logo_chromeappstore.png"
+  }
+}
