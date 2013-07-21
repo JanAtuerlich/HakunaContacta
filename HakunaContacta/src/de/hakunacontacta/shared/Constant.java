@@ -33,7 +33,7 @@ public interface Constant {
 //	Online
 //	final static String GOOGLE_CLIENT_ID = "163881565295-ngpkhb4hie9emdmki7mta52sitbiinbt.apps.googleusercontent.com"; 
 //	final static String APP_LINK = "http://hakuna-contacta.appspot.com/HakunaContacta.html"; 
-	
+//	
 	
 	final static String VIDEO_FAVS = "VideoFavs";
 	/* end of session attributes */
