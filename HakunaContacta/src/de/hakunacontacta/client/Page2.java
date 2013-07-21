@@ -179,7 +179,7 @@ public class Page2 extends Composite {
 			}
 		});
 
-		clientEngine.getExportFields(ExportTypeEnum.CSVWord);
+		clientEngine.getExportFields(ExportTypeEnum.CSVWord, true);
 
 		// Dropdown-Menu
 		final ListBox formatList = new ListBox();
@@ -233,6 +233,11 @@ public class Page2 extends Composite {
 
 				// Stock code must be between 1 and 15 chars that are numbers,
 				// letters, or dots.
+				if (name.matches("")) {
+					Window.alert("Der Exportfeldname ist leer! Bitte geben Sie einen Namen ein!");
+					addExportfieldTextBox.selectAll();
+					return;
+				}
 				if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
 					Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
 					addExportfieldTextBox.selectAll();

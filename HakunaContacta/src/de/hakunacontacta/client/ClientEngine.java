@@ -159,19 +159,39 @@ public class ClientEngine implements EntryPoint {
 											contactGroupRecords = contactGroupData2Record.getNewRecords(contactGroups);
 											
 											final String initToken = History.getToken();
+										    historyListener = new MyHistoryListener();
+									    	
+
 											
 											page1 = new Page1(thisClientEngine);
 									    	
 										    if (initToken.length() == 0) {
 										      History.newItem("page1");
+										      historyListener.setPage1(page1);
+										      History.addValueChangeHandler(historyListener);
+										      History.fireCurrentHistoryState(); 
 										    }
+  
+										    System.out.println("Token: "+initToken);
 										    
-										    historyListener = new MyHistoryListener();
-										    historyListener.setPage1(page1);
 
 										    
-									    	History.addValueChangeHandler(historyListener);
-									    	History.fireCurrentHistoryState(); 
+										    if (initToken.equals("page1")) {
+										    	historyListener.setPage1(page1);
+										    	History.addValueChangeHandler(historyListener);
+										    	History.fireCurrentHistoryState(); 
+										    }
+				    
+										    if (initToken.equals("page2")) {
+											    historyListener.setPage1(page1);
+										    	History.addValueChangeHandler(historyListener);
+										    	reloadPage2();
+										    }
+										    
+
+
+										    
+
 										}
 									});
 									
@@ -210,11 +230,33 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 	
+	public void reloadPage2() {
+		greetingService.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
+			@Override
+			public void onSuccess(ArrayList<ContactSourceType> result) {
+				exportTreeManager = new ExportTreeManager();
+				contactSourceTypesTree = exportTreeManager.getTree(result);
+				
+				page2 = new Page2(thisClientEngine, contactSourceTypesTree);
+				historyListener.setPage2(page2);
+				page2.updateData();
+				History.newItem("page2", true);
+				History.fireCurrentHistoryState();
+				
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Problem beim Erstellen der ContactSourceTypes beim Client");
+			}
+		});
+	}
+	
 	public void writeExportOptions(Tree exportTree, ExportTypeEnum lastFormat, final ExportTypeEnum newFormat){
 		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {				
-				thisClientEngine.getExportFields(newFormat);
+				thisClientEngine.getExportFields(newFormat,false);
 			}
 
 			@Override
@@ -224,8 +266,9 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 	
-	public void getExportFields(ExportTypeEnum type) {
-		greetingService.getExportFields(type, new AsyncCallback<ArrayList<ExportField>>() {
+
+	public void getExportFields(ExportTypeEnum type, boolean firstload) {
+		greetingService.getExportFields(type, firstload, new AsyncCallback<ArrayList<ExportField>>() {
 
 			@Override
 			public void onSuccess(ArrayList<ExportField> result) {

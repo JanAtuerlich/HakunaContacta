@@ -54,7 +54,6 @@ public class ContactManager implements IContactManager, Serializable{
 		try {
 			// Gruppen anfordern
 			// Request the feed
-			System.out.println("Jans Dings Google Feed");
 			URL groupFeedUrl = new URL(
 					"https://www.google.com/m8/feeds/groups/default/full");
 			ContactGroupFeed groupResultFeed = myService.getFeed(groupFeedUrl,
