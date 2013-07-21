@@ -118,15 +118,20 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("loginDetails(): die Session-ID lautet: " + session.getId());
 
-		session.setAttribute("contactManager", new ContactManager());
+		if (session.getAttribute("contactManager")==null) {
+			ContactManager contactManager = new ContactManager();
+			session.setAttribute("contactManager", contactManager);
+			contactManager.load(token);
+		}
+		
 
-		session.setAttribute("TEST", "Hallo");
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		
 //		Ersetzt in Session-Handling: Versuch 1
 //		contactManager = new ContactManager();
 		
-		contactManager.load(token);
+
+		
 
 		final StringBuffer r = new StringBuffer();
 		try {
@@ -192,9 +197,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		// TODO Auto-generated method stub
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("getContacts(): die Session-ID lautet: " + session.getId());
-		if(session.getAttribute("contactManager")==null){
-			session.setAttribute("contactManager", new ContactManager());
-		}
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
 		System.out.println("TEST noch da ? Mal schauen: "+ session.getAttribute("TEST"));
 		return contactManager.getContacts();
@@ -205,9 +207,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		// TODO Auto-generated method stub
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("getContactGroups(): die Session-ID lautet: " + session.getId());
-		if(session.getAttribute("contactManager")==null){
-			session.setAttribute("contactManager", new ContactManager());
-		}
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		
 		return contactManager.getGroups();
@@ -216,9 +215,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups) {
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("setSelections(): die Session-ID lautet: " + session.getId());
-		if(session.getAttribute("contactManager")==null){
-			session.setAttribute("contactManager", new ContactManager());
-		}
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
 		
 		contactManager.setSelections(contacts, contactGroups);
@@ -228,10 +224,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	@Override	public ArrayList<ContactSourceType> getContactSourceTypes() {
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("getContactSourceTypes(): die Session-ID lautet: " + session.getId());
-		if(session.getAttribute("contactManager")==null){
-			session.setAttribute("contactManager", new ContactManager());
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
+		for (Contact contact : contactManager.getSelectedContacts()) {
+			System.out.println("selected Kontakte:"+contact.getName());
 		}
-		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
 		return contactManager.getSourceTypesOfSelectedContacts();
 	}	// TODO #11:> end	
 

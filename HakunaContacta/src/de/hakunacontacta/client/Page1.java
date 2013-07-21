@@ -101,6 +101,7 @@ public class Page1 extends Composite {
 		selectionGrid.setCanGroupBy(false);
 		ListGridField selectedContactsField = new ListGridField("name", "Kontaktnamen");
 		selectionGrid.setFields(selectedContactsField);
+		loadSelectionGrid();
 
 		groupGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
