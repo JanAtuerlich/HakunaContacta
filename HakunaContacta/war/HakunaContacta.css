@@ -331,6 +331,13 @@ h2 {
     width: 250px;
 }
 
+.logoutButton{
+    left: 0;
+    position: relative;
+    top: 92px;
+    width: 250px;
+}
+
 #downloadLink {
     left: 300px;
     position: relative;

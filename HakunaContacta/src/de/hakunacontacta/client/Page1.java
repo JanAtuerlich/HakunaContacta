@@ -52,6 +52,10 @@ public class Page1 extends Composite {
 	}
 
 	private void initPage() {
+		
+		Button logoutButton = new Button("Logout");
+		logoutButton.addStyleName("logoutButton");
+		
 		page1.setPixelSize(800, 400);
 		contacts = clientEngine.getContactRecords();
 		contactGroups = clientEngine.getContactGroupRecord();
@@ -188,11 +192,22 @@ public class Page1 extends Composite {
 				clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
+		
+		logoutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				clientEngine.exitSession();
+			}
+
+		});
+		
+
 
 		page1.add(mainPanel);
 		HTML info = new HTML("<div id=\"p1info\">Bitte w\u00E4hlen Sie die Kontakte aus die Sie exportieren m\u00F6chten!</div>");
 		page1.add(info);
 		page1.add(button);
+		page1.add(logoutButton);
 		page1.setStyleName("page1");
 	}
 
@@ -200,6 +215,7 @@ public class Page1 extends Composite {
 		// TODO Auto-generated method stub
 
 	}
+	
 
 	private void loadGroupGrid() {
 		select = false;
