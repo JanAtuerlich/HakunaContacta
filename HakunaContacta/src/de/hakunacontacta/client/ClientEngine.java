@@ -200,7 +200,7 @@ public class ClientEngine implements EntryPoint {
 				page2 = new Page2(thisClientEngine, contactSourceTypesTree);
 				historyListener.setPage2(page2);
 				page2.updateData();
-				History.newItem("page2", true);
+				History.newItem("page2");
 			}
 
 			@Override
@@ -326,7 +326,13 @@ public class ClientEngine implements EntryPoint {
 			@Override
 			public void onSuccess(final LoginInfo result) {
 				if (result.getName() != null && !result.getName().isEmpty()) {
-					addGoogleAuthHelper();
+					
+					if ("".equals(History.getToken())) {
+						addGoogleAuthHelper();
+					} else {
+						History.addValueChangeHandler(historyListener);
+					    History.fireCurrentHistoryState();
+					}
 					loadLogout(result);
 
 					
