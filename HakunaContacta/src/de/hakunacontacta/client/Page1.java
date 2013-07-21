@@ -52,6 +52,10 @@ public class Page1 extends Composite {
 	}
 
 	private void initPage() {
+		
+		Button logoutButton = new Button("Logout");
+		logoutButton.addStyleName("logoutButton");
+		
 		page1.setPixelSize(800, 400);
 		contacts = clientEngine.getContactRecords();
 		contactGroups = clientEngine.getContactGroupRecord();
@@ -188,9 +192,20 @@ public class Page1 extends Composite {
 				clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
+		
+		logoutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				clientEngine.exitSession();
+			}
+
+		});
+		
+
 
 		page1.add(mainPanel);
 		page1.add(button);
+		page1.add(logoutButton);
 		page1.setStyleName("page1");
 	}
 
@@ -198,6 +213,7 @@ public class Page1 extends Composite {
 		// TODO Auto-generated method stub
 
 	}
+	
 
 	private void loadGroupGrid() {
 		select = false;

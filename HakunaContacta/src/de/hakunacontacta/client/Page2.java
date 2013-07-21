@@ -29,7 +29,6 @@ import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 
 import de.hakunacontacta.shared.ExportTypeEnum;
 
-
 public class Page2 extends Composite {
 	private VerticalPanel page2 = new VerticalPanel();
 
@@ -47,9 +46,7 @@ public class Page2 extends Composite {
 	private ExportTypeEnum currentFormat = ExportTypeEnum.CSVWord;
 	private String dateiendung = "csv";
 	private String encoded = "";
-	private HTML downloadLink=null;
-
-	
+	private HTML downloadLink = null;
 
 	public Page2(ClientEngine cEngine, Tree contactSourceTypesTree) {
 		thisSourceTypesTree = contactSourceTypesTree;
@@ -58,12 +55,9 @@ public class Page2 extends Composite {
 		initWidget(page2);
 	}
 
-	
-
 	public void setThisExportTypesTree(Tree ExportTypesTree) {
 		thisExportTypesTree = ExportTypesTree;
 	}
-
 
 	public void updateData() { // wird beim erneuten Seitenaufbau geladen um den
 								// Inhalt der Grids zu aktuallisieren
@@ -74,8 +68,8 @@ public class Page2 extends Composite {
 		exportGrid.getData().openAll();
 
 	}
-	
-	public void createDownloadLink(){
+
+	public void createDownloadLink() {
 		if (currentFormat == ExportTypeEnum.CSV) {
 			dateiendung = "csv";
 		} else if (currentFormat == ExportTypeEnum.XML) {
@@ -85,46 +79,45 @@ public class Page2 extends Composite {
 		} else if (currentFormat == ExportTypeEnum.CSVWord) {
 			dateiendung = "csv";
 		}
-		
-		if (downloadLink!=null) {
+
+		if (downloadLink != null) {
 			System.out.println("ich war hier");
 			page2.remove(downloadLink);
 		}
-		
 
-		class MyModule{	
+		class MyModule {
 			public native void openURL(String url, String filename) /*-{
-				
-			  $wnd.url = url;
-			  var uri = $wnd.url;
-				
-				var downloadLink = document.createElement("a");
-				downloadLink.href = uri;
-				downloadLink.download = filename;
-				downloadLink.id = "download"
-				
-				document.body.appendChild(downloadLink);
-				document.getElementById('download').click();
-				document.body.removeChild(downloadLink);
 
-				
-			}-*/;
+		$wnd.url = url;
+		var uri = $wnd.url;
+
+		var downloadLink = document.createElement("a");
+		downloadLink.href = uri;
+		downloadLink.download = filename;
+		downloadLink.id = "download"
+
+		document.body.appendChild(downloadLink);
+		document.getElementById('download').click();
+		document.body.removeChild(downloadLink);
+
+	}-*/;
 		}
 		if (!ClientEngine.isIEBrowser()) {
-			
-			MyModule embeddedJavaScript = new MyModule();
-			embeddedJavaScript.openURL("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung);	
-		}
-			
-		else{
-//			downloadLink = new HTML("<div id=\"downloadLink\"><a download=\"Contactexport." + dateiendung + "\" href=data:application/" + dateiendung + ";base64," + encoded + ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
-			Window.open("data:application/" + dateiendung + ";base64," + encoded,"ContactExport." + dateiendung, "");
-			//Downloadlink wird erstellt
-		}
-			
 
-			
-			
+			MyModule embeddedJavaScript = new MyModule();
+			embeddedJavaScript.openURL("data:application/" + dateiendung + ";base64," + encoded, "ContactExport." + dateiendung);
+		}
+
+		else {
+			// downloadLink = new
+			// HTML("<div id=\"downloadLink\"><a download=\"Contactexport." +
+			// dateiendung + "\" href=data:application/" + dateiendung +
+			// ";base64," + encoded +
+			// ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
+			Window.open("data:application/" + dateiendung + ";base64," + encoded, "ContactExport." + dateiendung, "");
+			// Downloadlink wird erstellt
+		}
+
 	}
 
 	public void setEncoded(String encoded) {
@@ -134,13 +127,15 @@ public class Page2 extends Composite {
 	private void initPage() {
 
 		clientEngine.setPage2(this);
-//		System.out.println("Check from Page2: " + clientEngine.check);
+		// System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
 
 		Button exportButton = new Button("Download Exportdatei");
 		exportButton.addStyleName("exportButton");
 		Button zurueckButton = new Button("Zur\u00FCck zur Kontaktauswahl");
 		zurueckButton.addStyleName("zurueckButton");
+		Button logoutButton = new Button("Logout");
+		logoutButton.addStyleName("logoutButton");
 
 		// Linke Seite
 
@@ -189,7 +184,6 @@ public class Page2 extends Composite {
 		formatList.addItem("CSV"); // Index 1
 		formatList.addItem("vCard"); // Index 2
 		formatList.addItem("XML (xCard)"); // Index 3
-		
 
 		formatList.addChangeHandler(new ChangeHandler() {
 
@@ -229,7 +223,6 @@ public class Page2 extends Composite {
 			public void onClick(ClickEvent event) {
 				final String name = addExportfieldTextBox.getText().trim();
 				addExportfieldTextBox.setFocus(true);
-				
 
 				// Stock code must be between 1 and 15 chars that are numbers,
 				// letters, or dots.
@@ -266,9 +259,9 @@ public class Page2 extends Composite {
 				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 					final String name = addExportfieldTextBox.getText().trim();
 					addExportfieldTextBox.setFocus(true);
-					
 
-					// Stock code must be between 1 and 15 chars that are numbers,
+					// Stock code must be between 1 and 15 chars that are
+					// numbers,
 					// letters, or dots.
 					if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
 						Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
@@ -281,7 +274,7 @@ public class Page2 extends Composite {
 						Window.alert("Es ist bereits ein Exportfeld mit dem Namen \"" + name + "\" vorhanden.");
 						return;
 					}
-					
+
 					TreeNode childNode = new TreeNode();
 					childNode.setAttribute("Name", name);
 					childNode.setCanDrag(false);
@@ -311,10 +304,10 @@ public class Page2 extends Composite {
 		grids.draw();
 		final HTML exportFormat = new HTML("Exportformat: ");
 		exportFormat.addStyleName("exportFormat");
-		
+
 		HTML gridHeaders2 = new HTML("<div id=\"gridHeader21\">Quellfelder</div><div id=\"gridHeader22\">Exportfelder</div>");
 		gridHeaders2.setStyleName("gridHeaders");
-		
+
 		mainPanel.add(gridHeaders2);
 		mainPanel.add(exportFormat);
 		mainPanel.add(formatList);
@@ -327,21 +320,31 @@ public class Page2 extends Composite {
 		exportButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
-}
+
+				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);
+			}
 
 		});
-		
+
 		zurueckButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				History.newItem("page1", true);
 			}
 		});
+		
+		logoutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				clientEngine.exitSession();
+			}
+
+		});
+		
 		page2.add(mainPanel);
 		page2.add(exportButton);
 		page2.add(zurueckButton);
+		page2.add(logoutButton);
 		page2.setStyleName("page2");
 
 	}
