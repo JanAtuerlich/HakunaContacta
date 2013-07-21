@@ -79,8 +79,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 
-	// TODO #11: implement login helper methods in service implementation	
-
 	@Override
 	public String getUserEmail(final String token) {
 		final UserService userService = UserServiceFactory.getUserService();
@@ -212,6 +210,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		
 		return contactManager.getGroups();
 	}
+	
 	@Override
 	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups) {
 		HttpSession session = this.getThreadLocalRequest().getSession();
@@ -225,7 +224,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		
 		session.setAttribute("contactManager", contactManager);
 	}
-	@Override	public ArrayList<ContactSourceType> getContactSourceTypes() {
+	
+	@Override	
+	public ArrayList<ContactSourceType> getContactSourceTypes() {
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("getContactSourceTypes(): die Session-ID lautet: " + session.getId());
 		if(session.getAttribute("contactManager")==null){
@@ -244,9 +245,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			session.setAttribute("exportManager", new ExportManager());
 		}
 		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
-		
-//		ersetzt durch session: versuch 1
-//		exportManager = ExportManager.getExportManager();
 		
 		
 		if (type == ExportTypeEnum.XML) {
@@ -267,8 +265,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		exportManager.setExportField(exportFields);
 	}
 	
-
-	public ArrayList<ExportField> getExportFields(ExportTypeEnum type) {
+	public ArrayList<ExportField> getExportFields(ExportTypeEnum type, boolean firstload) {
 		
 		System.out.println("getExportFields aufgerufen! Übergabeparameter String type: " + type);
 		
@@ -278,11 +275,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			System.out.println("Neuer exportManager wird angelegt");
 			session.setAttribute("exportManager", new ExportManager());
 		}
-		System.out.println("exportManager wird zugewiesen mit: " + session.getAttribute("exportManager"));
+		
+		if(firstload == true){
+			System.out.println("FirstLoad! \n exportManager wird neu erstellt! \n Bisherige ExportSettings werden resettet!");
+			session.setAttribute("exportManager", new ExportManager());
+			
+		}
+		
 		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
 		
-//		ersetzt durch session: versuch 1
-//		exportManager = ExportManager.getExportManager();
 				
 		if (type == ExportTypeEnum.XML) {
 			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.XML);");
