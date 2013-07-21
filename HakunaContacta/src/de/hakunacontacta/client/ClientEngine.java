@@ -256,7 +256,7 @@ public class ClientEngine implements EntryPoint {
 		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {				
-				thisClientEngine.getExportFields(newFormat);
+				thisClientEngine.getExportFields(newFormat,false);
 			}
 
 			@Override
