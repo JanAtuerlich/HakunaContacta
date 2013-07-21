@@ -190,6 +190,8 @@ public class Page1 extends Composite {
 		});
 
 		page1.add(mainPanel);
+		HTML info = new HTML("<div id=\"p1info\">Bitte w\u00E4hlen Sie die Kontakte aus die Sie exportieren m\u00F6chten!</div>");
+		page1.add(info);
 		page1.add(button);
 		page1.setStyleName("page1");
 	}

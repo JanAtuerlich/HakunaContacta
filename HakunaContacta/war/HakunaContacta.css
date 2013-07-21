@@ -10,6 +10,24 @@ body{
 	overflow-y: hidden;
 }
 
+#p1info {
+	color: #fff;
+	position: relative;
+	left: 22px;
+	font-size: 13.5pt;
+	top: 1px;
+}
+
+#info {
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #777777;
+	width: 200px;
+	display:none;
+}
+
+
 h1 {
     bottom: 16px;
     color: #777777;
@@ -120,9 +138,10 @@ h2 {
 }
 
 .next {
-    float: right;
-    margin-right: 20px !important;
-    width: 203px;
+	width: 203px;
+	position: relative;
+	left: 577px;
+	top: -20;
 }
 
 .page1{
@@ -136,7 +155,7 @@ h2 {
     left: 535px;
     margin-bottom: 5px;
     position: relative;
-    top: 0;
+    top: -40px;
     width: 170px;
 }
 
@@ -144,7 +163,7 @@ h2 {
     color: #FFFFFF;
     left: 456px;
     position: relative;
-    top: 22px;
+    top: -20px;
 }
 
 .contactGrid{
@@ -184,12 +203,13 @@ h2 {
 #gridHeader21{
 	color: #fff;
     float: left;
-    left: 78px;
-    position: relative
+    left: 54px;
+    position: relative;
+    text-align:center;
 }
 #gridHeader22{
 	color: #fff;
-    left: 440px;
+    left: 388px;
     position: relative;
 }
 
@@ -265,7 +285,7 @@ h2 {
 .addPanel {
     float: right;
     margin-right: -1px;
-    top: -26px;
+    top: -66px;
     width: 200px;
     position: relative;
     z-index: 200470;
@@ -291,22 +311,23 @@ h2 {
 }
 
 #tip2 {
-	margin: 0 20px;
+	margin: 0 6px;
 	text-align: center;
 	color: #fff;
+	font-size: 9.5pt;
 }
 
 .exportButton{
     left: 458px;
     position: relative;
     width: 250px;
-    top: -20px;
+    top: -60px;
 }
 
 .zurueckButton{
     left: 0;
     position: relative;
-    top: -452px;
+    top: -90px;
     width: 250px;
 }
 
@@ -323,5 +344,5 @@ h2 {
     width: 200px;
 }
 .grids2{
-	margin-top: 0px;
+    top: -40px !important;
 }

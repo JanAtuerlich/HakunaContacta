@@ -301,7 +301,7 @@ public class Page2 extends Composite {
 		addPanel.add(addExportfieldButton);
 		addPanel.addStyleName("addPanel");
 
-		final HTML tip2 = new HTML("<div id=\"tip2\"><p>Bitte w\u00E4hlen Sie links die Quellfelder aus, die Sie exportieren m\u00F6chten. Klappen Sie die entsprechenden Exportfelder durch Klicken auf und ziehen Sie dann per Drag and Drop das gew\u00FCnschte Quellfeld nach rechts in das vorher definierte Feld.<br/><br/>Wenn Sie  mehrere Quellfelder in ein Zielfeld ziehen werden diese falls keine Daten vorhanden sind der Reihe nach als Alternativen verwendet.</p></div>");
+		final HTML tip2 = new HTML("<div id=\"tip2\"><p><b>Exportfelder erstellen:</b></br></br>1. Exportfeldname eingeben</br></br>2. Mit \"Add\" Exportfeldname best\u00E4tigen.</br></br>3. Neuer Exportfeldordner erscheint.</br></br>4. Per Drag & Drop Informations-</br>felder der linken Seite in den Exportordner ziehen.</br></br>5.Priorit\u00E4t der Exportdaten durch Reihenfolge im Exportfeld zuweisen. </p></div>");
 		tip2.setPixelSize(200, 350);
 		HStack grids = new HStack(3);
 		grids.addMember(sourceGrid);
@@ -312,7 +312,7 @@ public class Page2 extends Composite {
 		final HTML exportFormat = new HTML("Exportformat: ");
 		exportFormat.addStyleName("exportFormat");
 		
-		HTML gridHeaders2 = new HTML("<div id=\"gridHeader21\">Quellfelder</div><div id=\"gridHeader22\">Exportfelder</div>");
+		HTML gridHeaders2 = new HTML("<div id=\"gridHeader21\">Informationsfelder</br>Ihrer Kontakte</div><div id=\"gridHeader22\">Exportfelder</div>");
 		gridHeaders2.setStyleName("gridHeaders");
 		
 		mainPanel.add(gridHeaders2);

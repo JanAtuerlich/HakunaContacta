@@ -34,14 +34,7 @@ public interface Constant {
 	//final static String GOOGLE_CLIENT_ID = "163881565295-ngpkhb4hie9emdmki7mta52sitbiinbt.apps.googleusercontent.com"; 
 	//final static String APP_LINK = "http://hakuna-contacta.appspot.com/HakunaContacta.html"; 
 	
-	final static String VIDEO_FAVS = "VideoFavs";
 	/* end of session attributes */
-	
-	final static String GOOGLE_YOUTUBE_FEED = "https://gdata.youtube.com/feeds/api/users/default/favorites/";
-	
-	final static String GOOGLE_SPREADSHEET_FEED = "https://docs.google.com/feeds/default/private/full/-/spreadsheet";
-	
-	final static String GOOGLE_RESOURCE = "https://gdata.youtube.com/";
 	
 	final static HttpTransport HTTP_TRANSPORT = new UrlFetchTransport();
 	
