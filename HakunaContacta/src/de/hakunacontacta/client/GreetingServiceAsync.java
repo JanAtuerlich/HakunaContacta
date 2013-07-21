@@ -74,7 +74,7 @@ public interface GreetingServiceAsync {
 	
 	void setExportFields(ArrayList<ExportField> exportFields, ExportTypeEnum type, AsyncCallback<Void> callback);
 	
-	void getExportFields(ExportTypeEnum type, AsyncCallback<ArrayList<ExportField>> callback);
+	void getExportFields(ExportTypeEnum type, boolean firstload, AsyncCallback<ArrayList<ExportField>> callback);
 	
 	void getFile(AsyncCallback<String> callback);
 

@@ -266,8 +266,9 @@ public class ClientEngine implements EntryPoint {
 		});
 	}
 	
-	public void getExportFields(ExportTypeEnum type) {
-		greetingService.getExportFields(type, new AsyncCallback<ArrayList<ExportField>>() {
+
+	public void getExportFields(ExportTypeEnum type, boolean firstload) {
+		greetingService.getExportFields(type, firstload, new AsyncCallback<ArrayList<ExportField>>() {
 
 			@Override
 			public void onSuccess(ArrayList<ExportField> result) {

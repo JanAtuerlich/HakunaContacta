@@ -39,7 +39,7 @@ public interface GreetingService extends RemoteService {
 	
 	void setExportFields(ArrayList<ExportField> exportFields, ExportTypeEnum type);
 	
-	ArrayList<ExportField> getExportFields(ExportTypeEnum type);
+	ArrayList<ExportField> getExportFields(ExportTypeEnum type, boolean firstload);
 	
 	String getFile();
 }
