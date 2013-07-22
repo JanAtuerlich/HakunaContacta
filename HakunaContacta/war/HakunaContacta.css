@@ -9,6 +9,28 @@ body{
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
+#allaround {
+	margin: 0 auto;
+	position: relative;
+	width: 1073px;
+	height: 1000px;
+}
+
+#videoanleitung {
+	position: absolute;
+	top: 84px;
+}
+
+#benutzerhandbuch {
+	position: absolute;
+	top: 316px;
+}
+
+#hilfe {
+	position: absolute;
+	top: 244px;
+	left: 40px;
+}
 
 #p1info {
 	color: #fff;
