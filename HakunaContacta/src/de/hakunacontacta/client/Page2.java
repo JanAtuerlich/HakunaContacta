@@ -27,6 +27,11 @@ import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 
 import de.hakunacontacta.shared.ExportTypeEnum;
 
+/**
+ * 
+ * @author MB
+ * @category GUI
+ */
 public class Page2 extends Composite {
 	private VerticalPanel page2 = new VerticalPanel();
 
@@ -46,6 +51,16 @@ public class Page2 extends Composite {
 	private String encoded = "";
 	private HTML downloadLink = null;
 
+	/**
+	 * Der Konstruktor von Page2 erwartet eine ClientEngine, welche der
+	 * Kontaktpunkt zur GreetingServiceImpl und damit zur Server-Seite ist.
+	 * Außerdem werden die Daten der ersten Seite benötigt.
+	 * 
+	 * @param cEngine
+	 *            ist der Kontaktpunkt des Clients zum Server
+	 * @param contactSourceTypesTree
+	 *            liefert den Content aus Page1
+	 */
 	public Page2(ClientEngine cEngine, Tree contactSourceTypesTree) {
 		thisSourceTypesTree = contactSourceTypesTree;
 		clientEngine = cEngine;
@@ -57,8 +72,11 @@ public class Page2 extends Composite {
 		thisExportTypesTree = ExportTypesTree;
 	}
 
-	public void updateData() { // wird beim erneuten Seitenaufbau geladen um den
-								// Inhalt der Grids zu aktuallisieren
+	/**
+	 * Diese Methode wird beim erneuten Seitenaufbau geladen um den Inhalt der
+	 * Grids zu aktuallisieren
+	 */
+	public void updateData() {
 
 		sourceGrid.setData(thisSourceTypesTree);
 		sourceGrid.getData().openAll();
@@ -67,6 +85,11 @@ public class Page2 extends Composite {
 
 	}
 
+	/**
+	 * Diese Methode erstellt eine url und liefert einen Base64-codierten String
+	 * mit einer Dateiendung abhängig vom im dropdown-menü gewählten Wert an den
+	 * Browser
+	 */
 	public void createDownloadLink() {
 		if (currentFormat == ExportTypeEnum.CSV) {
 			dateiendung = "csv";
@@ -79,7 +102,6 @@ public class Page2 extends Composite {
 		}
 
 		if (downloadLink != null) {
-			System.out.println("ich war hier");
 			page2.remove(downloadLink);
 		}
 
@@ -116,6 +138,10 @@ public class Page2 extends Composite {
 		this.encoded = encoded;
 	}
 
+	/**
+	 * Diese Methode erstellt alle Elemente, Widgets und Handler auf der zweiten
+	 * Seite und verwaltet die Kommunikation mit der ClientEngine auf
+	 */
 	private void initPage() {
 
 		clientEngine.setPage2(this);
@@ -177,8 +203,7 @@ public class Page2 extends Composite {
 			@Override
 			public void onChange(ChangeEvent event) {
 				int selectedIndex = formatList.getSelectedIndex();
-				// System.out.println("Dropdown change to: " + selectedIndex);
-
+				
 				if (selectedIndex == 0) {
 					// Methode für CSV-Word-Serienbriefe
 					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSVWord);
@@ -202,17 +227,15 @@ public class Page2 extends Composite {
 			}
 		});
 
-		// Move cursor focus to the input box.
+		// Bewegt den Mauscursor in die Input-Box
 		addExportfieldTextBox.setFocus(true);
 
-		// Listen for mouse events on the Add button.
+		// Achtet auf Mausaktivitäten beim Hinzufügen-Knopf.
 		addExportfieldButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				final String name = addExportfieldTextBox.getText().trim();
 				addExportfieldTextBox.setFocus(true);
 
-				// Stock code must be between 1 and 15 chars that are numbers,
-				// letters, or dots.
 				if (name.matches("")) {
 					Window.alert("Der Exportfeldname ist leer! Bitte geben Sie einen Namen ein!");
 					addExportfieldTextBox.selectAll();
@@ -224,7 +247,7 @@ public class Page2 extends Composite {
 					return;
 				}
 
-				// Don't add the stock if it's already in the table.
+				// Kein Exportfeld hinzufügen, falls bereits vorhanden
 				if (thisExportTypesTree.find("Name", name) != null) {
 					Window.alert("Es ist bereits ein Exportfeld mit dem Namen \"" + name + "\" vorhanden.");
 					return;
@@ -240,23 +263,20 @@ public class Page2 extends Composite {
 			}
 		});
 
-		// Listen for keyboard events in the input box.
+		// Achtet auf Tastatur-Aktivitäten in der Input-Box
 		addExportfieldTextBox.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 					final String name = addExportfieldTextBox.getText().trim();
 					addExportfieldTextBox.setFocus(true);
 
-					// Stock code must be between 1 and 15 chars that are
-					// numbers,
-					// letters, or dots.
 					if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
 						Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
 						addExportfieldTextBox.selectAll();
 						return;
 					}
 
-					// Don't add the stock if it's already in the table.
+					// Fügt das ExportFeld nicht hinzu, falls bereits vorhanden
 					if (thisExportTypesTree.find("Name", name) != null) {
 						Window.alert("Es ist bereits ein Exportfeld mit dem Namen \"" + name + "\" vorhanden.");
 						return;
@@ -302,8 +322,6 @@ public class Page2 extends Composite {
 		mainPanel.add(grids);
 		mainPanel.add(addPanel);
 		mainPanel.addStyleName("mainPanel");
-
-		// ------------------------------------
 
 		exportButton.addClickHandler(new ClickHandler() {
 			@Override
