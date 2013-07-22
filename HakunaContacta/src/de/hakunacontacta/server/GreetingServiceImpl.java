@@ -330,10 +330,4 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return x;
 	}
 	
-	@Override
-	public void exitSession(){
-	HttpSession session = this.getThreadLocalRequest().getSession();
-	session.invalidate();
-	}
-	
 }

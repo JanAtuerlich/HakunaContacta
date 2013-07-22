@@ -80,6 +80,4 @@ public interface GreetingServiceAsync {
 	
 	void exitSession(AsyncCallback<Void> callback);
 
-	void exitSession(AsyncCallback<Void> callback);
-
 }

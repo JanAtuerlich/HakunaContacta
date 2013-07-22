@@ -1,7 +1,5 @@
 package de.hakunacontacta.client;
 
-
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import de.hakunacontacta.contactModule.Contact;
@@ -482,25 +480,5 @@ public class ClientEngine implements EntryPoint {
 	public String getUser_token() {
 		return user_token;
 	}
-	
-	public void exitSession() {
-		greetingService.exitSession(new AsyncCallback<Void>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("exitSession -> onFailure");
-				
-				System.out.println("Failed to call exitSession() on greetingService in ClientEngine");
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				AUTH.clearAllTokens();
-				System.out.println("Successfully ended the Session");
-			}
-		});
-	}
-
-	
 	
 }
