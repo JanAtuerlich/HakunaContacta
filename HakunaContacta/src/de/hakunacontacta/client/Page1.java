@@ -54,7 +54,6 @@ public class Page1 extends Composite {
 		contacts = clientEngine.getContactRecords();
 		contactGroups = clientEngine.getContactGroupRecord();
 
-		// -----------------------------------------
 		groupGrid.setWidth(300);
 		groupGrid.setHeight(400);
 		groupGrid.setEmptyMessage("Keine Gruppen vorhanden.");
@@ -66,8 +65,7 @@ public class Page1 extends Composite {
 		groupGrid.setSelectionType(SelectionStyle.SIMPLE);
 		groupGrid.setShowSelectedStyle(false);
 		groupGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-		ListGridField groupnameField = new ListGridField("displayedName",
-				"Gruppenname");
+		ListGridField groupnameField = new ListGridField("displayedName", "Gruppenname");
 		groupGrid.setFields(groupnameField);
 
 		loadGroupGrid();
@@ -98,7 +96,7 @@ public class Page1 extends Composite {
 		selectionGrid.setShowAllRecords(true);
 		selectionGrid.setCanRemoveRecords(true);
 		selectionGrid.setCanGroupBy(false);
-		ListGridField selectedContactsField = new ListGridField("name","Kontaktnamen");
+		ListGridField selectedContactsField = new ListGridField("name", "Kontaktnamen");
 		selectionGrid.setFields(selectedContactsField);
 		loadSelectionGrid();
 
@@ -106,8 +104,7 @@ public class Page1 extends Composite {
 
 			public void onSelectionChanged(SelectionEvent event) {
 				if (select) {
-					ContactGroupRecord record = (ContactGroupRecord) event
-							.getRecord();
+					ContactGroupRecord record = (ContactGroupRecord) event.getRecord();
 					if (event.getState()) {
 						groupGrid.selectRecord(record);
 						groupSelection(record.getGroupname(), true);
@@ -149,19 +146,17 @@ public class Page1 extends Composite {
 			}
 		});
 
-		selectionGrid
-				.addRemoveRecordClickHandler(new RemoveRecordClickHandler() {
+		selectionGrid.addRemoveRecordClickHandler(new RemoveRecordClickHandler() {
 
-					@Override
-					public void onRemoveRecordClick(RemoveRecordClickEvent event) {
-						ContactRecord record = (ContactRecord) selectionGrid
-								.getRecord(event.getRowNum());
-						contactSelection(record.getEtag(), false);
-						checkGroupsForSelection();
-						loadGroupGrid();
-						loadContactGrid(markedGroup);
-					}
-				});
+			@Override
+			public void onRemoveRecordClick(RemoveRecordClickEvent event) {
+				ContactRecord record = (ContactRecord) selectionGrid.getRecord(event.getRowNum());
+				contactSelection(record.getEtag(), false);
+				checkGroupsForSelection();
+				loadGroupGrid();
+				loadContactGrid(markedGroup);
+			}
+		});
 
 		contactGrid.setStyleName("contactGrid");
 		selectionGrid.setStyleName("selectionGrid");
