@@ -9,12 +9,10 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -105,7 +103,7 @@ public class Page2 extends Composite {
 		if (!ClientEngine.isIEBrowser()) {
 
 			MyModule embeddedJavaScript = new MyModule();
-			embeddedJavaScript.openURL("data:application/" + dateiendung + ";base64," + encoded, "ContactExport." + dateiendung);
+			embeddedJavaScript.openURL("data:application/" + dateiendung+ ";base64," + encoded, "ContactExport." + dateiendung);
 		}
 
 		else {
@@ -114,7 +112,7 @@ public class Page2 extends Composite {
 			// dateiendung + "\" href=data:application/" + dateiendung +
 			// ";base64," + encoded +
 			// ">"+dateiendung.toUpperCase()+"-Downloadlink</a></div>");
-			Window.open("data:application/" + dateiendung + ";base64," + encoded, "ContactExport." + dateiendung, "");
+			Window.open("data:application/" + dateiendung + ";base64,"+ encoded, "ContactExport." + dateiendung, "");
 			// Downloadlink wird erstellt
 		}
 
@@ -127,8 +125,7 @@ public class Page2 extends Composite {
 	private void initPage() {
 
 		clientEngine.setPage2(this);
-		// System.out.println("Check from Page2: " + clientEngine.check);
-		page2.setPixelSize(500, 350);
+		page2.setPixelSize(1000, 350);
 
 		Button exportButton = new Button("Download Exportdatei");
 		exportButton.addStyleName("exportButton");
@@ -188,26 +185,30 @@ public class Page2 extends Composite {
 			@Override
 			public void onChange(ChangeEvent event) {
 				int selectedIndex = formatList.getSelectedIndex();
-				System.out.println("Dropdown change to: " + selectedIndex);
+				// System.out.println("Dropdown change to: " + selectedIndex);
 
 				if (selectedIndex == 0) {
 					// Methode für CSV-Word-Serienbriefe
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSVWord);
+					clientEngine.writeExportOptions(thisExportTypesTree,
+							currentFormat, ExportTypeEnum.CSVWord);
 					currentFormat = ExportTypeEnum.CSVWord;
 				}
 				if (selectedIndex == 1) {
 					// Methode für CSV
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.CSV);
+					clientEngine.writeExportOptions(thisExportTypesTree,
+							currentFormat, ExportTypeEnum.CSV);
 					currentFormat = ExportTypeEnum.CSV;
 				}
 				if (selectedIndex == 2) {
 					// Methode für vCard
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.vCard);
+					clientEngine.writeExportOptions(thisExportTypesTree,
+							currentFormat, ExportTypeEnum.vCard);
 					currentFormat = ExportTypeEnum.vCard;
 				}
 				if (selectedIndex == 3) {
 					// Methode für XML
-					clientEngine.writeExportOptions(thisExportTypesTree, currentFormat, ExportTypeEnum.XML);
+					clientEngine.writeExportOptions(thisExportTypesTree,
+							currentFormat, ExportTypeEnum.XML);
 					currentFormat = ExportTypeEnum.XML;
 				}
 			}
@@ -230,14 +231,14 @@ public class Page2 extends Composite {
 					return;
 				}
 				if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
-					Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
+					Window.alert("Der Exportfeldname \"" + name+ "\" enth\u00E4lt ung\u00FCltige Zeichen.");
 					addExportfieldTextBox.selectAll();
 					return;
 				}
 
 				// Don't add the stock if it's already in the table.
 				if (thisExportTypesTree.find("Name", name) != null) {
-					Window.alert("Es ist bereits ein Exportfeld mit dem Namen \"" + name + "\" vorhanden.");
+					Window.alert("Es ist bereits ein Exportfeld mit dem Namen \""+ name + "\" vorhanden.");
 					return;
 				}
 
@@ -247,7 +248,8 @@ public class Page2 extends Composite {
 				childNode.setAttribute("Name", name);
 				childNode.setCanDrag(false);
 				childNode.setIsFolder(true);
-				thisExportTypesTree.add(childNode, thisExportTypesTree.getRoot());
+				thisExportTypesTree.add(childNode,
+						thisExportTypesTree.getRoot());
 			}
 		});
 
@@ -262,14 +264,16 @@ public class Page2 extends Composite {
 					// numbers,
 					// letters, or dots.
 					if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
-						Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
+						Window.alert("Der Exportfeldname \"" + name
+								+ "\" enth\u00E4lt ung\u00FCltige Zeichen.");
 						addExportfieldTextBox.selectAll();
 						return;
 					}
 
 					// Don't add the stock if it's already in the table.
 					if (thisExportTypesTree.find("Name", name) != null) {
-						Window.alert("Es ist bereits ein Exportfeld mit dem Namen \"" + name + "\" vorhanden.");
+						Window.alert("Es ist bereits ein Exportfeld mit dem Namen \""
+								+ name + "\" vorhanden.");
 						return;
 					}
 
@@ -277,7 +281,8 @@ public class Page2 extends Composite {
 					childNode.setAttribute("Name", name);
 					childNode.setCanDrag(false);
 					childNode.setIsFolder(true);
-					thisExportTypesTree.add(childNode, thisExportTypesTree.getRoot());
+					thisExportTypesTree.add(childNode,
+							thisExportTypesTree.getRoot());
 				}
 			}
 		});
@@ -292,7 +297,8 @@ public class Page2 extends Composite {
 		addPanel.add(addExportfieldButton);
 		addPanel.addStyleName("addPanel");
 
-		final HTML tip2 = new HTML("<div id=\"tip2\"><p><b>Exportfelder erstellen:</b></br></br>1. Exportfeldname eingeben</br></br>2. Mit \"Add\" Exportfeldname best\u00E4tigen.</br></br>3. Neuer Exportfeldordner erscheint.</br></br>4. Per Drag & Drop Informations-</br>felder der linken Seite in den Exportordner ziehen.</br></br>5.Priorit\u00E4t der Exportdaten durch Reihenfolge im Exportfeld zuweisen.</p></div>");
+		final HTML tip2 = new HTML(
+				"<div id=\"tip2\"><p><b>Exportfelder erstellen:</b></br></br>1. Exportfeldname eingeben</br></br>2. Mit \"Add\" Exportfeldname best\u00E4tigen.</br></br>3. Neuer Exportfeldordner erscheint.</br></br>4. Per Drag & Drop Informations-</br>felder der linken Seite in den Exportordner ziehen.</br></br>5.Priorit\u00E4t der Exportdaten durch Reihenfolge im Exportfeld zuweisen.</p></div>");
 		tip2.setPixelSize(200, 350);
 		HStack grids = new HStack(3);
 		grids.addMember(sourceGrid);
@@ -303,7 +309,8 @@ public class Page2 extends Composite {
 		final HTML exportFormat = new HTML("Exportformat: ");
 		exportFormat.addStyleName("exportFormat");
 
-		HTML gridHeaders2 = new HTML("<div id=\"gridHeader21\">Informationsfelder</br>Ihrer Kontakte</div><div id=\"gridHeader22\">Exportfelder</div>");
+		HTML gridHeaders2 = new HTML(
+				"<div id=\"gridHeader21\">Informationsfelder</br>Ihrer Kontakte</div><div id=\"gridHeader22\">Exportfelder</div>");
 		gridHeaders2.setStyleName("gridHeaders");
 
 		mainPanel.add(gridHeaders2);
@@ -319,7 +326,8 @@ public class Page2 extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);
+				clientEngine.getFile(thisExportTypesTree, currentFormat,
+						currentFormat);
 			}
 
 		});
@@ -330,7 +338,7 @@ public class Page2 extends Composite {
 				History.newItem("page1", true);
 			}
 		});
-		
+
 		page2.add(mainPanel);
 		page2.add(exportButton);
 		page2.add(zurueckButton);
