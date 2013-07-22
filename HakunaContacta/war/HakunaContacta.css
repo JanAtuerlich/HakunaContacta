@@ -181,6 +181,36 @@ h2 {
 	margin: 5px auto;
 	width: 650px;
 }
+.loginlogoutButton{
+	background-image: none !important;
+	border-color: none !important;
+	background-color: #4D4D4D !important;
+	
+	-webkit-border-top-left-radius: 20px !important;
+	-webkit-border-top-right-radius: 20px !important;
+	-moz-border-radius-topleft: 20px !important;
+	-moz-border-radius-topright: 20px !important;
+	border-top-left-radius: 20px !important;
+	border-top-right-radius: 20px !important;
+    -webkit-border-bottom-right-radius: 0px !important;
+	-webkit-border-bottom-left-radius: 0px !important;
+	-moz-border-radius-bottomright: 0px !important;
+	-moz-border-radius-bottomleft: 0px !important;
+	border-bottom-right-radius: 0px !important;
+	border-bottom-left-radius: 0px !important;
+    
+    
+    border-style: none !important;
+    color: #FFFFFF;
+    font-size: 13pt !important;
+    font-weight: 300;
+    height: 36;
+    padding: 9px !important;
+    text-decoration: none !important;
+    z-index: 1000010;
+    margin-right: -15px !important;
+    margin-top: 5px !important;
+}
 .gridHeaders{
 	font-size: 14pt;
 }
@@ -331,12 +361,7 @@ h2 {
     width: 250px;
 }
 
-.logoutButton{
-    left: 0;
-    position: relative;
-    top: 92px;
-    width: 250px;
-}
+
 
 #downloadLink {
     left: 300px;

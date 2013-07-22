@@ -2,6 +2,7 @@ package de.hakunacontacta.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -52,9 +53,7 @@ public class Page1 extends Composite {
 	}
 
 	private void initPage() {
-		
-		Button logoutButton = new Button("Logout");
-		logoutButton.addStyleName("logoutButton");
+
 		
 		page1.setPixelSize(800, 400);
 		contacts = clientEngine.getContactRecords();
@@ -193,13 +192,7 @@ public class Page1 extends Composite {
 			}
 		});
 		
-		logoutButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				clientEngine.exitSession();
-			}
 
-		});
 		
 
 
@@ -207,7 +200,6 @@ public class Page1 extends Composite {
 		HTML info = new HTML("<div id=\"p1info\">Bitte w\u00E4hlen Sie die Kontakte aus die Sie exportieren m\u00F6chten!</div>");
 		page1.add(info);
 		page1.add(button);
-		page1.add(logoutButton);
 		page1.setStyleName("page1");
 	}
 
