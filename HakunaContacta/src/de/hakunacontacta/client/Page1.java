@@ -1,18 +1,20 @@
 package de.hakunacontacta.client;
 
+
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.smartgwt.client.types.AutoFitEvent;
+
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.events.HeaderDoubleClickEvent;
-import com.smartgwt.client.widgets.grid.events.HeaderDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RemoveRecordClickEvent;
@@ -196,7 +198,16 @@ public class Page1 extends Composite {
 		logoutButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				
 				clientEngine.exitSession();
+				
+//				System.out.println("Cookie Value is: " + Cookies.getCookie("JSESSIONID") );		
+//				Cookies.setCookie("JSESSIONID", "What");
+//				System.out.println("Cookie Value is now: " + Cookies.getCookie("JSESSIONID") );		
+//				
+//				System.out.println("LogoutURL: " + clientEngine.getLogouturl());
+//
+//				Window.Location.assign(clientEngine.getLogouturl());
 			}
 
 		});
@@ -209,10 +220,6 @@ public class Page1 extends Composite {
 		page1.setStyleName("page1");
 	}
 
-	private void addHeaderDoubleClickHandler(HeaderDoubleClickHandler headerDoubleClickHandler) {
-		// TODO Auto-generated method stub
-
-	}
 	
 
 	private void loadGroupGrid() {

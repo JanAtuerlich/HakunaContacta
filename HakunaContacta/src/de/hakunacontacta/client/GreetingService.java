@@ -20,10 +20,9 @@ import de.hakunacontacta.shared.LoginInfo;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-	String greetServer(String name) throws IllegalArgumentException;
+//	String greetServer(String name) throws IllegalArgumentException;
 
-	// TODO #09: start create login helper methods in service interface
-	String getUserEmail(String token);
+//	String getUserEmail(String token);
 
 	LoginInfo login(String requestUri);
 

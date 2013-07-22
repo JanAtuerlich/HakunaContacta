@@ -54,10 +54,9 @@ import de.hakunacontacta.shared.LoginInfo;
  */
 public interface GreetingServiceAsync {
 
-	void greetServer(String input, AsyncCallback<String> callback) throws IllegalArgumentException;
+//	void greetServer(String input, AsyncCallback<String> callback) throws IllegalArgumentException;
 
-	// TODO #10: create login helper methods in service asynchronous interface	
-	void getUserEmail(String token, AsyncCallback<String> callback);
+//	void getUserEmail(String token, AsyncCallback<String> callback);
 
 	void login(String requestUri, AsyncCallback<LoginInfo> asyncCallback);
 
@@ -66,7 +65,7 @@ public interface GreetingServiceAsync {
 	void getContacts(AsyncCallback<ArrayList<Contact>> callback);
 
 	void getContactGroups(AsyncCallback<ArrayList<ContactGroup>> callback);
-
+ 
 	void setSelections(ArrayList<Contact> contacts,
 			ArrayList<ContactGroup> contactGroups, AsyncCallback<Void> callback);
 	
