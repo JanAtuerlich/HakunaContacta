@@ -1,3 +1,3 @@
 # Module hakunacontacta
 # RPC service class, partial path of RPC policy file
-de.hakunacontacta.client.GreetingService, DF647E973C186DB8DB6EDB26281DAC98.gwt.rpc
+de.hakunacontacta.client.GreetingService, 44FC59F4D130E26C6AA7072D0359554D.gwt.rpc

@@ -18,10 +18,6 @@ import de.hakunacontacta.shared.LoginInfo;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-	String greetServer(String name) throws IllegalArgumentException;
-
-	String getUserEmail(String token);
-
 	LoginInfo login(String requestUri);
 
 	LoginInfo loginDetails(String token);
