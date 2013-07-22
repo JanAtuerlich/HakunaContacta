@@ -1,7 +1,6 @@
 package de.hakunacontacta.fileModule;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,8 +26,6 @@ import net.sourceforge.cardme.vcard.types.params.AdrParamType;
 import net.sourceforge.cardme.vcard.types.params.EmailParamType;
 import net.sourceforge.cardme.vcard.types.params.TelParamType;
 
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
-
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.shared.ContactSourceField;
 import de.hakunacontacta.shared.ContactSourceType;
@@ -38,36 +35,25 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 
-public class FileCreator implements IFileCreator, Serializable{
+public class FileCreator implements IFileCreator, Serializable {
 
 	private ArrayList<Contact> selectedContacts;
 	private ArrayList<ExportField> exportFields;
 	private ArrayList<Contact> cleansedContacts;
 	private ExportTypeEnum exportFormat;
 
-	public FileCreator(){
+	public FileCreator() {
 	}
-
-
-	// public FileCreator(ArrayList<Contact> selectedContacts,
-	// ArrayList<ExportField> exportFields, String exportFormat) {
-	// this.selectedContacts = selectedContacts;
-	// this.exportFields = exportFields;
-	// this.exportFormat = exportFormat;
-	// }
 
 	@Override
 	public String cleanseContacts() {
-		System.out.println("Entered cleanseContacts");
-		
+
 		cleansedContacts = new ArrayList<Contact>();
 
 		for (Contact incomingContact : selectedContacts) {
-			System.out.println(incomingContact.getName());
 			ArrayList<ContactSourceType> initSourceTypeList = new ArrayList<ContactSourceType>();
 			Collections.sort(exportFields);
 			for (ExportField exportField : exportFields) {
-				System.out.println("New initSourceType and Field are: " + exportField.getName());
 				ContactSourceType initSourceType = new ContactSourceType();
 				initSourceType.setType(exportField.getName());
 				ContactSourceField initSourceField = new ContactSourceField();
@@ -80,25 +66,17 @@ public class FileCreator implements IFileCreator, Serializable{
 			Contact cleansedContact = new Contact();
 			cleansedContact.seteTag(incomingContact.geteTag());
 			cleansedContact.setName(incomingContact.getName());
-			System.out.println(incomingContact.getName());
 			cleansedContact.setSourceTypes(initSourceTypeList);
 			for (ExportField exportField : exportFields) {
 				for (ExportOption exportOption : exportField.getExportOptions()) {
-					System.out.println(exportOption.getSourceField());
 					boolean foundbest = false;
 					for (ContactSourceType incomingSourceType : incomingContact.getSourceTypes()) {
 						for (ContactSourceField incomingSourceField : incomingSourceType.getSourceFields()) {
-							System.out.println("Match searched in exportOption and incomingSourceType in Type and Field: " + exportOption.getSourceType() + ", " + incomingSourceType.getType() + " && " + exportOption.getSourceField() + ", " + incomingSourceField.getName());
 							if (exportOption.getSourceType().equals(incomingSourceType.getType()) && exportOption.getSourceField().equals(incomingSourceField.getName())) {
-								System.out.println("Match in exportOption and incomingSourceType in Type and Field: " + exportOption.getSourceType() + ", " + exportOption.getSourceField());
 								for (ContactSourceType cleansedSourceType : cleansedContact.getSourceTypes()) {
-									System.out.println("Match searched in: " + cleansedSourceType.getType() + ", " + exportField.getName());
 									if (cleansedSourceType.getType() == exportField.getName()) {
-										System.out.println(cleansedContact.getName() + ", " + cleansedSourceType.getType());
 										for (ContactSourceField cleansedSourceField : cleansedSourceType.getSourceFields()) {
-											System.out.println("Setting SourceField_name: " + exportField.getName());
 											cleansedSourceField.setName(exportField.getName());
-											System.out.println("Setting SourceField_value: " + exportField.getName());
 											cleansedSourceField.setValue(incomingSourceField.getValue());
 										}
 									}
@@ -111,7 +89,6 @@ public class FileCreator implements IFileCreator, Serializable{
 						break;
 				}
 			}
-			System.out.println(cleansedContact.getName());
 			cleansedContacts.add(cleansedContact);
 		}
 
@@ -132,31 +109,18 @@ public class FileCreator implements IFileCreator, Serializable{
 			output = null;
 		}
 
-		System.out.println("AusgabeString: \n" + output);
-
-//		byte[] encoded = null;
-//		try {
-//			encoded = Base64.encodeBase64(output.getBytes("UTF-8"));
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		return new String(encoded);
 		return new String(output);
 	}
 
 	private String createCSV() {
 
-		// TODO einfach den Namen aus dem Kontaktobjekt übernehmen ist schlecht,
-		// da wird Felder Vorname Nachname bekommen werden,
 		String csv = "";
 		String seperator = ",";
 
 		for (ExportField exportField : exportFields) {
 			csv += exportField.getName() + seperator;
 		}
-		
+
 		csv = csv.substring(0, csv.length() - 1);
 		csv += "\n";
 
@@ -172,14 +136,10 @@ public class FileCreator implements IFileCreator, Serializable{
 			csv = csv.substring(0, csv.length() - 1);
 			csv += "\n";
 		}
-		System.out.println("\n" + csv);
 		return csv;
 	}
 
 	private String createCSVWord() {
-
-		// TODO einfach den Namen aus dem Kontaktobjekt übernehmen ist schlecht,
-		// da wird Felder Vorname Nachname bekommen werden,
 
 		String csv = "";
 		String seperator = ";";
@@ -273,10 +233,8 @@ public class FileCreator implements IFileCreator, Serializable{
 							try {
 								vcard.addUrl(new UrlType(new URL(sourceField.getValue())));
 							} catch (NullPointerException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (MalformedURLException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -284,35 +242,16 @@ public class FileCreator implements IFileCreator, Serializable{
 				} else if (sourceType.getType().equals("Adresse")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
-
 							AdrType address1 = new AdrType();
 							address1.setCharset("UTF-8");
-							
 							address1.setExtendedAddress(sourceField.getValue().replace("\n", " "));
-							// address1.setCountryName("U.S.A.");
-							// address1.setLocality("New York");
-							// address1.setRegion("New York");
-							// address1.setPostalCode("NYC887");
-							// address1.setPostOfficeBox("25334");
-							// address1.setStreetAddress("South cresent drive, Building 5, 3rd floor");
-							// address1.addParam(AdrParamType.HOME)
-							// .addParam(AdrParamType.PARCEL)
 							address1.addParam(AdrParamType.PREF);
-							// .addExtendedParam(new
-							// ExtendedParamType("CUSTOM-PARAM-TYPE",
-							// VCardTypeName.ADR))
-							// .addExtendedParam(new
-							// ExtendedParamType("CUSTOM-PARAM-TYPE",
-							// "WITH-CUSTOM-VALUE", VCardTypeName.ADR));
-
 							vcard.addAdr(address1);
-							// TODO sourceField.getValue())));
 						}
 					}
 				} else if (sourceType.getType().equals("Telefon")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
-
 							TelType telephone = new TelType();
 							telephone.setCharset("UTF-8");
 							telephone.setTelephone(sourceField.getValue());
@@ -324,7 +263,6 @@ public class FileCreator implements IFileCreator, Serializable{
 				} else if (sourceType.getType().equals("Handy")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
-
 							TelType telephone = new TelType();
 							telephone.setCharset("UTF-8");
 							telephone.setTelephone(sourceField.getValue());
@@ -336,7 +274,6 @@ public class FileCreator implements IFileCreator, Serializable{
 				} else if (sourceType.getType().equals("E-Mail privat")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
-
 							EmailType email = new EmailType();
 							email.setEmail(sourceField.getValue());
 							email.addParam(EmailParamType.HOME).setCharset("UTF-8");
@@ -379,14 +316,13 @@ public class FileCreator implements IFileCreator, Serializable{
 			try {
 				vCard += writer.buildVCardString();
 			} catch (VCardBuildException e) {
-				System.out.println("VCard Builder failed!");
 				e.printStackTrace();
 			}
 		}
 
 		return vCard;
 	}
-	
+
 	public void setFields(ArrayList<Contact> selectedContactsX, ArrayList<ExportField> exportFieldsX, ExportTypeEnum exportFormatX) {
 		selectedContacts = selectedContactsX;
 		exportFields = exportFieldsX;

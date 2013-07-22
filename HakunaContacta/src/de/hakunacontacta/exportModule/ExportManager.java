@@ -30,7 +30,7 @@ public class ExportManager implements IExportManager, Serializable {
 		this.addExportField("Vorname", exportFieldsCSVWord);
 		this.addExportField("Nachname", exportFieldsCSVWord);
 		this.addExportField("Adresse", exportFieldsCSVWord);
-		
+
 		this.addExportField("Vorname", exportFieldsvCard);
 		this.addExportField("Nachname", exportFieldsvCard);
 		this.addExportField("Zweitname", exportFieldsvCard);
@@ -43,7 +43,7 @@ public class ExportManager implements IExportManager, Serializable {
 		this.addExportField("E-Mail geschäftlich", exportFieldsvCard);
 		this.addExportField("Kommentar", exportFieldsvCard);
 		this.addExportField("Homepage", exportFieldsvCard);
-		
+
 		this.addExportField("Vorname", exportFieldsXML);
 		this.addExportField("Nachname", exportFieldsXML);
 		this.addExportField("Zweitname", exportFieldsXML);
@@ -119,8 +119,6 @@ public class ExportManager implements IExportManager, Serializable {
 		}
 	}
 
-
-
 	public void removeExportField(String exportField) {
 		for (ExportField exportFieldx : this.currentFields) {
 			if (exportFieldx.getName() == exportField) {
@@ -151,13 +149,13 @@ public class ExportManager implements IExportManager, Serializable {
 	public void setExportField(ArrayList<ExportField> exportFields) {
 
 		currentFields.clear();
-		
+
 		System.out.println("setExportOption Ausgabe:");
 		for (ExportField exportField : exportFields) {
 			currentFields.add(exportField);
 			System.out.println(exportField.getName());
 			for (ExportOption exportOption : exportField.getExportOptions()) {
-				System.out.println(" - " +exportOption.getSourceField() + " " + exportOption.getSourceType());
+				System.out.println(" - " + exportOption.getSourceField() + " " + exportOption.getSourceType());
 			}
 		}
 	}
@@ -165,10 +163,9 @@ public class ExportManager implements IExportManager, Serializable {
 	public ArrayList<ExportField> getChosenExportFields() {
 		return currentFields;
 	}
-	
+
 	public ExportTypeEnum getExportType() {
 		return exportType;
 	}
-
 
 }
