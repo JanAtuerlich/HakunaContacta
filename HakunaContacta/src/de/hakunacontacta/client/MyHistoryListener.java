@@ -42,6 +42,7 @@ public class MyHistoryListener implements ValueChangeHandler<String> {
 		HTML footerimage = new HTML("<img src=\"images/2.jpg\">");
 
 		RootPanel.get("footer").add(footerimage);
+	}
 
 
 	public void goToPage2() {
