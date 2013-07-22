@@ -9,12 +9,7 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 
 /**
  * ExportManager verwaltet ExportFields und ExportOptions
- * 
- * @author AlHafi
- * @category exportauswahlModul
- * @version 0.1beta
  */
-
 public class ExportManager implements IExportManager, Serializable {
 
 	private ExportTypeEnum exportType;
@@ -23,7 +18,7 @@ public class ExportManager implements IExportManager, Serializable {
 	private ArrayList<ExportField> exportFieldsvCard = new ArrayList<ExportField>();
 	private ArrayList<ExportField> exportFieldsCSVWord = new ArrayList<ExportField>();
 
-	private ArrayList<ExportField> currentFields = exportFieldsCSV; // aktueller Bearbeitungszeiger
+	private ArrayList<ExportField> currentFields = exportFieldsCSV;
 
 	public ExportManager() {
 		super();
@@ -59,6 +54,13 @@ public class ExportManager implements IExportManager, Serializable {
 
 	}
 
+	/**
+	 * Die Methode setExportFormat(...) setzt den Bearbeitungszeiger des ExportManagers auf die entsprechende Collection
+	 * abhängign vom dem übergebenen Enum Wert.
+	 * 
+	 * @param ExportTypeEnum gibt die Zielcollection an
+	 * @return void
+	 */
 	public void setExportFormat(ExportTypeEnum type) {
 		System.out.println("Methode");
 		if (type == ExportTypeEnum.CSV) {
@@ -94,6 +96,13 @@ public class ExportManager implements IExportManager, Serializable {
 		exportFields.add(exportField);
 	}
 
+	/**
+	 * Die Methode setExportFormat(...) setzt den Bearbeitungszeiger des ExportManagers auf die entsprechende Collection
+	 * abhängign vom dem übergebenen Enum Wert und gibt diese zurück
+	 * 
+	 * @param ExportTypeEnum gibt die Zielcollection an
+	 * @return Liefert die aktuell in Bearbeitung befindliche ArrayList zurück
+	 */
 	public ArrayList<ExportField> changeExportFormat(ExportTypeEnum type) {
 		if (type == ExportTypeEnum.CSV) {
 			currentFields = exportFieldsCSV;
@@ -159,6 +168,8 @@ public class ExportManager implements IExportManager, Serializable {
 			}
 		}
 	}
+	
+	
 
 	public ArrayList<ExportField> getChosenExportFields() {
 		return currentFields;
