@@ -14,14 +14,11 @@ import de.hakunacontacta.shared.Constant;
 import de.hakunacontacta.shared.ContactSourceType;
 import de.hakunacontacta.shared.ExportField;
 import de.hakunacontacta.shared.ExportTypeEnum;
-import de.hakunacontacta.shared.FieldVerifier;
 import de.hakunacontacta.shared.LoginInfo;
-
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import java.util.ArrayList;
@@ -38,64 +35,54 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 
 /**
- * The server side implementation of the RPC service.
+ * Diese Klasse ist die serverseitige Implementierung des RPC-Service
+ * @author MB
  */
-@SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
 
 	private static Logger log = Logger.getLogger(GreetingServiceImpl.class.getCanonicalName());
 
+	/* (non-Javadoc)
+	 * @see de.hakunacontacta.client.GreetingService#login(java.lang.String)
+	 */
 	@Override
 	public LoginInfo login(final String requestUri) {
-		
-		HttpSession session = this.getThreadLocalRequest().getSession();
-		
-		System.out.println("Betrete Methode login()");
+
 		final UserService userService = UserServiceFactory.getUserService();
-	
-		
+
 		final User user = userService.getCurrentUser();
-		System.out.println("getCurrentUser: " + userService.getCurrentUser());
 		final LoginInfo loginInfo = new LoginInfo();
-		
+
 		if (user != null) {
 			loginInfo.setLoggedIn(true);
 			loginInfo.setName(user.getEmail());
 			loginInfo.setLogoutUrl(userService.createLogoutURL("/logout.html"));
-			System.out.println("LOGOUT-URL: " + userService.createLogoutURL("/logout.html"));
-			System.out.println("ODER LOGOUT-URL: " + loginInfo.getLogoutUrl());
-//			loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 
 		} else {
 			loginInfo.setLoggedIn(false);
 			loginInfo.setLoginUrl(userService.createLoginURL(Constant.APP_LINK));
 		}
-		
+
 		return loginInfo;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see de.hakunacontacta.client.GreetingService#loginDetails(java.lang.String)
+	 */
 	@Override
 	public LoginInfo loginDetails(final String token) {
-		
+
 		String url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + token;
-		
-		System.out.println("https://accounts.google.com/o/oauth2/revoke?token=" + token);
-		
+
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("loginDetails(): die Session-ID lautet: " + session.getId());
-		System.out.println("Token: " + token);
-		if (session.getAttribute("contactManager")==null) {
+
+		if (session.getAttribute("contactManager") == null) {
 			ContactManager contactManager = new ContactManager();
 			session.setAttribute("contactManager", contactManager);
 			contactManager.load(token);
 		}
-		
 
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
-
-		
-
-		
 
 		final StringBuffer r = new StringBuffer();
 		try {
@@ -150,147 +137,115 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		} catch (final IOException e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}
-		
 		session.setAttribute("contactManager", contactManager);
-		
 		return loginInfo;
 	}
- 
+
 	@Override
 	public ArrayList<Contact> getContacts() {
-		// TODO Auto-generated method stub
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("getContacts(): die Session-ID lautet: " + session.getId());
-		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
-		System.out.println("TEST noch da ? Mal schauen: "+ session.getAttribute("TEST"));
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		return contactManager.getContacts();
 	}
 
 	@Override
 	public ArrayList<ContactGroup> getContactGroups() {
-		// TODO Auto-generated method stub
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("getContactGroups(): die Session-ID lautet: " + session.getId());
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
-		
 		return contactManager.getGroups();
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see de.hakunacontacta.client.GreetingService#setSelections(java.util.ArrayList, java.util.ArrayList)
+	 */
 	@Override
 	public void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups) {
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("setSelections(): die Session-ID lautet: " + session.getId());
-		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");	
-		
+		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		contactManager.setSelections(contacts, contactGroups);
-		
 		session.setAttribute("contactManager", contactManager);
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see de.hakunacontacta.client.GreetingService#exitSession()
+	 */
 	@Override
-	public void exitSession(){
+	public void exitSession() {
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		session.invalidate();
 	}
-	
-	@Override	
+
+	@Override
 	public ArrayList<ContactSourceType> getContactSourceTypes() {
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("getContactSourceTypes(): die Session-ID lautet: " + session.getId());
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
-		for (Contact contact : contactManager.getSelectedContacts()) {
-			System.out.println("selected Kontakte:"+contact.getName());
-		}
 		return contactManager.getSourceTypesOfSelectedContacts();
-	}	// TODO #11:> end	
+	}
 
 	@Override
 	public void setExportFields(ArrayList<ExportField> exportFields, ExportTypeEnum type) {
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("setExportFields(): die Session-ID lautet: " + session.getId());
-		if(session.getAttribute("exportManager")==null){
-			System.out.println("Neuer exportManager wird angelegt");
+		if (session.getAttribute("exportManager") == null) {
 			session.setAttribute("exportManager", new ExportManager());
 		}
 		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
-		
-		
+
 		if (type == ExportTypeEnum.XML) {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.XML);");
 			exportManager.setExportFormat(ExportTypeEnum.XML);
 		} else if (type == ExportTypeEnum.CSVWord) {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSVWord);");
 			exportManager.setExportFormat(ExportTypeEnum.CSVWord);
 		} else if (type == ExportTypeEnum.vCard) {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.vCard);");
 			exportManager.setExportFormat(ExportTypeEnum.vCard);
 		} else {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSV);");
 			exportManager.setExportFormat(ExportTypeEnum.CSV);
 		}
 
 		session.setAttribute("exportManager", exportManager);
 		exportManager.setExportField(exportFields);
 	}
-	
+
 	public ArrayList<ExportField> getExportFields(ExportTypeEnum type, boolean firstload) {
-		
-		System.out.println("getExportFields aufgerufen! Übergabeparameter String type: " + type);
-		
+
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("Ausgabe der Session in getExportFields" + session);
-		if(session.getAttribute("exportManager")==null){
-			System.out.println("Neuer exportManager wird angelegt");
+		if (session.getAttribute("exportManager") == null) {
 			session.setAttribute("exportManager", new ExportManager());
 		}
-		
-		if(firstload == true){
-			System.out.println("FirstLoad! \n exportManager wird neu erstellt! \n Bisherige ExportSettings werden resettet!");
+
+		if (firstload == true) {
 			session.setAttribute("exportManager", new ExportManager());
-			
 		}
-		
+
 		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
-		
-				
+
 		if (type == ExportTypeEnum.XML) {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.XML);");
 			exportManager.setExportFormat(ExportTypeEnum.XML);
 		} else if (type == ExportTypeEnum.CSVWord) {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSVWord);");
 			exportManager.setExportFormat(ExportTypeEnum.CSVWord);
 		} else if (type == ExportTypeEnum.vCard) {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.vCard);");
 			exportManager.setExportFormat(ExportTypeEnum.vCard);
 		} else {
-			System.out.println(" - exportManager.setExportFormat(exportTypeEnum.CSV);");
 			exportManager.setExportFormat(ExportTypeEnum.CSV);
 		}
 
 		session.setAttribute("exportManager", exportManager);
 		return exportManager.getChosenExportFields();
 	}
-	
-	public String getFile(){
-		System.out.println("getFile - GreetingServiceImpl");
-		
+
+	/* (non-Javadoc)
+	 * @see de.hakunacontacta.client.GreetingService#getFile()
+	 */
+	public String getFile() {
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		System.out.println("Ausgabe der Session in getFile" + session);
 		ContactManager contactManager = (ContactManager) session.getAttribute("contactManager");
 		ExportManager exportManager = (ExportManager) session.getAttribute("exportManager");
-		if(session.getAttribute("fileCreator")==null){
+		if (session.getAttribute("fileCreator") == null) {
 			session.setAttribute("fileCreator", new FileCreator());
 		}
-		FileCreator fileCreator = (FileCreator)session.getAttribute("fileCreator");
+		FileCreator fileCreator = (FileCreator) session.getAttribute("fileCreator");
 		fileCreator.setFields(contactManager.getSelectedContacts(), exportManager.getChosenExportFields(), exportManager.getExportType());
-//		session.setAttribute("fileCreator", fileCreator);
-		
-//		Ersetzt durch Session-Handling: Versuch 1
-//		fileCreator = FileCreator.getInstance(contactManager.getSelectedContacts(), exportManager.getChosenExportFields(), exportManager.getExportType());
-		
+
 		String x = fileCreator.cleanseContacts();
-		System.out.println(x);
 		return x;
 	}
-	
+
 }
