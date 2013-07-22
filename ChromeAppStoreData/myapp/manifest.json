@@ -1,8 +1,8 @@
 {
   "name": "Hakuna Contacta ",
   "manifest_version": 2,
-  "description": "Einfache Kontaktexporte in die Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)",
-  "version": "2",
+  "description": "Einfacher Export Ihrer Google-Kontakte in die Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)",
+  "version": "1",
   "app": {
     "launch": {
       "web_url": "http://hakuna-contacta.appspot.com/"

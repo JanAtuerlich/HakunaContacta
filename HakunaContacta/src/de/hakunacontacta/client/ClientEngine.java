@@ -33,7 +33,8 @@ import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.smartgwt.client.widgets.tree.Tree;
 
 /**
- * Entry point classes define <code>onModuleLoad()</code>.
+ * Die Klasse ClientEngine ist die "Main-Klasse" auf Client-Seite, über sie werden 
+ * die RPC-Calls zum Server abgesetzt und die antworten bearbeitet. Des weiteren erstellt sie die Page1 und Page2
  */
 public class ClientEngine implements EntryPoint {
 
@@ -65,22 +66,74 @@ public class ClientEngine implements EntryPoint {
 	private String loginurl;
 	private String logouturl;
 
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
 
-	/**
-	 * Create a remote service proxy to talk to the server-side Greeting
-	 * service.
-	 */
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-	// TODO #07: add helper methods for Login, Logout and AuthRequest
+	/**
+	 *Die onModuleLoad-Methode wird als erstes beim Laden der Homepage aufgerufen.
+	 * 
+	 */
+	@Override
+	public void onModuleLoad() {
+		Button loginButton = new Button("Einloggen");
+		loginButton.addStyleName("loginlogoutButton");
+		loginButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.Location.assign(loginurl);
+			}
 
+		});
+		signInLink.getElement().setClassName("login-area");
+		signInLink.setTitle("sign out");
+		loginImage.getElement().setClassName("login-image");
+		loginPanel.add(loginButton);
+		HTML starttext = new HTML("<h2>Willkommen bei Hakuna Contacta</h2><div id=\"startlogin\">So funktionierts:<br>1. Kontakte ausw\u00E4hlen<br>2. Exportfelder ausw\u00E4hlen<br>3. Download der Exportdatei<br>(4. Als Quelldatei f\u00FCr Word Serienbrief verwenden)</div><div id=\"gcontacts2word\"><img src=\"images/gcontacts2word.png\"><p class=\"whitetext\">Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)  </p></div><div id=\"arrow1\"><img src=\"images/arrow1.png\"/></div>");
+		RootPanel.get("content").add(starttext);
+
+		RootPanel.get("loginPanelContainer").add(loginPanel);
+		RootPanel.get("footer").clear();
+		HTML footerimage = new HTML("<img src=\"images/1.jpg\">");
+		RootPanel.get("footer").add(footerimage);
+		final StringBuilder userEmail = new StringBuilder();
+		greetingService.login(GWT.getHostPageBaseURL(),
+				new AsyncCallback<LoginInfo>() {
+					@Override
+					public void onFailure(final Throwable caught) {
+						GWT.log("login -> onFailure");
+					}
+
+					@Override
+					public void onSuccess(final LoginInfo result) {
+						if (result.getName() != null
+								&& !result.getName().isEmpty()) {
+							addGoogleAuthHelper();
+							loadLogout(result);
+							Button logoutButton = new Button("Ausloggen");
+							logoutButton.addStyleName("loginlogoutButton");
+							loginPanel.clear();
+							logoutButton.addClickHandler(new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									thisClientEngine.exitSession();
+								}
+
+							});
+							loginPanel.add(logoutButton);
+
+						} else {
+							loadLogin(result);
+
+						}
+						userEmail.append(result.getEmailAddress());
+					}
+				});
+
+	}
+	
 	private void loadLogin(final LoginInfo loginInfo) {
 		setLoginurl(loginInfo.getLoginUrl());
 		signInLink.setHref(loginInfo.getLoginUrl());
@@ -94,6 +147,7 @@ public class ClientEngine implements EntryPoint {
 		signInLink.setText("Ausloggen");
 		signInLink.setTitle("Ausloggen");
 	}
+
 
 	private void addGoogleAuthHelper() {
 		final AuthRequest req = new AuthRequest(GOOGLE_AUTH_URL,
@@ -118,7 +172,6 @@ public class ClientEngine implements EntryPoint {
 
 												@Override
 												public void onFailure(Throwable caught) {
-													System.out.println("Fehler bei der Rückgabe der Gruppen.");
 												}
 
 												@Override
@@ -129,7 +182,6 @@ public class ClientEngine implements EntryPoint {
 
 																@Override
 																public void onFailure(Throwable caught) {
-																	System.out.println("Fehler bei der Rückgabe der Kontakte.");
 																}
 
 																@Override
@@ -194,7 +246,13 @@ public class ClientEngine implements EntryPoint {
 			}
 		});
 	}
-
+	
+	/**
+	 *createPage2 erstellt Page2 und holt sich dazu vom Server via RPC die SourceFelder der Kontakte,
+	 *gibt diese an den TreeManager weiter und übergibt diesen Tree dann der page2.
+	 *Des weiteren fügt sie die page2 zum HistoryHandler hinzu und öffnet sie.
+	 * 
+	 */
 	public void createPage2() {
 		greetingService
 				.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
@@ -215,7 +273,11 @@ public class ClientEngine implements EntryPoint {
 					}
 				});
 	}
-
+	
+	/**
+	 *Wir beim aktuallisieren auf page2 aufgerufen und refrehed den Content
+	 * 
+	 */
 	public void reloadPage2() {
 		greetingService
 				.getContactSourceTypes(new AsyncCallback<ArrayList<ContactSourceType>>() {
@@ -229,7 +291,6 @@ public class ClientEngine implements EntryPoint {
 						page2.updateData();
 						History.newItem("page2", true);
 						History.fireCurrentHistoryState();
-
 					}
 
 					@Override
@@ -238,7 +299,12 @@ public class ClientEngine implements EntryPoint {
 					}
 				});
 	}
-
+	
+	/**
+	 *writeExportOption schickt die eingegeben ExportOptions für das entsprechende Format an den Server und holst das neue Format
+	 * 
+	 * @param ExportTree, last Format das Format unter dem der Tree gespeichert werden soll, newFormat das geladen werden soll
+	 */
 	public void writeExportOptions(Tree exportTree, ExportTypeEnum lastFormat,final ExportTypeEnum newFormat) {
 			greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat,	new AsyncCallback<Void>() {
 					@Override
@@ -252,7 +318,13 @@ public class ClientEngine implements EntryPoint {
 					}
 				});
 	}
-
+	
+	/**
+	 *getExportFields holt den ExportTree für das übergeben Format via RPC
+	 *Ist firstload true wird ein neuer ExportManager mit den Standartfeldern erstellt
+	 * 
+	 * @param ExportTypeEnum gibt den gewünschen Tree an, firstload falls true wird resettet
+	 */
 	public void getExportFields(ExportTypeEnum type, boolean firstload) {
 		greetingService.getExportFields(type, firstload,new AsyncCallback<ArrayList<ExportField>>() {
 
@@ -270,7 +342,13 @@ public class ClientEngine implements EntryPoint {
 				});
 
 	}
-
+	
+	/**
+	 *getFile speichert nochmal die in der GUI eingegebenen ExportTree auf dem Server und lässt dann einer Datei im gewüschen
+	 *Format erstellen. Diese Datei wird als String in page2 gesetzt und als Download dann bereitgestellt.
+	 * 
+	 * @param  exportTree aus der GUI, gewünschtes ExportFormat
+	 */
 	public void getFile(Tree exportTree, ExportTypeEnum lastFormat,
 			final ExportTypeEnum newFormat) {
 		greetingService.setExportFields(exportTreeManager.writeExportTree(exportTree), lastFormat, new AsyncCallback<Void>() {
@@ -318,67 +396,13 @@ public class ClientEngine implements EntryPoint {
 		return contactRecords;
 	}
 
+	
+	
+
 	/**
-	 * This is the entry point method.
+	 *Setzt die Selections der Kontakte und Kontaktgruppen und sendet diese an den Server
+	 * 
 	 */
-	@Override
-	public void onModuleLoad() {
-		Button loginButton = new Button("Einloggen");
-		loginButton.addStyleName("loginlogoutButton");
-		loginButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				Window.Location.assign(loginurl);
-			}
-
-		});
-		signInLink.getElement().setClassName("login-area");
-		signInLink.setTitle("sign out");
-		loginImage.getElement().setClassName("login-image");
-		loginPanel.add(loginButton);
-		HTML starttext = new HTML("<h2>Willkommen bei Hakuna Contacta</h2><div id=\"startlogin\">So funktionierts:<br>1. Kontakte ausw\u00E4hlen<br>2. Exportfelder ausw\u00E4hlen<br>3. Download der Exportdatei<br>(4. Als Quelldatei f\u00FCr Word Serienbrief verwenden)</div><div id=\"gcontacts2word\"><img src=\"images/gcontacts2word.png\"><p class=\"whitetext\">Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)  </p></div><div id=\"arrow1\"><img src=\"images/arrow1.png\"/></div>");
-		RootPanel.get("content").add(starttext);
-
-		RootPanel.get("loginPanelContainer").add(loginPanel);
-		RootPanel.get("footer").clear();
-		HTML footerimage = new HTML("<img src=\"images/1.jpg\">");
-		RootPanel.get("footer").add(footerimage);
-		final StringBuilder userEmail = new StringBuilder();
-		greetingService.login(GWT.getHostPageBaseURL(),
-				new AsyncCallback<LoginInfo>() {
-					@Override
-					public void onFailure(final Throwable caught) {
-						GWT.log("login -> onFailure");
-					}
-
-					@Override
-					public void onSuccess(final LoginInfo result) {
-						if (result.getName() != null
-								&& !result.getName().isEmpty()) {
-							addGoogleAuthHelper();
-							loadLogout(result);
-							Button logoutButton = new Button("Ausloggen");
-							logoutButton.addStyleName("loginlogoutButton");
-							loginPanel.clear();
-							logoutButton.addClickHandler(new ClickHandler() {
-								@Override
-								public void onClick(ClickEvent event) {
-									thisClientEngine.exitSession();
-								}
-
-							});
-							loginPanel.add(logoutButton);
-
-						} else {
-							loadLogin(result);
-
-						}
-						userEmail.append(result.getEmailAddress());
-					}
-				});
-
-	}
-
 	public void setSelections(ContactRecord[] contactRecords,
 			ContactGroupRecord[] contactGroupRecords) {
 		for (ContactGroupRecord contactGroupRecord : contactGroupRecords) {
@@ -410,6 +434,29 @@ public class ClientEngine implements EntryPoint {
 						thisClientEngine.createPage2();
 					}
 				});
+	}
+	
+	
+	/**
+	 *exitSession() löscht die Session auf dem Server nachdem sich der Benutzer ausgeloggt hat
+	 * 
+	 */
+	public void exitSession() {
+		greetingService.exitSession(new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("exitSession -> onFailure");
+
+				System.out.println("Failed to call exitSession() on greetingService in ClientEngine");
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				AUTH.clearAllTokens();
+				Window.Location.assign(thisClientEngine.getLogouturl());
+			}
+		});
 	}
 
 	public HorizontalPanel getLoginPanel() {
@@ -444,23 +491,14 @@ public class ClientEngine implements EntryPoint {
 		return navigator.userAgent.toLowerCase();
 	}-*/;
 
-	/**
-	 * Returns true if the current browser is Chrome.
-	 */
 	public static boolean isChromeBrowser() {
 		return getBrowserName().toLowerCase().contains("chrome");
 	}
 
-	/**
-	 * Returns true if the current browser is Firefox.
-	 */
 	public static boolean isFirefoxBrowser() {
 		return getBrowserName().toLowerCase().contains("firefox");
 	}
 
-	/**
-	 * Returns true if the current browser is IE (Internet Explorer).
-	 */
 	public static boolean isIEBrowser() {
 		return getBrowserName().toLowerCase().contains("msie");
 	}
@@ -468,24 +506,8 @@ public class ClientEngine implements EntryPoint {
 	public String getUser_token() {
 		return user_token;
 	}
+	
 
-	public void exitSession() {
-		greetingService.exitSession(new AsyncCallback<Void>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("exitSession -> onFailure");
-
-				System.out.println("Failed to call exitSession() on greetingService in ClientEngine");
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				AUTH.clearAllTokens();
-				Window.Location.assign(thisClientEngine.getLogouturl());
-				System.out.println("Successfully ended the Session");
-			}
-		});
-	}
 
 }
