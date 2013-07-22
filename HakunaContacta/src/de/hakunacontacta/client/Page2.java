@@ -173,6 +173,7 @@ public class Page2 extends Composite {
 		exportGrid.setTreeFieldTitle("Exportfelder");
 		exportGrid.setHeight(320);
 		exportGrid.setWidth(250);
+		exportGrid.setParentAlreadyContainsChildMessage("Dieses Exportfeld enthält bereits das ausgew\u00E4hlte Informations-Objekt.");
 		exportGrid.setBorder("1px solid #ABABAB");
 		exportGrid.setAlternateRecordStyles(true);
 		exportGrid.addFolderDropHandler(new FolderDropHandler() {
@@ -240,7 +241,7 @@ public class Page2 extends Composite {
 					addExportfieldTextBox.selectAll();
 					return;
 				}
-				if (!name.matches("^[0-9A-Za-z\\.]{1,15}$")) {
+				if (!name.matches("^[0-9A-Za-z\\.\\-]{1,15}$")) {
 					Window.alert("Der Exportfeldname \"" + name + "\" enth\u00E4lt ung\u00FCltige Zeichen.");
 					addExportfieldTextBox.selectAll();
 					return;
