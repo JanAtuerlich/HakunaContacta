@@ -62,7 +62,6 @@ public class ExportManager implements IExportManager, Serializable {
 	 * @return void
 	 */
 	public void setExportFormat(ExportTypeEnum type) {
-		System.out.println("Methode");
 		if (type == ExportTypeEnum.CSV) {
 			currentFields = exportFieldsCSV;
 			this.exportType = ExportTypeEnum.CSV;
@@ -159,12 +158,9 @@ public class ExportManager implements IExportManager, Serializable {
 
 		currentFields.clear();
 
-		System.out.println("setExportOption Ausgabe:");
 		for (ExportField exportField : exportFields) {
 			currentFields.add(exportField);
-			System.out.println(exportField.getName());
 			for (ExportOption exportOption : exportField.getExportOptions()) {
-				System.out.println(" - " + exportOption.getSourceField() + " " + exportOption.getSourceType());
 			}
 		}
 	}
