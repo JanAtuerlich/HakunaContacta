@@ -134,8 +134,6 @@ public class Page2 extends Composite {
 		exportButton.addStyleName("exportButton");
 		Button zurueckButton = new Button("Zur\u00FCck zur Kontaktauswahl");
 		zurueckButton.addStyleName("zurueckButton");
-		Button logoutButton = new Button("Logout");
-		logoutButton.addStyleName("logoutButton");
 
 		// Linke Seite
 
@@ -333,18 +331,9 @@ public class Page2 extends Composite {
 			}
 		});
 		
-		logoutButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				clientEngine.exitSession();
-			}
-
-		});
-		
 		page2.add(mainPanel);
 		page2.add(exportButton);
 		page2.add(zurueckButton);
-		page2.add(logoutButton);
 		page2.setStyleName("page2");
 
 	}

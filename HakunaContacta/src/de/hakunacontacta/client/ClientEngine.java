@@ -4,8 +4,11 @@ package de.hakunacontacta.client;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
+import de.hakunacontacta.contactModule.ContactManager;
 import de.hakunacontacta.client.MyHistoryListener;
 import de.hakunacontacta.shared.Constant;
 import de.hakunacontacta.shared.ContactData2Record;
@@ -21,9 +24,14 @@ import de.hakunacontacta.shared.LoginInfo;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -68,7 +76,9 @@ public class ClientEngine implements EntryPoint {
 	private final HorizontalPanel loginPanel = new HorizontalPanel();
 	private final Anchor signInLink = new Anchor("");
 	private final Image loginImage = new Image();
+	private String loginurl;
 	private String logouturl;
+
 //	private final TextBox nameField = new TextBox();
 	// TODO #06:> end
 
@@ -87,13 +97,14 @@ public class ClientEngine implements EntryPoint {
 	// TODO #07: add helper methods for Login, Logout and AuthRequest
 
 	private void loadLogin(final LoginInfo loginInfo) {
+		setLoginurl(loginInfo.getLoginUrl());
 		signInLink.setHref(loginInfo.getLoginUrl());
 		signInLink.setText("Einloggen");
 		signInLink.setTitle("Einloggen");
-		loginImage.setUrl("images/login.png");
 	}
 
 	private void loadLogout(final LoginInfo loginInfo) {
+		setLogouturl(loginInfo.getLogoutUrl());
 		signInLink.setHref(loginInfo.getLogoutUrl());
 		signInLink.setText("Ausloggen");
 		signInLink.setTitle("Ausloggen");
@@ -109,7 +120,7 @@ public class ClientEngine implements EntryPoint {
 				if (!token.isEmpty()) {
 					user_token=token;	
 					greetingService.loginDetails(token, new AsyncCallback<LoginInfo>() {
-						
+	
 						
 						@Override
 						public void onFailure(final Throwable caught) {
@@ -171,7 +182,6 @@ public class ClientEngine implements EntryPoint {
 										      History.fireCurrentHistoryState(); 
 										    }
   
-										    System.out.println("Token: "+initToken);
 										    
 
 										    
@@ -348,12 +358,22 @@ public class ClientEngine implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
+		Button loginButton = new Button("Einloggen");
+		loginButton.addStyleName("loginlogoutButton");
+		loginButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.Location.assign(loginurl);
+			}
+
+		});
 		signInLink.getElement().setClassName("login-area");
 		signInLink.setTitle("sign out");
 		loginImage.getElement().setClassName("login-image");
-		loginPanel.add(signInLink);
+		loginPanel.add(loginButton);
 		HTML starttext = new HTML("<h2>Willkommen bei Hakuna Contacta</h2><div id=\"startlogin\">So funktionierts:<br>1. Kontakte ausw\u00E4hlen<br>2. Exportfelder ausw\u00E4hlen<br>3. Download der Exportdatei<br>(4. Als Quelldatei f\u00FCr Word Serienbrief verwenden)</div><div id=\"gcontacts2word\"><img src=\"images/gcontacts2word.png\"><p class=\"whitetext\">Exportformate - CSV (Word-Serienbrief), CSV (Komma getrennt), vCARD, xCard (XML)  </p></div><div id=\"arrow1\"><img src=\"images/arrow1.png\"/></div>");
 		RootPanel.get("content").add(starttext);
+		
 		RootPanel.get("loginPanelContainer").add(loginPanel);
 		RootPanel.get("footer").clear();
 		HTML footerimage = new HTML("<img src=\"images/1.jpg\">");
@@ -370,6 +390,17 @@ public class ClientEngine implements EntryPoint {
 				if (result.getName() != null && !result.getName().isEmpty()) {
 					addGoogleAuthHelper();
 					loadLogout(result);
+					Button logoutButton = new Button("Ausloggen");
+					logoutButton.addStyleName("loginlogoutButton");
+					loginPanel.clear();
+					logoutButton.addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							thisClientEngine.exitSession();
+						}
+
+					});
+					loginPanel.add(logoutButton);
 
 					
 
@@ -421,11 +452,19 @@ public class ClientEngine implements EntryPoint {
 	public Anchor getSignInLink() {
 		return signInLink;
 	}
+	
+	public String getLoginurl() {
+		return loginurl;
+	}
+
+	public void setLoginurl(String loginurl) {
+		this.loginurl = loginurl;
+	}
 
 	public String getLogouturl() {
 		return logouturl;
 	}
-
+	
 	public void setLogouturl(String logouturl) {
 		this.logouturl = logouturl;
 	}
@@ -476,6 +515,7 @@ public class ClientEngine implements EntryPoint {
 			@Override
 			public void onSuccess(Void result) {
 				AUTH.clearAllTokens();
+				Window.Location.assign(thisClientEngine.getLogouturl());
 				System.out.println("Successfully ended the Session");
 			}
 		});
