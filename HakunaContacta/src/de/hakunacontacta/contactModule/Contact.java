@@ -26,7 +26,6 @@ public class Contact implements Serializable {
 	 * Der Konstruktor sollte public sein und keine Parameter erwarten, da
 	 * Contact serialisierbar ist
 	 */
-
 	public Contact() {
 	}
 
@@ -54,9 +53,9 @@ public class Contact implements Serializable {
 	}
 
 	/**
-	 * Diese Methode fügt allen Gruppen, die im Contact-Objekt über die Methode
-	 * setGroups(ArrayList<ContactGroup> groups) gespeichert wurden, dieses
-	 * Contact-Objekt hinzu
+	 * Diese Methode prüft für alle Gruppen dieses Kontaktes ob alle Kontakte
+	 * der Gruppen dieses Kontaktes selektiert sind, dabei werden alle Gruppen,
+	 * deren Kontakte alle selektiert sind auf "selektiert" gesetzt
 	 */
 	public void selectChkGroups() {
 		for (ContactGroup contactGroup : groups) {

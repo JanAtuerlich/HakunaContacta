@@ -3,6 +3,14 @@ package de.hakunacontacta.contactModule;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Contact wird vom ContactManager verwaltet und kann sich viele Kontakte
+ * abspeichern
+ * 
+ * @author MB
+ * @category contactModule
+ * 
+ */
 public class ContactGroup implements Serializable {
 
 	private String name;
@@ -11,13 +19,28 @@ public class ContactGroup implements Serializable {
 	private boolean selected;
 	private ArrayList<Contact> contacts = new ArrayList<Contact>();
 
+	/**
+	 * Der Konstruktor sollte public sein und keine Parameter erwarten, da
+	 * ContactGroup serialisierbar ist
+	 */
 	public ContactGroup() {
 	}
 
+	/**
+	 * Diese Methode fügt dieser Gruppe einen Kontakt hinzu, der Kontakt ist
+	 * davon nicht direkt betroffen
+	 * 
+	 * @param contact
+	 *            sollte erst hinzugefügt werden, wenn er vollständig
+	 *            parametriert ist
+	 */
 	public void addContact(Contact contact) {
 		contacts.add(contact);
 	}
 
+	/**
+	 * Diese Methode setzt jeden Kontakt, der diese Gruppe kennt auf selektiert
+	 */
 	public void selectChkContacts() {
 
 		for (Contact contact : contacts) {
@@ -34,6 +57,9 @@ public class ContactGroup implements Serializable {
 
 	}
 
+	/**
+	 * Diese Methode setzt alle Kontakte dieser Gruppe auf "nicht selektiert"
+	 */
 	public void unselectChkContacts() {
 		for (Contact contact : contacts) {
 			contact.setSelected(false);
@@ -41,6 +67,10 @@ public class ContactGroup implements Serializable {
 
 	}
 
+	/**
+	 * Diese Methode prüft alle Kontakte der Gruppe, nur wenn alle selektiert
+	 * sind wird die Gruppe selektiert
+	 */
 	public void checkGroupForSelection() {
 		boolean groupSelected = true;
 		for (Contact contact : contacts) {
