@@ -21,6 +21,11 @@ import com.smartgwt.client.widgets.layout.HStack;
 import de.hakunacontacta.shared.ContactGroupRecord;
 import de.hakunacontacta.shared.ContactRecord;
 
+/**
+ * @author MB
+ * @category GUI
+ * 
+ */
 public class Page1 extends Composite {
 
 	private VerticalPanel page1 = new VerticalPanel();
@@ -42,18 +47,32 @@ public class Page1 extends Composite {
 		initWidget(page1);
 	}
 
+	/**
+	 * Der Konstruktor von Page1 erwartet eine ClientEngine, welche der
+	 * Kontaktpunkt zur GreetingServiceImpl und damit zur Server-Seite ist.
+	 * 
+	 * @param cEngine
+	 *            ist der Kontaktpunkt des Clients zum Server
+	 */
 	public Page1(ClientEngine cEngine) {
 		clientEngine = cEngine;
 		initPage();
 		initWidget(page1);
 	}
 
+	/**
+	 * Diese Methode erstellt alle Elemente, Widgets und Handler auf der ersten
+	 * Seite und verwaltet die Kommunikation mit der ClientEngine
+	 */
 	private void initPage() {
 
 		page1.setPixelSize(1000, 400);
+
+		// Die Kontakte und Gruppen werden bezogen (in Form von Record Objekten)
 		contacts = clientEngine.getContactRecords();
 		contactGroups = clientEngine.getContactGroupRecord();
 
+		// Dieses Grid beinhaltet alles Gruppen
 		groupGrid.setWidth(300);
 		groupGrid.setHeight(400);
 		groupGrid.setEmptyMessage("Keine Gruppen vorhanden.");
@@ -70,6 +89,7 @@ public class Page1 extends Composite {
 
 		loadGroupGrid();
 
+		// Dieses Grid beinhaltet alle Kontakte der Gruppe, die markiert ist
 		contactGrid.setWidth(200);
 		contactGrid.setHeight(400);
 		contactGrid.setBorder("1px solid #ABABAB");
@@ -85,8 +105,11 @@ public class Page1 extends Composite {
 		ListGridField nameField = new ListGridField("name", "Kontaktnamen");
 		contactGrid.setFields(nameField);
 
+		// Standardmößig werden alle Kontakte angezeigt
 		loadContactGrid("ALL");
 
+		// Dieses Grid beinhaltet alle Kontakte, die selektiert wurden, anfangs
+		// ist dieses leer
 		selectionGrid.setWidth(250);
 		selectionGrid.setHeight(400);
 		selectionGrid.setBorder("1px solid #ABABAB");
@@ -100,6 +123,8 @@ public class Page1 extends Composite {
 		selectionGrid.setFields(selectedContactsField);
 		loadSelectionGrid();
 
+		// Dieser Handler wird aufgerufen, wenn im Group Grid eine Gruppe
+		// angehakt wird
 		groupGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
 			public void onSelectionChanged(SelectionEvent event) {
@@ -119,6 +144,8 @@ public class Page1 extends Composite {
 			}
 		});
 
+		// Dieser Handler wird aufgerufen, wenn im Group Grid eine Gruppe
+		// markiert wird
 		groupGrid.addRecordClickHandler(new RecordClickHandler() {
 
 			public void onRecordClick(RecordClickEvent event) {
@@ -127,6 +154,8 @@ public class Page1 extends Composite {
 			}
 		});
 
+		// Dieser Handler wird aufgerufen, wenn im Kontakt Grid ein Kontakt
+		// angehakt wird
 		contactGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
 			public void onSelectionChanged(SelectionEvent event) {
@@ -146,6 +175,8 @@ public class Page1 extends Composite {
 			}
 		});
 
+		// Dieser Handler wird aufgerufen, wenn im Selection Grid ein Kontakt
+		// entfernt wird
 		selectionGrid.addRemoveRecordClickHandler(new RemoveRecordClickHandler() {
 
 			@Override
@@ -175,13 +206,16 @@ public class Page1 extends Composite {
 		mainPanel.add(grids);
 		mainPanel.setStyleName("mainPanel");
 
-		// ------------------------------------------
+		// Ein Weiter-Button wird eingefügt, um auf die nächste Seite zu
+		// wechseln
 		Button button = new Button("Weiter <span id=\"arrow\">\u2192</span>");
 		button.setStyleName("next");
 		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-
+				// Durch das Aufrufen der nächsten Seite werden alle
+				// Selektierung an den ContactManager gesendet und dort
+				// übernommen
 				clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
@@ -193,6 +227,9 @@ public class Page1 extends Composite {
 		page1.setStyleName("page1");
 	}
 
+	/**
+	 * Diese Methode lädt die Gruppen neu
+	 */
 	private void loadGroupGrid() {
 		select = false;
 		groupGrid.setData(contactGroups);
@@ -204,6 +241,14 @@ public class Page1 extends Composite {
 		select = true;
 	}
 
+	/**
+	 * Diese Methode lädt die Kontakte neu, entweder alle Kontakte oder nur die
+	 * einer bestimmten Gruppe
+	 * 
+	 * @param groupName
+	 *            Falls groupName mit "ALL" beleget ist werden alle Kontakte neu
+	 *            geladen, ansonsten nur die Kontakte diese Gruppe
+	 */
 	private void loadContactGrid(String groupName) {
 		select = false;
 		if (groupName.equals("ALL")) {
@@ -228,6 +273,9 @@ public class Page1 extends Composite {
 		select = true;
 	}
 
+	/**
+	 * Diese Methode lädt die selektierten Kontakte neu
+	 */
 	private void loadSelectionGrid() {
 		selectionGrid.setData(new ContactRecord[] {});
 		for (ContactRecord contactRecord : contacts) {
@@ -237,6 +285,16 @@ public class Page1 extends Composite {
 		}
 	}
 
+	/**
+	 * Diese Methode de/selektiert die ausgewählte Gruppe und alle darin
+	 * enthaltenen Kontakte
+	 * 
+	 * @param groupname
+	 *            de/selektiert alle Kontakte dieser Gruppe
+	 * @param selected
+	 *            true setzt alle Kontakte der Gruppe auf selektiert, false
+	 *            deselektiert alle Kontakte dieser Gruppe
+	 */
 	private void groupSelection(String groupname, boolean selected) {
 		for (ContactGroupRecord groupRecord : contactGroups) {
 			if (groupRecord.getGroupname().equals(groupname)) {
@@ -251,6 +309,16 @@ public class Page1 extends Composite {
 		}
 	}
 
+	/**
+	 * Diese Methode de/selektiert einen einzelnen Kontakt
+	 * 
+	 * @param etag
+	 *            der Kontakt mit diesem eindeutigen Identifikator wird
+	 *            de/selektiert
+	 * @param selected
+	 *            true setzt dem Kontakt auf selektiert, false deselektiert den
+	 *            Kontakt
+	 */
 	private void contactSelection(String etag, boolean selected) {
 		for (ContactRecord contactRecord : contacts) {
 			if (contactRecord.getEtag().equals(etag)) {
@@ -259,6 +327,10 @@ public class Page1 extends Composite {
 		}
 	}
 
+	/**
+	 * Diese Methode überprüft alle Kontakte einer Gruppe, sind alle Kontakte
+	 * selektiert, wird auch die Gruppe selektiert
+	 */
 	private void checkGroupsForSelection() {
 		for (ContactGroupRecord groupRecord : contactGroups) {
 			String contactsInGroup = groupRecord.getAttributeAsString("contacts") + ",";

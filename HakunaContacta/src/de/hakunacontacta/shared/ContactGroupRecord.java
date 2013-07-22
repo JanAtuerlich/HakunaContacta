@@ -2,11 +2,32 @@ package de.hakunacontacta.shared;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
+/**
+ * Diese Klasse dient zum Abspeichern von Kontaktgruppen und kann in Drag&Drop
+ * von GWT eingesetzt werden
+ * 
+ * @author MB
+ * @category transportObject
+ */
 public class ContactGroupRecord extends ListGridRecord {
 
 	public ContactGroupRecord() {
 	}
 
+	/**
+	 * Der Kontstrukter ruft für jedes übergebene Attribut den jeweiligen Setter
+	 * auf
+	 * 
+	 * @param groupname
+	 *            speichert den Gruppen-Namen ab
+	 * @param selected
+	 *            speichert ab ob die Gruppe selektiert ist
+	 * @param contacts
+	 *            speichert alle Kontakte ab, die die Gruppe kennt
+	 * @param displayedName
+	 *            ist ein neues Attribut, das für die Anzeige auf Page1
+	 *            verwendet werden soll
+	 */
 	public ContactGroupRecord(String groupname, boolean selected, String[] contacts, String displayedName) {
 		setGroupname(groupname);
 		setContacts(contacts);

@@ -28,7 +28,6 @@ import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 import de.hakunacontacta.shared.ExportTypeEnum;
 
 /**
- * 
  * @author MB
  * @category GUI
  */
@@ -108,19 +107,19 @@ public class Page2 extends Composite {
 		class MyModule {
 			public native void openURL(String url, String filename) /*-{
 
-		$wnd.url = url;
-		var uri = $wnd.url;
-
-		var downloadLink = document.createElement("a");
-		downloadLink.href = uri;
-		downloadLink.download = filename;
-		downloadLink.id = "download"
-
-		document.body.appendChild(downloadLink);
-		document.getElementById('download').click();
-		document.body.removeChild(downloadLink);
-
-	}-*/;
+				$wnd.url = url;
+				var uri = $wnd.url;
+		
+				var downloadLink = document.createElement("a");
+				downloadLink.href = uri;
+				downloadLink.download = filename;
+				downloadLink.id = "download"
+		
+				document.body.appendChild(downloadLink);
+				document.getElementById('download').click();
+				document.body.removeChild(downloadLink);
+		
+			}-*/;
 		}
 		if (!ClientEngine.isIEBrowser()) {
 
@@ -140,7 +139,7 @@ public class Page2 extends Composite {
 
 	/**
 	 * Diese Methode erstellt alle Elemente, Widgets und Handler auf der zweiten
-	 * Seite und verwaltet die Kommunikation mit der ClientEngine auf
+	 * Seite und verwaltet die Kommunikation mit der ClientEngine
 	 */
 	private void initPage() {
 
