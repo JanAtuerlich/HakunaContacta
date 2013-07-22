@@ -9,12 +9,10 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -137,6 +135,8 @@ public class Page2 extends Composite {
 //		System.out.println("Check from Page2: " + clientEngine.check);
 		page2.setPixelSize(500, 350);
 
+		Button logoutButton = new Button("Logout");
+		logoutButton.addStyleName("logoutButton");
 		Button exportButton = new Button("Download Exportdatei");
 		exportButton.addStyleName("exportButton");
 		Button zurueckButton = new Button("Zur\u00FCck zur Kontaktauswahl");
@@ -324,12 +324,18 @@ public class Page2 extends Composite {
 
 		// ------------------------------------
 
+		logoutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				clientEngine.exitSession();
+			}
+
+		});
 		exportButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);				
-}
+				clientEngine.getFile(thisExportTypesTree, currentFormat, currentFormat);
+			}
 
 		});
 		

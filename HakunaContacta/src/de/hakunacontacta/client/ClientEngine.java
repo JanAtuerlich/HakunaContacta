@@ -100,6 +100,20 @@ public class ClientEngine implements EntryPoint {
 		signInLink.setTitle("Ausloggen");
 	}
 
+	public void exitSession(){
+		greetingService.exitSession(new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("exitSession -> onFailure");
+				System.out.println("Failed to call exitSession() on greetingService in ClientEngine");
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				System.out.println("Successfully ended the Session");
+			}});
+	}
+	
 	private void addGoogleAuthHelper() {
 		final AuthRequest req = new AuthRequest(GOOGLE_AUTH_URL, GOOGLE_CLIENT_ID)
 				.withScopes(PLUS_ME_SCOPE);

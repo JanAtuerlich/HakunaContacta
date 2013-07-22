@@ -42,4 +42,6 @@ public interface GreetingService extends RemoteService {
 	ArrayList<ExportField> getExportFields(ExportTypeEnum type, boolean firstload);
 	
 	String getFile();
+	
+	void exitSession();
 }

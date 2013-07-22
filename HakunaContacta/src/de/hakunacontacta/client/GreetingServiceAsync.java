@@ -78,4 +78,6 @@ public interface GreetingServiceAsync {
 	
 	void getFile(AsyncCallback<String> callback);
 
+	void exitSession(AsyncCallback<Void> callback);
+
 }

@@ -96,6 +96,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		final UserService userService = UserServiceFactory.getUserService();
 		final User user = userService.getCurrentUser();
 		final LoginInfo loginInfo = new LoginInfo();
+		
 		if (user != null) {
 			loginInfo.setLoggedIn(true);
 			loginInfo.setName(user.getEmail());
@@ -219,6 +220,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		contactManager.setSelections(contacts, contactGroups);
 		
 		session.setAttribute("contactManager", contactManager);
+	}
+	
+	@Override
+	public void exitSession(){
+		HttpSession session = this.getThreadLocalRequest().getSession();
+		session.invalidate();
 	}
 	
 	@Override	
