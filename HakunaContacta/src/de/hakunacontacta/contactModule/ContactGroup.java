@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * @category contactModule
  * 
  */
+@SuppressWarnings("serial")
 public class ContactGroup implements Serializable {
 
 	private String name;

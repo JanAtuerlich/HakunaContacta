@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  * @author MB
  * @category contactModule
  */
+@SuppressWarnings("serial")
 public class ContactManager implements IContactManager, Serializable {
 	private ArrayList<Contact> contacts = new ArrayList<Contact>();
 	private ArrayList<ContactGroup> contactGroups = new ArrayList<ContactGroup>();

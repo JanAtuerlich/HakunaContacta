@@ -9,6 +9,7 @@ import java.io.Serializable;
  * @category exportauswahlModul
  * @version 0.1beta
  */
+@SuppressWarnings("serial")
 public class ExportOption implements Comparable<ExportOption>, Serializable {
 
 	private String sourceType;

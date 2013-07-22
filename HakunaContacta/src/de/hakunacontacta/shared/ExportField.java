@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * @version 0.1beta
  * 
  */
+@SuppressWarnings("serial")
 public class ExportField implements Comparable<ExportField>, Serializable {
 
 	private String name;

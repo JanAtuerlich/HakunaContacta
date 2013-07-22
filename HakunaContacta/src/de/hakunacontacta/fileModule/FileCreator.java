@@ -39,6 +39,7 @@ import ezvcard.VCard;
  * @author AlHafi
  * 
  */
+@SuppressWarnings("serial")
 public class FileCreator implements IFileCreator, Serializable {
 
 	private ArrayList<Contact> selectedContacts;
@@ -53,7 +54,7 @@ public class FileCreator implements IFileCreator, Serializable {
 	 * Die Methode cleanseContacts() bereitet die Kontaktdaten für den Export
 	 * auf, dabei werden die selektierten Exportfields in den Kontakten nach
 	 * Prioritäten gesucht, gibts es also Export-Feld Prio 1 nicht wird gesucht
-	 * ob es Prio2 gibt und das ganze wird dann als Collection aus Contacts and
+	 * ob es Prio2 gibt und das Ganze wird dann als ArrayList aus Contacts and
 	 * die einzelnen fielCreator weitergegeben.
 	 * 
 	 * @param nothing
