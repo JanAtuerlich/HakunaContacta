@@ -13,7 +13,7 @@ body{
 #p1info {
 	color: #fff;
 	position: relative;
-	left: 22px;
+	left: 122px;
 	font-size: 13.5pt;
 	top: 1px;
 }
@@ -41,8 +41,16 @@ h1 {
 h2 {
     color: #FFFFFF;
     font-size: 24pt;
-    text-align: center;
     font-family: 'Alef',normal;
+    width: 522px;
+	margin: 0 auto;
+}
+h3 {
+    color: #FFFFFF;
+    font-size: 24pt;
+    font-family: 'Alef',normal;
+
+	margin: 0 auto;
 }
 .whitetext {
 	color: #fff;
@@ -98,7 +106,6 @@ h2 {
 	float: left;
 }
 #menu {
-	width: 300px;
 	padding: 15px;
 	float:right;
 }
@@ -140,7 +147,7 @@ h2 {
 .next {
 	width: 203px;
 	position: relative;
-	left: 577px;
+	left: 677px;
 	top: -20;
 }
 
@@ -348,14 +355,14 @@ h2 {
 }
 
 .exportButton{
-    left: 458px;
+    left: 604px;
     position: relative;
     width: 250px;
     top: -60px;
 }
 
 .zurueckButton{
-    left: 0;
+    left: 147px;
     position: relative;
     top: -90px;
     width: 250px;

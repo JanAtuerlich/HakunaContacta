@@ -63,12 +63,12 @@ public class ExportTreeManager {
 
 		}
 
-		System.out.println("Augabe der erstellen Klassen:");
-		for (ExportField exportField : exportFields) {
-			System.out.println("o " + exportField.getName());
-			System.out.println(exportField.toString());
 
-		}
+//		for (ExportField exportField : exportFields) {
+//			System.out.println("o " + exportField.getName());
+//			System.out.println(exportField.toString());
+//
+//		}
 
 		return exportFields;
 
