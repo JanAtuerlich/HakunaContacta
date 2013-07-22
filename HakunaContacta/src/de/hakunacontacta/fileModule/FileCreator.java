@@ -39,6 +39,7 @@ import ezvcard.VCard;
  * @author AlHafi
  * 
  */
+@SuppressWarnings("serial")
 public class FileCreator implements IFileCreator, Serializable {
 
 	private ArrayList<Contact> selectedContacts;

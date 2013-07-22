@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * der in Form einer ArrayList im ContactSourceType enthaltenen Informationen
  * 
  */
+@SuppressWarnings("serial")
 public class ContactSourceType implements Serializable, Comparable<ContactSourceType> {
 
 	private String type;

@@ -2,6 +2,7 @@ package de.hakunacontacta.shared;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class LoginInfo implements Serializable {
 
 	private boolean loggedIn = false;

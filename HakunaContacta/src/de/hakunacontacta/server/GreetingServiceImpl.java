@@ -38,6 +38,7 @@ import org.codehaus.jackson.JsonToken;
  * Diese Klasse ist die serverseitige Implementierung des RPC-Service
  * @author MB
  */
+@SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
 
 	private static Logger log = Logger.getLogger(GreetingServiceImpl.class.getCanonicalName());

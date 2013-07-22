@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Die Klasse ContactSourceField hängt unter ContactSourceType und enthält jeweils eine spezifische Kontaktinformation die anhand
  * von String name beschrieben wird und im String value steht.
  */
+@SuppressWarnings("serial")
 public class ContactSourceField implements Serializable {
 
 	private String name;

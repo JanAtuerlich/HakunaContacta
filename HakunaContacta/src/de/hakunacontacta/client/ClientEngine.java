@@ -365,7 +365,6 @@ public class ClientEngine implements EntryPoint {
 								public void onClick(ClickEvent event) {
 									thisClientEngine.exitSession();
 								}
-
 							});
 							loginPanel.add(logoutButton);
 

@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hakunacontacta.shared.ExportField;
-import de.hakunacontacta.shared.ExportOption;
 import de.hakunacontacta.shared.ExportTypeEnum;
 
 /**
  * ExportManager verwaltet ExportFields und ExportOptions
  */
+@SuppressWarnings("serial")
 public class ExportManager implements IExportManager, Serializable {
 
 	private ExportTypeEnum exportType;
@@ -160,8 +160,6 @@ public class ExportManager implements IExportManager, Serializable {
 
 		for (ExportField exportField : exportFields) {
 			currentFields.add(exportField);
-			for (ExportOption exportOption : exportField.getExportOptions()) {
-			}
 		}
 	}
 	

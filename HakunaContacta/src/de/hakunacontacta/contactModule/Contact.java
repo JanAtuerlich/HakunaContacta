@@ -14,6 +14,7 @@ import de.hakunacontacta.shared.ContactSourceType;
  * @version 0.1beta
  */
 
+@SuppressWarnings("serial")
 public class Contact implements Serializable {
 
 	private String eTag;
