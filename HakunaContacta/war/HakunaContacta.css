@@ -10,6 +10,24 @@ body{
 	overflow-y: hidden;
 }
 
+#p1info {
+	color: #fff;
+	position: relative;
+	left: 122px;
+	font-size: 13.5pt;
+	top: 1px;
+}
+
+#info {
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #777777;
+	width: 200px;
+	display:none;
+}
+
+
 h1 {
     bottom: 16px;
     color: #777777;
@@ -23,8 +41,16 @@ h1 {
 h2 {
     color: #FFFFFF;
     font-size: 24pt;
-    text-align: center;
     font-family: 'Alef',normal;
+    width: 522px;
+	margin: 0 auto;
+}
+h3 {
+    color: #FFFFFF;
+    font-size: 24pt;
+    font-family: 'Alef',normal;
+
+	margin: 0 auto;
 }
 .whitetext {
 	color: #fff;
@@ -80,7 +106,6 @@ h2 {
 	float: left;
 }
 #menu {
-	width: 300px;
 	padding: 15px;
 	float:right;
 }
@@ -120,9 +145,10 @@ h2 {
 }
 
 .next {
-    float: right;
-    margin-right: 20px !important;
-    width: 203px;
+	width: 203px;
+	position: relative;
+	left: 677px;
+	top: -20;
 }
 
 .page1{
@@ -136,7 +162,7 @@ h2 {
     left: 535px;
     margin-bottom: 5px;
     position: relative;
-    top: 0;
+    top: -40px;
     width: 170px;
 }
 
@@ -144,7 +170,7 @@ h2 {
     color: #FFFFFF;
     left: 456px;
     position: relative;
-    top: 22px;
+    top: -20px;
 }
 
 .contactGrid{
@@ -161,6 +187,36 @@ h2 {
 .mainPanel {
 	margin: 5px auto;
 	width: 650px;
+}
+.loginlogoutButton{
+	background-image: none !important;
+	border-color: none !important;
+	background-color: #4D4D4D !important;
+	
+	-webkit-border-top-left-radius: 20px !important;
+	-webkit-border-top-right-radius: 20px !important;
+	-moz-border-radius-topleft: 20px !important;
+	-moz-border-radius-topright: 20px !important;
+	border-top-left-radius: 20px !important;
+	border-top-right-radius: 20px !important;
+    -webkit-border-bottom-right-radius: 0px !important;
+	-webkit-border-bottom-left-radius: 0px !important;
+	-moz-border-radius-bottomright: 0px !important;
+	-moz-border-radius-bottomleft: 0px !important;
+	border-bottom-right-radius: 0px !important;
+	border-bottom-left-radius: 0px !important;
+    
+    
+    border-style: none !important;
+    color: #FFFFFF;
+    font-size: 13pt !important;
+    font-weight: 300;
+    height: 36;
+    padding: 9px !important;
+    text-decoration: none !important;
+    z-index: 1000010;
+    margin-right: -15px !important;
+    margin-top: 5px !important;
 }
 .gridHeaders{
 	font-size: 14pt;
@@ -184,12 +240,13 @@ h2 {
 #gridHeader21{
 	color: #fff;
     float: left;
-    left: 78px;
-    position: relative
+    left: 54px;
+    position: relative;
+    text-align:center;
 }
 #gridHeader22{
 	color: #fff;
-    left: 440px;
+    left: 388px;
     position: relative;
 }
 
@@ -265,7 +322,7 @@ h2 {
 .addPanel {
     float: right;
     margin-right: -1px;
-    top: -26px;
+    top: -66px;
     width: 200px;
     position: relative;
     z-index: 200470;
@@ -291,31 +348,27 @@ h2 {
 }
 
 #tip2 {
-	margin: 0 20px;
+	margin: 0 6px;
 	text-align: center;
 	color: #fff;
+	font-size: 9.5pt;
 }
 
 .exportButton{
-    left: 458px;
+    left: 604px;
     position: relative;
     width: 250px;
-    top: -20px;
+    top: -60px;
 }
 
 .zurueckButton{
-    left: 0;
+    left: 147px;
     position: relative;
-    top: -452px;
+    top: -90px;
     width: 250px;
 }
 
-.logoutButton{
-    left: 0;
-    position: relative;
-    top: 92px;
-    width: 250px;
-}
+
 
 #downloadLink {
     left: 300px;
@@ -330,5 +383,5 @@ h2 {
     width: 200px;
 }
 .grids2{
-	margin-top: 0px;
+    top: -40px !important;
 }

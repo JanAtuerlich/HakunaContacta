@@ -21,6 +21,7 @@ import de.hakunacontacta.shared.LoginInfo;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import java.util.ArrayList;
@@ -105,6 +106,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		final User user = userService.getCurrentUser();
 		System.out.println("getCurrentUser: " + userService.getCurrentUser());
 		final LoginInfo loginInfo = new LoginInfo();
+		
 		if (user != null) {
 			loginInfo.setLoggedIn(true);
 			loginInfo.setName(user.getEmail());
@@ -120,16 +122,17 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		
 		return loginInfo;
 	}
-
+	
 	@Override
 	public LoginInfo loginDetails(final String token) {
+		
 		String url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + token;
 		
 		System.out.println("https://accounts.google.com/o/oauth2/revoke?token=" + token);
 		
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		System.out.println("loginDetails(): die Session-ID lautet: " + session.getId());
-
+		System.out.println("Token: " + token);
 		if (session.getAttribute("contactManager")==null) {
 			ContactManager contactManager = new ContactManager();
 			session.setAttribute("contactManager", contactManager);
@@ -233,6 +236,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		session.setAttribute("contactManager", contactManager);
 	}
 	
+	@Override
+	public void exitSession(){
+		HttpSession session = this.getThreadLocalRequest().getSession();
+		session.invalidate();
+	}
+	
 	@Override	
 	public ArrayList<ContactSourceType> getContactSourceTypes() {
 		HttpSession session = this.getThreadLocalRequest().getSession();
@@ -331,12 +340,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		String x = fileCreator.cleanseContacts();
 		System.out.println(x);
 		return x;
-	}
-	
-	@Override
-	public void exitSession(){
-	HttpSession session = this.getThreadLocalRequest().getSession();
-	session.invalidate();
 	}
 	
 }

@@ -2,10 +2,8 @@ package de.hakunacontacta.client;
 
 import java.util.ArrayList;
 
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-
 
 import de.hakunacontacta.contactModule.Contact;
 import de.hakunacontacta.contactModule.ContactGroup;
@@ -20,9 +18,9 @@ import de.hakunacontacta.shared.LoginInfo;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-//	String greetServer(String name) throws IllegalArgumentException;
+	String greetServer(String name) throws IllegalArgumentException;
 
-//	String getUserEmail(String token);
+	String getUserEmail(String token);
 
 	LoginInfo login(String requestUri);
 
@@ -35,16 +33,13 @@ public interface GreetingService extends RemoteService {
 	void setSelections(ArrayList<Contact> contacts, ArrayList<ContactGroup> contactGroups);
 
 	ArrayList<ContactSourceType> getContactSourceTypes();
-	
+
 	void setExportFields(ArrayList<ExportField> exportFields, ExportTypeEnum type);
-	
+
 	ArrayList<ExportField> getExportFields(ExportTypeEnum type, boolean firstload);
-	
+
 	String getFile();
-	
+
 	void exitSession();
-	
-	
-	
-	
+
 }

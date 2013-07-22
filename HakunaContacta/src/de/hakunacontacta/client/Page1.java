@@ -1,16 +1,11 @@
 package de.hakunacontacta.client;
 
-
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -54,11 +49,8 @@ public class Page1 extends Composite {
 	}
 
 	private void initPage() {
-		
-		Button logoutButton = new Button("Logout");
-		logoutButton.addStyleName("logoutButton");
-		
-		page1.setPixelSize(800, 400);
+
+		page1.setPixelSize(1000, 400);
 		contacts = clientEngine.getContactRecords();
 		contactGroups = clientEngine.getContactGroupRecord();
 
@@ -74,7 +66,8 @@ public class Page1 extends Composite {
 		groupGrid.setSelectionType(SelectionStyle.SIMPLE);
 		groupGrid.setShowSelectedStyle(false);
 		groupGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-		ListGridField groupnameField = new ListGridField("displayedName", "Gruppenname");
+		ListGridField groupnameField = new ListGridField("displayedName",
+				"Gruppenname");
 		groupGrid.setFields(groupnameField);
 
 		loadGroupGrid();
@@ -105,7 +98,7 @@ public class Page1 extends Composite {
 		selectionGrid.setShowAllRecords(true);
 		selectionGrid.setCanRemoveRecords(true);
 		selectionGrid.setCanGroupBy(false);
-		ListGridField selectedContactsField = new ListGridField("name", "Kontaktnamen");
+		ListGridField selectedContactsField = new ListGridField("name","Kontaktnamen");
 		selectionGrid.setFields(selectedContactsField);
 		loadSelectionGrid();
 
@@ -113,7 +106,8 @@ public class Page1 extends Composite {
 
 			public void onSelectionChanged(SelectionEvent event) {
 				if (select) {
-					ContactGroupRecord record = (ContactGroupRecord) event.getRecord();
+					ContactGroupRecord record = (ContactGroupRecord) event
+							.getRecord();
 					if (event.getState()) {
 						groupGrid.selectRecord(record);
 						groupSelection(record.getGroupname(), true);
@@ -155,17 +149,19 @@ public class Page1 extends Composite {
 			}
 		});
 
-		selectionGrid.addRemoveRecordClickHandler(new RemoveRecordClickHandler() {
+		selectionGrid
+				.addRemoveRecordClickHandler(new RemoveRecordClickHandler() {
 
-			@Override
-			public void onRemoveRecordClick(RemoveRecordClickEvent event) {
-				ContactRecord record = (ContactRecord) selectionGrid.getRecord(event.getRowNum());
-				contactSelection(record.getEtag(), false);
-				checkGroupsForSelection();
-				loadGroupGrid();
-				loadContactGrid(markedGroup);
-			}
-		});
+					@Override
+					public void onRemoveRecordClick(RemoveRecordClickEvent event) {
+						ContactRecord record = (ContactRecord) selectionGrid
+								.getRecord(event.getRowNum());
+						contactSelection(record.getEtag(), false);
+						checkGroupsForSelection();
+						loadGroupGrid();
+						loadContactGrid(markedGroup);
+					}
+				});
 
 		contactGrid.setStyleName("contactGrid");
 		selectionGrid.setStyleName("selectionGrid");
@@ -194,33 +190,13 @@ public class Page1 extends Composite {
 				clientEngine.setSelections(contacts, contactGroups);
 			}
 		});
-		
-		logoutButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				clientEngine.exitSession();
-				
-//				System.out.println("Cookie Value is: " + Cookies.getCookie("JSESSIONID") );		
-//				Cookies.setCookie("JSESSIONID", "What");
-//				System.out.println("Cookie Value is now: " + Cookies.getCookie("JSESSIONID") );		
-//				
-//				System.out.println("LogoutURL: " + clientEngine.getLogouturl());
-//
-//				Window.Location.assign(clientEngine.getLogouturl());
-			}
-
-		});
-		
-
 
 		page1.add(mainPanel);
+		HTML info = new HTML("<div id=\"p1info\">Bitte w\u00E4hlen Sie die Kontakte aus die Sie exportieren m\u00F6chten!</div>");
+		page1.add(info);
 		page1.add(button);
-		page1.add(logoutButton);
 		page1.setStyleName("page1");
 	}
-
-	
 
 	private void loadGroupGrid() {
 		select = false;
@@ -246,7 +222,7 @@ public class Page1 extends Composite {
 			contactGrid.setData(new ContactRecord[] {});
 			for (ContactRecord record : contacts) {
 				String groups = record.getAttributeAsString("groups") + ",";
-				if(groups.contains(groupName + ",")){
+				if (groups.contains(groupName + ",")) {
 					contactGrid.addData(record);
 					if (record.getSelected()) {
 						contactGrid.selectRecord(record);
@@ -293,8 +269,8 @@ public class Page1 extends Composite {
 			String contactsInGroup = groupRecord.getAttributeAsString("contacts") + ",";
 			boolean allContactsAreSelected = true;
 			boolean isEmpty = true;
-			for(ContactRecord contactRecord : contacts){
-				if (contactsInGroup.contains(contactRecord.getEtag() + ",")){
+			for (ContactRecord contactRecord : contacts) {
+				if (contactsInGroup.contains(contactRecord.getEtag() + ",")) {
 					isEmpty = false;
 					if (!contactRecord.getSelected()) {
 						allContactsAreSelected = false;
