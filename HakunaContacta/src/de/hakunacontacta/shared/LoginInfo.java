@@ -1,5 +1,3 @@
-// TODO #12: add LoginInfo helper class
-
 package de.hakunacontacta.shared;
 
 import java.io.Serializable;
@@ -66,9 +64,5 @@ public class LoginInfo implements Serializable {
 	public String getPictureUrl() {
 		return pictureUrl;
 	}
-	
-	
 
 }
-// TODO #12:> end
-

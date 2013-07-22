@@ -98,6 +98,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		final User user = userService.getCurrentUser();
 		System.out.println("getCurrentUser: " + userService.getCurrentUser());
 		final LoginInfo loginInfo = new LoginInfo();
+		
 		if (user != null) {
 			loginInfo.setLoggedIn(true);
 			loginInfo.setName(user.getEmail());
@@ -225,6 +226,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		session.setAttribute("contactManager", contactManager);
 	}
 	
+	@Override
+	public void exitSession(){
+		HttpSession session = this.getThreadLocalRequest().getSession();
+		session.invalidate();
+	}
+	
 	@Override	
 	public ArrayList<ContactSourceType> getContactSourceTypes() {
 		HttpSession session = this.getThreadLocalRequest().getSession();
@@ -323,12 +330,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		String x = fileCreator.cleanseContacts();
 		System.out.println(x);
 		return x;
-	}
-	
-	@Override
-	public void exitSession(){
-	HttpSession session = this.getThreadLocalRequest().getSession();
-	session.invalidate();
 	}
 	
 }

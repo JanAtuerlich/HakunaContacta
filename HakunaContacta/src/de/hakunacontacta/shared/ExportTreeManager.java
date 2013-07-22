@@ -51,24 +51,15 @@ public class ExportTreeManager {
 
 			ExportField exportField = new ExportField();
 			exportField.setName(node.getAttribute("Name"));
-			// System.out.println(node.getAttribute("Name"));
 
 			int prio = 1;
 			for (TreeNode leaf : exportTree.getChildren(node)) {
-				// System.out.println("  - " + leaf.getAttribute("Name"));
 				exportField.addExportOption(leaf.getAttribute("SourceType"), leaf.getAttribute("SourceFieldName"), leaf.getAttribute("Name"), prio);
 				prio++;
 			}
 			exportFields.add(exportField);
 
 		}
-
-
-//		for (ExportField exportField : exportFields) {
-//			System.out.println("o " + exportField.getName());
-//			System.out.println(exportField.toString());
-//
-//		}
 
 		return exportFields;
 

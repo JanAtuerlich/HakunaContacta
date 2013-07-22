@@ -2,16 +2,15 @@ package de.hakunacontacta.shared;
 
 import java.io.Serializable;
 
-public class ContactSourceField implements Serializable{
+public class ContactSourceField implements Serializable {
 
 	private String name;
 	private String value;
 	private int anzahl;
 
 	public ContactSourceField() {
-		
-	}
 
+	}
 
 	public String getName() {
 		return name;
@@ -37,7 +36,6 @@ public class ContactSourceField implements Serializable{
 		this.anzahl = anzahl;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -45,7 +43,6 @@ public class ContactSourceField implements Serializable{
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -63,5 +60,5 @@ public class ContactSourceField implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }

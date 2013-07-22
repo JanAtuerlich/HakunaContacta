@@ -2,9 +2,9 @@ package de.hakunacontacta.shared;
 
 import java.io.Serializable;
 
-
 /**
  * ExportOption
+ * 
  * @author AlHafi
  * @category exportauswahlModul
  * @version 0.1beta
@@ -15,15 +15,12 @@ public class ExportOption implements Comparable<ExportOption>, Serializable {
 	private String sourceField;
 	private String displayName;
 	private int priority;
-	//
 
-//	public ExportOption(String sourceType, String sourceField, int priority) {
-//		this.sourceType = sourceType;
-//		this.sourceField = sourceField;
-//		this.priority = priority;
-//	}
-	
-	
+	@Override
+	public int compareTo(ExportOption o) {
+		return this.getPriority() - o.getPriority();
+	}
+
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -55,12 +52,5 @@ public class ExportOption implements Comparable<ExportOption>, Serializable {
 	public void setSourceField(String sourceField) {
 		this.sourceField = sourceField;
 	}
-
-	@Override
-	public int compareTo(ExportOption o) {
-		return this.getPriority() - o.getPriority();
-	}
-	
-	
 
 }

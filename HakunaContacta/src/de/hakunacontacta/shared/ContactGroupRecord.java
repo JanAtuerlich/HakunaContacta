@@ -2,47 +2,47 @@ package de.hakunacontacta.shared;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class ContactGroupRecord  extends ListGridRecord {
+public class ContactGroupRecord extends ListGridRecord {
 
-    public ContactGroupRecord() {  
-    }  
-  
-    public ContactGroupRecord(String groupname, boolean selected, String[] contacts, String displayedName) {  
-        setGroupname(groupname);  
-        setContacts(contacts);
-        setSelected(selected);
-        setDisplayedName(displayedName);
-    }   
+	public ContactGroupRecord() {
+	}
+
+	public ContactGroupRecord(String groupname, boolean selected, String[] contacts, String displayedName) {
+		setGroupname(groupname);
+		setContacts(contacts);
+		setSelected(selected);
+		setDisplayedName(displayedName);
+	}
 
 	public void setSelected(boolean selected) {
-    	setAttribute("selected", selected);
+		setAttribute("selected", selected);
 	}
-    
-    public boolean getSelected() {
-    	return getAttributeAsBoolean("selected");
-    }
 
-	public void setGroupname(String groupname) {  
-        setAttribute("groupname", groupname);  
-    }  
-  
-    public String getGroupname() {  
-        return getAttributeAsString("groupname");  
-    }  
-  
-    public void setContacts(String[] contacts) {  
-        setAttribute("contacts", contacts);  
-    }  
+	public boolean getSelected() {
+		return getAttributeAsBoolean("selected");
+	}
 
-	public String[] getContacts() {  
-        return getAttributeAsStringArray("contacts");  
-    }  
-  
-	public String getDisplayedName(){
+	public void setGroupname(String groupname) {
+		setAttribute("groupname", groupname);
+	}
+
+	public String getGroupname() {
+		return getAttributeAsString("groupname");
+	}
+
+	public void setContacts(String[] contacts) {
+		setAttribute("contacts", contacts);
+	}
+
+	public String[] getContacts() {
+		return getAttributeAsStringArray("contacts");
+	}
+
+	public String getDisplayedName() {
 		return getAttributeAsString("displayedName");
 	}
-	
-	public void setDisplayedName(String displayedName){
+
+	public void setDisplayedName(String displayedName) {
 		setAttribute("displayedName", displayedName);
 	}
 }

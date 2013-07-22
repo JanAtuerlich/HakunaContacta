@@ -42,7 +42,7 @@ public class ExportField implements Comparable<ExportField>, Serializable {
 	 * @author AlHafi
 	 */
 
-	public void addExportOption(String sourceType, String sourceField,String displayName, int priority) {
+	public void addExportOption(String sourceType, String sourceField, String displayName, int priority) {
 		ExportOption exportOption = new ExportOption();
 		exportOption.setDisplayName(displayName);
 		exportOption.setSourceField(sourceField);
@@ -50,28 +50,6 @@ public class ExportField implements Comparable<ExportField>, Serializable {
 		exportOption.setPriority(priority);
 		exportOptions.add(exportOption);
 	}
-
-//	/**
-//	 * Die Methode entfernt eine entsprechende ExportOption aus dem aktuellen
-//	 * ExportSet(CSV,XML, usw) anhand der Attribute
-//	 * 
-//	 * @param sourceType
-//	 *            Quelltyp des zu entfernden Feldes
-//	 * @param sourceField
-//	 *            Feldbezeichnung des zu entfernden Feldes
-//	 * @author AlHafi
-//	 */
-//	public void removeExportOption(String sourceType, String sourceField) {
-//		for (ExportOption exportOptionx : this.exportOptions) {
-//			if (exportOptionx.getSourceField() == sourceField && exportOptionx.getSourceType() == sourceType) {
-//				this.exportOptions.remove(exportOptionx);
-//			}
-//
-//		}
-//	}
-//	 public ExportField(String name) {
-//	 this.name = name;
-//	 }
 
 	public String getName() {
 		return name;
@@ -85,15 +63,15 @@ public class ExportField implements Comparable<ExportField>, Serializable {
 	public int compareTo(ExportField o) {
 		return this.getName().compareTo(o.getName());
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		String string = "";
 		for (ExportOption exportOption : exportOptions) {
 			string += exportOption.getSourceType() + " - " + exportOption.getSourceField() + " ( " + exportOption.getPriority() + ") \n";
 		}
-		
+
 		return string;
-		
+
 	}
 
 }
