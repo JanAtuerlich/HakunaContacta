@@ -173,7 +173,7 @@ public class Page2 extends Composite {
 		exportGrid.setTreeFieldTitle("Exportfelder");
 		exportGrid.setHeight(320);
 		exportGrid.setWidth(250);
-		exportGrid.setParentAlreadyContainsChildMessage("Dieses Exportfeld enthält bereits das ausgew\u00E4hlte Informations-Objekt.");
+		exportGrid.setParentAlreadyContainsChildMessage("Dieses Exportfeld enth\u00E4lt bereits das ausgew\u00E4hlte Informations-Objekt.");
 		exportGrid.setBorder("1px solid #ABABAB");
 		exportGrid.setAlternateRecordStyles(true);
 		exportGrid.addFolderDropHandler(new FolderDropHandler() {
