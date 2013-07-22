@@ -35,6 +35,10 @@ import de.hakunacontacta.shared.ExportTypeEnum;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 
+/**
+ * @author AlHafi
+ * 
+ */
 public class FileCreator implements IFileCreator, Serializable {
 
 	private ArrayList<Contact> selectedContacts;
@@ -45,6 +49,16 @@ public class FileCreator implements IFileCreator, Serializable {
 	public FileCreator() {
 	}
 
+	/**
+	 * Die Methode cleanseContacts() bereitet die Kontaktdaten für den Export
+	 * auf, dabei werden die selektierten Exportfields in den Kontakten nach
+	 * Prioritäten gesucht, gibts es also Export-Feld Prio 1 nicht wird gesucht
+	 * ob es Prio2 gibt und das ganze wird dann als Collection aus Contacts and
+	 * die einzelnen fielCreator weitergegeben.
+	 * 
+	 * @param nothing
+	 * @return String Exportdatei
+	 */
 	@Override
 	public String cleanseContacts() {
 
@@ -95,16 +109,12 @@ public class FileCreator implements IFileCreator, Serializable {
 		String output = "";
 		if (exportFormat == ExportTypeEnum.CSV) {
 			output = createCSV();
-
 		} else if (exportFormat == ExportTypeEnum.CSVWord) {
 			output = createCSVWord();
-
 		} else if (exportFormat == ExportTypeEnum.XML) {
 			output = createXML();
-
 		} else if (exportFormat == ExportTypeEnum.vCard) {
 			output = createVCard();
-
 		} else {
 			output = null;
 		}
@@ -112,6 +122,12 @@ public class FileCreator implements IFileCreator, Serializable {
 		return new String(output);
 	}
 
+	/**
+	 * Die Methode createCSV() bereit die Collection exportField als String in
+	 * Form einer CSV auf
+	 * 
+	 * @return String Exportdatei als CSV
+	 */
 	private String createCSV() {
 
 		String csv = "";
@@ -139,6 +155,14 @@ public class FileCreator implements IFileCreator, Serializable {
 		return csv;
 	}
 
+	/**
+	 * Die Methode createCSVWord bereitet die Collection exportField als String
+	 * in Form einer CSV auf. Das besondere sind hier der Seperator ; und das
+	 * Datensatztrennzeichen *
+	 * 
+	 * @param nothing
+	 * @return String Exportdatei in Form einer CSV
+	 */
 	private String createCSVWord() {
 
 		String csv = "";
@@ -164,9 +188,16 @@ public class FileCreator implements IFileCreator, Serializable {
 		}
 
 		return csv;
-
 	}
 
+	/**
+	 * Die Methode createXML bereitet die Collection als xCard, einer vCard in
+	 * XML-Form auf Dabei wird zuerst eine vCard erzeugt und diese dann in das
+	 * xCard-Format gecastet.
+	 * 
+	 * @param nothing
+	 * @return String Exportdatei als xCard (XML)
+	 */
 	private String createXML() {
 		String vCard = createVCard();
 		VCard vcard = Ezvcard.parse(vCard).first();
@@ -175,6 +206,14 @@ public class FileCreator implements IFileCreator, Serializable {
 		return xml;
 	}
 
+	/**
+	 * Die Methode createVCard bereitet die Collection als vCard, einer vCard
+	 * auf Felder die es im vCar Format eigentlich nicht gibt werden als x-Field
+	 * angelegt, einer art Custom-Feld
+	 * 
+	 * @param nothing
+	 * @return String Exportdatei als vCard (XML)
+	 */
 	private String createVCard() {
 		String vCard = "";
 
@@ -233,8 +272,10 @@ public class FileCreator implements IFileCreator, Serializable {
 							try {
 								vcard.addUrl(new UrlType(new URL(sourceField.getValue())));
 							} catch (NullPointerException e) {
+								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (MalformedURLException e) {
+								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -242,6 +283,7 @@ public class FileCreator implements IFileCreator, Serializable {
 				} else if (sourceType.getType().equals("Adresse")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
+
 							AdrType address1 = new AdrType();
 							address1.setCharset("UTF-8");
 							address1.setExtendedAddress(sourceField.getValue().replace("\n", " "));
@@ -252,28 +294,29 @@ public class FileCreator implements IFileCreator, Serializable {
 				} else if (sourceType.getType().equals("Telefon")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
+
 							TelType telephone = new TelType();
 							telephone.setCharset("UTF-8");
 							telephone.setTelephone(sourceField.getValue());
 							telephone.addParam(TelParamType.HOME).setParameterTypeStyle(ParameterTypeStyle.PARAMETER_VALUE_LIST);
 							vcard.addTel(telephone);
 						}
-
 					}
 				} else if (sourceType.getType().equals("Handy")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
+
 							TelType telephone = new TelType();
 							telephone.setCharset("UTF-8");
 							telephone.setTelephone(sourceField.getValue());
 							telephone.addParam(TelParamType.CELL).setParameterTypeStyle(ParameterTypeStyle.PARAMETER_VALUE_LIST);
 							vcard.addTel(telephone);
 						}
-
 					}
 				} else if (sourceType.getType().equals("E-Mail privat")) {
 					for (ContactSourceField sourceField : sourceType.getSourceFields()) {
 						if (sourceField.getValue() != "") {
+
 							EmailType email = new EmailType();
 							email.setEmail(sourceField.getValue());
 							email.addParam(EmailParamType.HOME).setCharset("UTF-8");
@@ -319,7 +362,6 @@ public class FileCreator implements IFileCreator, Serializable {
 				e.printStackTrace();
 			}
 		}
-
 		return vCard;
 	}
 

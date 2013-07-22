@@ -6,8 +6,19 @@ import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
+/**
+ * Die Klasse ExportTreeManager dient zur konvertierung von  ArrayLists in Trees und umgekehrt,
+ * da diese in der GUI angezeigt und manipuliert werden können und sollen.
+ * 
+ */
 public class ExportTreeManager {
+	
 
+	/**
+	 * Die Methode getTree(..) wandelt eine ArrayList in einen Tree um.
+	 * @param ArrayList aus Kontakts
+	 * @return Tree der umgewandelten Kontakts
+	 */
 	public Tree getTree(ArrayList<ContactSourceType> contactSourceTypes) {
 
 		Tree sources = new Tree();
@@ -42,6 +53,11 @@ public class ExportTreeManager {
 		return sources;
 	}
 
+	/**
+	 * Die Methode writeExportTree(..) wandelt einen Tree in eine  ArrayList um.
+	 * @param Tree der umgewandelten Kontakts
+	 * @return ArrayList aus Kontakts 
+	 */
 	public ArrayList<ExportField> writeExportTree(Tree exportTree) {
 		TreeNode rootnode = exportTree.getRoot();
 
@@ -65,6 +81,11 @@ public class ExportTreeManager {
 
 	}
 
+	/**
+	 * Die Methode getTree(..) wandelt eine ArrayList in einen Tree um.
+	 * @param ArrayList aus Kontakts
+	 * @return Tree der umgewandelten Kontakts
+	 */
 	public Tree getExportFieldsTree(ArrayList<ExportField> exportFields) {
 
 		final Tree exportFieldTree = new Tree();

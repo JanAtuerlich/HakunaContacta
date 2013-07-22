@@ -3,6 +3,12 @@ package de.hakunacontacta.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
+/**
+ * Die Klasse ContactSourceType hängt im Contacts und beschreibt die Art der Informationen wie z.B. Adresse, oder Telefonnummern
+ * der in Form einer ArrayList im ContactSourceType enthaltenen Informationen
+ * 
+ */
 public class ContactSourceType implements Serializable, Comparable<ContactSourceType> {
 
 	private String type;
@@ -12,6 +18,7 @@ public class ContactSourceType implements Serializable, Comparable<ContactSource
 	public ContactSourceType() {
 	}
 
+	
 	@Override
 	public int compareTo(ContactSourceType o) {
 		return this.getType().compareTo(o.getType());
