@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.types.SortDirection;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -86,6 +87,7 @@ public class Page1 extends Composite {
 		groupGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
 		ListGridField groupnameField = new ListGridField("displayedName", "Gruppenname");
 		groupGrid.setFields(groupnameField);
+		groupGrid.setSortDirection(SortDirection.ASCENDING);
 
 		loadGroupGrid();
 
@@ -104,6 +106,7 @@ public class Page1 extends Composite {
 		contactGrid.setShowSelectedStyle(false);
 		ListGridField nameField = new ListGridField("name", "Kontaktnamen");
 		contactGrid.setFields(nameField);
+		contactGrid.setSortDirection(SortDirection.ASCENDING);
 
 		// Standardmößig werden alle Kontakte angezeigt
 		loadContactGrid("ALL");
@@ -121,6 +124,7 @@ public class Page1 extends Composite {
 		selectionGrid.setCanGroupBy(false);
 		ListGridField selectedContactsField = new ListGridField("name", "Kontaktnamen");
 		selectionGrid.setFields(selectedContactsField);
+		selectionGrid.setSortDirection(SortDirection.ASCENDING);
 		loadSelectionGrid();
 
 		// Dieser Handler wird aufgerufen, wenn im Group Grid eine Gruppe

@@ -80,6 +80,17 @@ public class ContactManager implements IContactManager, Serializable {
 													// hinzugefügt
 
 			}
+			// Eine Gruppe "Alle Kontakte" und eine Gruppe "Nicht in einer Gruppe" wird angelegt
+			ContactGroup contactGroupAllContacts = new ContactGroup();
+			contactGroupAllContacts.setName("Alle Kontakte");
+			contactGroupAllContacts.setGroupID("all_contacts_standard_group");
+			contactGroups.add(contactGroupAllContacts);
+			
+			ContactGroup contactGroupNoGroup = new ContactGroup();
+			contactGroupNoGroup.setName("Nicht in einer Gruppe");
+			contactGroupNoGroup.setGroupID("not_in_a_group_standard_group");
+			contactGroups.add(contactGroupNoGroup);
+			
 
 			// Diese Feed-URL ist notwendig um alle Kontakte aus der Google API
 			// zu beziehen (maximal 10000)
@@ -110,9 +121,27 @@ public class ContactManager implements IContactManager, Serializable {
 						// Gruppen-Objekte
 						// in der ArrayList angelegt, sowie in diesen Gruppen
 						// Objekten Referenzen auf den Kontakt
+						for (ContactGroup group : contactGroups) {
+							if (group.getGroupID().equals("all_contacts_standard_group")){
+								group.addContact(contact);
+								contact.addContactGroup(group);
+								break;
+							}
+						}
+						boolean hasGroups = false;
 						for (GroupMembershipInfo groupInfo : entry.getGroupMembershipInfos()) {
 							for (ContactGroup group : contactGroups) {
 								if (group.getGroupID().equals(groupInfo.getHref())) {
+									group.addContact(contact);
+									contact.addContactGroup(group);
+									hasGroups = true;
+									break;
+								}
+							}
+						}
+						if (!hasGroups){
+							for (ContactGroup group : contactGroups) {
+								if (group.getGroupID().equals("not_in_a_group_standard_group")){
 									group.addContact(contact);
 									contact.addContactGroup(group);
 									break;
@@ -213,10 +242,16 @@ public class ContactManager implements IContactManager, Serializable {
 							for (Organization orga : entry.getOrganizations()) {
 								ContactSourceField sourceFieldEnterprice = new ContactSourceField();
 								sourceFieldEnterprice.setName("Unternehmen");
-								sourceFieldEnterprice.setValue(orga.getOrgName().getValue());
+								if (orga.hasOrgName())
+									sourceFieldEnterprice.setValue(orga.getOrgName().getValue());
+								else
+									sourceFieldEnterprice.setValue("nicht verfügbar");
 								ContactSourceField sourceFieldTitle = new ContactSourceField();
 								sourceFieldTitle.setName("Titel");
-								sourceFieldTitle.setValue(orga.getOrgTitle().getValue());
+								if (orga.hasOrgTitle())
+									sourceFieldTitle.setValue(orga.getOrgTitle().getValue());
+								else
+									sourceFieldTitle.setValue("nicht verfügbar");
 								sourceType.addSourceField(sourceFieldEnterprice);
 								sourceType.addSourceField(sourceFieldTitle);
 							}
