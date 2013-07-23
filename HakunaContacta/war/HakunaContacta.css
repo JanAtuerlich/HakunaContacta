@@ -59,6 +59,13 @@ h1 {
     text-align: left;
     font-family: 'Alef', normal;
 }
+h1 a:hover{
+	text-decoration: none;
+}
+
+h1 a:visited{
+	color: #777777;
+}
 
 h2 {
     color: #FFFFFF;
